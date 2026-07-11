@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Listening – Part 4: Scrap Metal Recycling</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #ffffff;
+    --text: #1a1a2e;
+    --border: #dde1e9;
+    --primary: #1e6de6;
+    --secondary-bg: #f4f6fb;
+    --correct: #16a34a;
+    --incorrect: #dc2626;
+    --highlight: #fde047;
+    --highlight-text: #1a1a2e;
+    --input-bg: #ffffff;
+    --input-text: #1a1a2e;
+    --header-bg: #ffffff;
+    --shadow: 0 2px 12px rgba(30,109,230,.08);
+    --fsize: 16px;
+}
+[data-theme="dark"] {
+    --bg: #13131f;
+    --text: #e8eaf6;
+    --border: #2d2d45;
+    --primary: #5b8dee;
+    --secondary-bg: #1e1e30;
+    --correct: #22c55e;
+    --incorrect: #ef4444;
+    --highlight: #facc15;
+    --highlight-text: #0f0f1a;
+    --input-bg: #1e1e30;
+    --input-text: #ffffff;
+    --header-bg: #13131f;
+    --shadow: 0 2px 12px rgba(0,0,0,.3);
+}
+.font-small  { --fsize: 14px; }
+.font-medium { --fsize: 16px; }
+.font-large  { --fsize: 18px; }
+.font-xlarge { --fsize: 20px; }
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: var(--fsize);
+    line-height: 1.5;
+    padding-bottom: 90px;
+    transition: background .3s, color .3s;
+}
+
+/* watermark */
+body::after {
+    content: "@FOZILBEK_IELTS";
+    position: fixed; left: 50%; top: 50%;
+    transform: translate(-50%,-50%) rotate(-20deg);
+    font-size: 64px; font-weight: 900;
+    color: var(--text); opacity: .035;
+    pointer-events: none; z-index: 0; white-space: nowrap;
+}
+
+/* HEADER */
+.header {
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 58px; z-index: 200;
+    box-shadow: var(--shadow);
+    transition: background .3s, border-color .3s;
+}
+.header-left { display: flex; align-items: center; gap: 18px; }
+.ielts-logo { height: 50px; }
+.tg-link {
+    color: var(--primary) !important; text-decoration: none;
+    font-weight: 700; font-size: 13px;
+    display: flex; align-items: center; gap: 6px;
+    transition: opacity .2s;
+}
+.tg-link:hover { opacity: .75; }
+.hicons { display: flex; gap: 8px; align-items: center; }
+.icon-btn {
+    width: 32px; height: 32px; border-radius: 6px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px; transition: background .2s;
+    position: relative;
+}
+.icon-btn:hover { background: var(--secondary-bg); }
+.fs-dropdown {
+    position: absolute; top: calc(100% + 6px); right: 0;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 0; min-width: 130px;
+    display: none; z-index: 500; box-shadow: var(--shadow);
+}
+.fs-dropdown.show { display: block; }
+.fs-dropdown div {
+    padding: 8px 16px; cursor: pointer; font-size: 14px;
+    transition: background .2s;
+}
+.fs-dropdown div:hover { background: var(--secondary-bg); }
+.sun-icon, .moon-icon { position: absolute; transition: opacity .3s, transform .3s; }
+.sun-icon  { opacity: 1; transform: scale(1); }
+.moon-icon { opacity: 0; transform: scale(.5); }
+[data-theme="dark"] .sun-icon  { opacity: 0; transform: scale(.5); }
+[data-theme="dark"] .moon-icon { opacity: 1; transform: scale(1); }
+
+/* LAYOUT */
+.main-wrap {
+    margin-top: 58px;
+    display: flex;
+    transition: all .3s;
+}
+.left-panel {
+    width: 100%;
+    padding: 28px 32px;
+    transition: width .4s;
+}
+.main-wrap.results-mode .left-panel {
+    width: 72%;
+    height: calc(100vh - 148px);
+    overflow-y: auto;
+}
+.right-panel {
+    display: none;
+    border-left: 1px solid var(--border);
+    padding: 20px;
+    overflow-y: auto;
+}
+.main-wrap.results-mode .right-panel {
+    display: block;
+    width: 28%;
+    height: calc(100vh - 148px);
+}
+.right-panel h2 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+#transcription-text { font-size: 14px; line-height: 1.8; white-space: pre-wrap; }
+
+/* PART HEADER */
+.part-header {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+}
+.part-header p { margin: 0; }
+.part-header p + p { margin-top: 4px; }
+
+/* CENTERED TITLE */
+.centered-title {
+    text-align: center;
+    font-size: 17px; font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* SECTION HEADING */
+.section-heading {
+    font-weight: 700;
+    font-size: calc(var(--fsize) * 1.0);
+    margin: 22px 0 10px;
+    border-left: 3px solid var(--primary);
+    padding-left: 10px;
+}
+
+/* BULLET LIST */
+.q-list {
+    list-style: none;
+    padding-left: 0;
+}
+.q-list li {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 10px;
+    padding-left: 1.2em;
+    position: relative;
+    line-height: 1.7;
+}
+.q-list li::before {
+    content: "●";
+    position: absolute; left: 0;
+    color: var(--primary); font-size: .7em; top: .35em;
+}
+.q-list.sub li::before { content: "–"; color: var(--text); font-size: 1em; top: 0; }
+.q-list.sub { padding-left: 24px; margin-top: 4px; }
+
+/* INPUTS */
+.ans-input {
+    border: 1.5px solid #9aa3ad;
+    border-radius: 5px;
+    background: var(--input-bg);
+    color: var(--input-text);
+    padding: 3px 8px;
+    font-size: var(--fsize);
+    width: 130px;
+    min-width: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    transition: border-color .15s, box-shadow .15s;
+}
+[data-theme="dark"] .ans-input { color: #ffffff; border-color: #555; }
+.ans-input::placeholder { color: #999; text-align: center; font-style: italic; }
+.ans-input:focus { outline: none; border-color: var(--primary); border-width: 2px; }
+.ans-input.correct { border-color: var(--correct); background: #dcfce7; color: #14532d; }
+.ans-input.incorrect { border-color: var(--incorrect); background: #fee2e2; color: #7f1d1d; }
+[data-theme="dark"] .ans-input.correct  { background: #14532d; color: #dcfce7; }
+[data-theme="dark"] .ans-input.incorrect { background: #7f1d1d; color: #fee2e2; }
+
+/* Correct inline hint */
+.correct-inline {
+    color: var(--correct); font-weight: 700;
+    margin-left: 6px; display: inline-block;
+    vertical-align: middle;
+}
+.correct-inline::before { content: "→ "; }
+
+/* HIGHLIGHT */
+.highlight {
+    background: var(--highlight);
+    color: var(--highlight-text) !important;
+    font-weight: 600; padding: 1px 3px; border-radius: 2px;
+}
+.comment-highlight {
+    background: #86efac; position: relative; cursor: help; color: #052e16 !important;
+}
+[data-theme="dark"] .comment-highlight { background: #166534; color: #dcfce7 !important; }
+.comment-tooltip {
+    position: absolute; bottom: 100%; left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a2e; color: #fff;
+    padding: 6px 10px; border-radius: 6px; font-size: 13px;
+    white-space: nowrap; z-index: 1000;
+    opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.comment-highlight:hover .comment-tooltip { opacity: 1; }
+
+/* BOTTOM NAV */
+.nav-row {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--bg); border-top: 1px solid var(--border);
+    height: 72px; z-index: 200;
+    display: flex; align-items: center;
+    padding: 0 16px;
+    box-shadow: 0 -2px 12px rgba(0,0,0,.05);
+    transition: background .3s, border-color .3s;
+}
+.part-label {
+    font-weight: 700; font-size: 15px;
+    margin-right: 14px; white-space: nowrap;
+    color: var(--primary);
+}
+.sub-btns { display: flex; gap: 4px; flex-wrap: wrap; flex: 1; }
+.sub-q {
+    width: 30px; height: 30px; border-radius: 4px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text);
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+}
+.sub-q:hover { background: var(--secondary-bg); border-color: var(--primary); }
+.sub-q.answered { background: var(--secondary-bg); }
+.sub-q.correct  { background: var(--correct); color: #fff; border-color: var(--correct); }
+.sub-q.incorrect { background: var(--incorrect); color: #fff; border-color: var(--incorrect); }
+.sub-q.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.deliver-btn {
+    margin-left: 16px;
+    background: var(--secondary-bg); color: var(--text);
+    border: 1px solid var(--border);
+    padding: 10px 20px; border-radius: 6px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    transition: background .2s, border-color .2s;
+    white-space: nowrap;
+}
+.deliver-btn:hover { background: #dde3f0; border-color: var(--primary); }
+.deliver-btn.success { background: var(--correct); color: #fff; border-color: var(--correct); }
+.deliver-btn.success:hover { filter: brightness(.9); }
+
+/* NAV ARROWS */
+.nav-arrows {
+    position: fixed; bottom: 84px; right: 16px;
+    display: flex; gap: 4px; z-index: 201;
+}
+.nav-arrow {
+    width: 40px; height: 40px;
+    background: var(--text); color: var(--bg);
+    border: none; border-radius: 6px;
+    font-size: 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+}
+.nav-arrow:hover { opacity: .8; }
+.nav-arrow:disabled { background: #ccc; cursor: not-allowed; }
+
+/* CONTEXT MENU */
+.ctx-menu {
+    position: absolute; background: var(--bg);
+    border: 1px solid var(--border); border-radius: 8px;
+    box-shadow: var(--shadow); z-index: 1000;
+    display: none; min-width: 130px; overflow: hidden;
+}
+.ctx-item {
+    padding: 10px 14px; cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--secondary-bg);
+    transition: background .15s;
+}
+.ctx-item:last-child { border-bottom: none; }
+.ctx-item:hover { background: var(--secondary-bg); }
+
+/* MODAL */
+.modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.55); z-index: 500;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+}
+.modal-box {
+    background: var(--bg); border-radius: 12px;
+    width: 100%; max-width: 780px; max-height: 88vh;
+    overflow-y: auto; padding: 28px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.25);
+}
+.modal-head {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: 18px;
+}
+.modal-head h2 { font-size: 20px; }
+.close-btn { background: none; border: none; font-size: 26px; cursor: pointer; color: #888; }
+.close-btn:hover { color: var(--text); }
+#score-summary {
+    font-size: 17px; font-weight: 700;
+    margin-bottom: 16px; color: var(--primary);
+}
+#result-details table { width: 100%; border-collapse: collapse; font-size: 14px; }
+#result-details th, #result-details td {
+    border: 1px solid var(--border); padding: 9px 12px; text-align: left;
+}
+#result-details th { background: var(--secondary-bg); font-weight: 700; }
+#result-details td:first-child { text-align: center; font-weight: 700; }
+.r-correct { color: var(--correct); font-weight: 700; }
+.r-wrong   { color: var(--incorrect); font-weight: 700; }
+
+/* FLASH */
+@keyframes flash { 0%{background:#dbeafe} 100%{background:transparent} }
+.flash-anim { animation: flash .8s ease-out; }
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-left">
+        <img src="https://i.pinimg.com/736x/88/93/a8/8893a81fed78f6989142a13e3605c45e.jpg" alt="IELTS" class="ielts-logo">
+        <a href="https://t.me/FOZILBEK_IELTS" target="_blank" class="tg-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-.38.24-1.07.7-.96.66-1.89 1.28-1.89 1.28s-.17.11-.49.03c-.32-.08-.72-.26-1.16-.47-.54-.26-1.17-.53-1.17-.53s-.87-.55.62-1.14c.32-.13 1.96-.84 2.99-1.2 1.05-.37 2.86-1.01 2.86-1.01s1.02-.4 1.02 0z"/></svg>
+            @FOZILBEK_IELTS
+        </a>
+    </div>
+    <div class="hicons">
+        <div style="position:relative">
+            <button class="icon-btn" id="fs-btn" title="Font Size">A</button>
+            <div class="fs-dropdown" id="fs-drop">
+                <div data-sz="small">Small</div>
+                <div data-sz="medium">Medium</div>
+                <div data-sz="large">Large</div>
+                <div data-sz="xlarge">Extra Large</div>
+            </div>
+        </div>
+        <button class="icon-btn" id="dm-btn" title="Dark Mode">
+            <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+    </div>
+</header>
+
+<!-- MAIN -->
+<div class="main-wrap" id="mainWrap">
+    <div class="left-panel" id="leftPanel">
+        <div class="part-header">
+            <p><strong>Part 4</strong></p>
+            <p>Listen and answer questions 31–40.</p>
+        </div>
+
+        <!-- Custom Listening Audio Player with Local File Selector -->
+        <div class="audio-player-card" style="margin: 15px 0 25px 0; background: var(--card-bg, #ffffff); border: 1px solid var(--border-color, #e2e8f0); border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: #ebf5ff; color: #2563eb;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+                    </span>
+                    <span style="font-weight: 700; font-size: 0.95rem; color: var(--text-color, #1e293b);">Listening Test Audio</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <label for="audioPicker" style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px; background: #2563eb; color: #ffffff; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; transition: background 0.2s;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Audio faylni yuklash / Upload Audio
+                    </label>
+                    <input type="file" id="audioPicker" accept="audio/*" style="display: none;">
+                </div>
+            </div>
+            
+            <audio id="listeningAudio" controls src="/audio/scrap_metal.mp3" style="width: 100%; border-radius: 8px; outline: none;"></audio>
+            
+            <div style="font-size: 0.75rem; color: #64748b; line-height: 1.4;">
+                💡 <strong>Eslatma:</strong> Audio faylni tanlash uchun yuqoridagi <strong>"Audio faylni yuklash"</strong> tugmasini bosing va Telegram orqali yuklab olgan <code>P4.mp3</code> audio faylingizni tanlang. Tizimda audio avtomatik ishga tushadi!
+            </div>
+        </div>
+
+        <script>
+            document.getElementById('audioPicker').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const url = URL.createObjectURL(file);
+                    const audio = document.getElementById('listeningAudio');
+                    audio.src = url;
+                    audio.play();
+                }
+            });
+        </script>
+
+        <div style="max-width:680px;">
+            <div class="question-prompt" style="margin-bottom:18px;">
+                <p><strong>Questions 31–40</strong></p>
+                <p>Complete the notes below.</p>
+                <p>Write <strong>ONE WORD ONLY</strong> for each answer.</p>
+            </div>
+
+            <p class="centered-title">Scrap Metal Recycling</p>
+
+            <!-- Section 1 -->
+            <p class="section-heading">Early practices of reusing metals</p>
+            <ul class="q-list">
+                <li>In ancient Greece and Rome, leftover metal was reshaped into
+                    <strong>31</strong> <input type="text" id="q31" class="ans-input" placeholder="31" autocomplete="off">
+                </li>
+                <li>During the 19th century in the US, traders generated income from unwanted metal objects once found on
+                    <strong>32</strong> <input type="text" id="q32" class="ans-input" placeholder="32" autocomplete="off">
+                </li>
+            </ul>
+
+            <!-- Section 2 -->
+            <p class="section-heading">Forces behind the rising demand for recycled metals</p>
+            <ul class="q-list">
+                <li>Many countries have witnessed growth in their
+                    <strong>33</strong> <input type="text" id="q33" class="ans-input" placeholder="33" autocomplete="off">
+                </li>
+                <li>For certain resources like copper, the available supply is of lower
+                    <strong>34</strong> <input type="text" id="q34" class="ans-input" placeholder="34" autocomplete="off">
+                    than before.
+                </li>
+                <li>The fast-growing
+                    <strong>35</strong> <input type="text" id="q35" class="ans-input" placeholder="35" autocomplete="off">
+                    industry produces a large volume of waste.
+                </li>
+            </ul>
+
+            <!-- Section 3 -->
+            <p class="section-heading">Unconventional sources of metals</p>
+            <ul class="q-list">
+                <li>In the UK, roadside
+                    <strong>36</strong> <input type="text" id="q36" class="ans-input" placeholder="36" autocomplete="off">
+                    take in tiny amounts of platinum from the ground.
+                </li>
+                <li>In Sweden, recoverable metals exist:
+                    <ul class="q-list sub">
+                        <li>inside abandoned cotton
+                            <strong>37</strong> <input type="text" id="q37" class="ans-input" placeholder="37" autocomplete="off">
+                        </li>
+                        <li>within disused underground
+                            <strong>38</strong> <input type="text" id="q38" class="ans-input" placeholder="38" autocomplete="off">
+                            once intended for gas distribution.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Section 4 -->
+            <p class="section-heading">Techniques for recycling metals</p>
+            <ul class="q-list">
+                <li>To separate iron from other materials, one can rely on a strong
+                    <strong>39</strong> <input type="text" id="q39" class="ans-input" placeholder="39" autocomplete="off">
+                </li>
+                <li>In the UK, an experimental approach makes use of
+                    <strong>40</strong> <input type="text" id="q40" class="ans-input" placeholder="40" autocomplete="off">
+                    to extract valuable metals.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- RIGHT PANEL (transcription shown after checking) -->
+    <div class="right-panel" id="rightPanel">
+        <h2>Transcription – Part 4</h2>
+        <div id="transcription-text"></div>
+    </div>
+</div>
+
+<!-- Hidden transcription data -->
+<div id="trans-data" style="display:none;">
+Good morning everyone. Today, we will continue our lecture series on recycling, with a particular focus on scrap metal – that is, pieces of metal that have been discarded and are no longer of use. Contrary to popular belief, recycling is far from a modern invention. In fact, it has been practised in various forms for centuries. For example, the ancient Greeks and Romans collected scrap metal, such as copper and bronze, to cast <span class="highlight">statues</span>. In these societies, scrap metal was highly valued and put to a variety of uses, ensuring that nothing went to waste. Over time, scrap metal recycling has grown into a major global industry.
+
+Take the US for instance, where the scrap metal trade dates back to the nineteenth century, a period of rapid urbanisation. Metal dealers spotted an opportunity to profit from abandoned machinery and tools left on <span class="highlight">farms</span>, as families moved from rural areas to cities. Today, some of these early dealers have expanded into multinational corporations, supplying metal to buyers around the world.
+
+But why is scrap metal so essential today? One key factor is the ongoing positive evolution within the <span class="highlight">economy</span> of many nations. As incomes rise, so too does the demand for consumer goods. Another driver of demand concerns specific types of metal, such as copper. Although copper is still relatively abundant, its <span class="highlight">quality</span> has declined in recent years. This makes recycling copper especially attractive. Furthermore, a rapidly expanding sector has significantly increased the demand for scrap metal – the <span class="highlight">electronics</span> sector. Consider how many devices you've replaced in recent years: smartphones, laptops, tablets, and more.
+
+One promising area for finding new sources is roadways. In the UK, for instance, vehicles release tiny traces of platinum that accumulate over time. Interestingly, certain <span class="highlight">plants</span> growing along roadsides can absorb metals from the soil efficiently. Sweden is another country making significant strides. As it was historically a major cotton producer, researchers are examining old cotton <span class="highlight">factories</span> that have been closed down. In addition, beneath many Swedish cities lie outdated <span class="highlight">pipes</span> that once supplied gas to local neighbourhoods.
+
+Once scrap metal is identified, the next step is extraction and separation. For example, if you want to separate iron from non-magnetic metals, you can use a strong <span class="highlight">magnet</span>. In the UK, one researcher is experimenting with <span class="highlight">bacteria</span> that could potentially help extract precious metals from waste. This technique is still at the trial stage, but if successful, it could revolutionise the recycling process.
+</div>
+
+<!-- Context Menu -->
+<div id="ctxMenu" class="ctx-menu">
+    <div class="ctx-item" onclick="doHighlight()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M15.24 2.56l6.2 6.2-11.2 11.2H4.04v-6.2l11.2-11.2zm0 2.83L6.04 14.49v3.71h3.71L18.95 9z"/></svg>
+        Highlight
+    </div>
+    <div class="ctx-item" onclick="doComment()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 12H5.17L4 15.17V4h16v10z"/></svg>
+        Comment
+    </div>
+    <div class="ctx-item" id="ctx-clear" onclick="doClearOne()" style="display:none">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        Clear
+    </div>
+    <div class="ctx-item" onclick="doClearAll()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 13h14v-2H5zm-2 4h14v-2H3zm4-8h10V7H7z"/></svg>
+        Clear All
+    </div>
+</div>
+
+<!-- Nav arrows -->
+<div class="nav-arrows">
+    <button class="nav-arrow" id="prevBtn" onclick="navQ(-1)">‹</button>
+    <button class="nav-arrow" id="nextBtn" onclick="navQ(1)">›</button>
+</div>
+
+<!-- Bottom nav -->
+<nav class="nav-row">
+    <span class="part-label">Part 4</span>
+    <div class="sub-btns" id="subBtns"></div>
+    <button class="deliver-btn" id="deliverBtn">Check Answers</button>
+</nav>
+
+<!-- Result modal -->
+<div id="resultModal" class="modal-overlay hidden">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h2>Your Results</h2>
+            <button class="close-btn" onclick="document.getElementById('resultModal').classList.add('hidden')">&times;</button>
+        </div>
+        <p id="score-summary"></p>
+        <div id="result-details"></div>
+    </div>
+</div>
+
+<script>
+// ─── State ───────────────────────────────────────────────────────────────────
+let currentQ = 31;
+let selRange  = null;
+let ctxEl     = null;
+
+const ANSWERS = {
+    q31: 'statues',
+    q32: 'farms',
+    q33: 'economy',
+    q34: 'quality',
+    q35: 'electronics',
+    q36: 'plants',
+    q37: 'factories',
+    q38: 'pipes',
+    q39: 'magnet',
+    q40: 'bacteria'
+};
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    initFontSize();
+    buildSubBtns();
+    setActiveQ(31);
+
+    document.getElementById('dm-btn').addEventListener('click', toggleDark);
+
+    document.getElementById('fs-btn').addEventListener('click', e => {
+        e.stopPropagation();
+        document.getElementById('fs-drop').classList.toggle('show');
+    });
+    document.addEventListener('click', e => {
+        if (!e.target.closest('.icon-btn') && !e.target.closest('.fs-dropdown'))
+            document.getElementById('fs-drop').classList.remove('show');
+    });
+    document.querySelectorAll('#fs-drop div').forEach(d =>
+        d.addEventListener('click', () => setFontSize(d.dataset.sz))
+    );
+
+    document.getElementById('deliverBtn').addEventListener('click', checkAnswers);
+
+    // Track answered state
+    document.querySelectorAll('.ans-input').forEach(inp => {
+        inp.addEventListener('input', updateBtns);
+    });
+
+    // Context menu
+    document.addEventListener('contextmenu', e => {
+        const sel = window.getSelection();
+        if (!sel || sel.isCollapsed) return;
+        e.preventDefault();
+        const menu = document.getElementById('ctxMenu');
+        menu.style.left = e.pageX + 'px';
+        menu.style.top  = e.pageY + 'px';
+        menu.style.display = 'block';
+        ctxEl = e.target.closest('.highlight, .comment-highlight');
+        document.getElementById('ctx-clear').style.display = ctxEl ? 'block' : 'none';
+    });
+    document.addEventListener('click', e => {
+        if (!e.target.closest('#ctxMenu')) document.getElementById('ctxMenu').style.display = 'none';
+    });
+
+    // Selection range tracking
+    document.addEventListener('selectionchange', () => {
+        const sel = window.getSelection();
+        if (sel && sel.rangeCount > 0 && !sel.isCollapsed)
+            selRange = sel.getRangeAt(0);
+    });
+});
+
+// ─── Theme ────────────────────────────────────────────────────────────────────
+function initTheme() {
+    const t = localStorage.getItem('ielts-theme') || 'light';
+    document.body.setAttribute('data-theme', t);
+}
+function toggleDark() {
+    const d = document.body.getAttribute('data-theme') === 'dark';
+    document.body.setAttribute('data-theme', d ? 'light' : 'dark');
+    localStorage.setItem('ielts-theme', d ? 'light' : 'dark');
+}
+
+// ─── Font Size ────────────────────────────────────────────────────────────────
+function initFontSize() {
+    setFontSize(localStorage.getItem('ielts-fs') || 'medium', false);
+}
+function setFontSize(sz, save = true) {
+    document.body.classList.remove('font-small','font-medium','font-large','font-xlarge');
+    document.body.classList.add('font-' + sz);
+    if (save) localStorage.setItem('ielts-fs', sz);
+    document.getElementById('fs-drop').classList.remove('show');
+}
+
+// ─── Sub-question buttons ─────────────────────────────────────────────────────
+function buildSubBtns() {
+    const cont = document.getElementById('subBtns');
+    cont.innerHTML = '';
+    for (let i = 31; i <= 40; i++) {
+        const b = document.createElement('button');
+        b.className = 'sub-q';
+        b.textContent = i;
+        b.onclick = () => setActiveQ(i);
+        b.id = 'sb' + i;
+        cont.appendChild(b);
+    }
+}
+function setActiveQ(n) {
+    currentQ = n;
+    document.querySelectorAll('.sub-q').forEach(b => b.classList.remove('active'));
+    const btn = document.getElementById('sb' + n);
+    if (btn) btn.classList.add('active');
+    document.getElementById('prevBtn').disabled = n <= 31;
+    document.getElementById('nextBtn').disabled = n >= 40;
+    const inp = document.getElementById('q' + n);
+    if (inp) {
+        inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const li = inp.closest('li');
+        if (li) { li.classList.add('flash-anim'); setTimeout(() => li.classList.remove('flash-anim'), 800); }
+        inp.focus();
+    }
+    updateBtns();
+}
+function navQ(dir) { setActiveQ(Math.min(40, Math.max(31, currentQ + dir))); }
+function updateBtns() {
+    for (let i = 31; i <= 40; i++) {
+        const btn = document.getElementById('sb' + i);
+        if (!btn || btn.classList.contains('correct') || btn.classList.contains('incorrect')) continue;
+        const inp = document.getElementById('q' + i);
+        if (inp && inp.value.trim()) btn.classList.add('answered');
+        else btn.classList.remove('answered');
+    }
+}
+
+// ─── Check Answers ────────────────────────────────────────────────────────────
+function checkAnswers() {
+    let score = 0;
+    const results = [];
+
+    // Clear old marks
+    document.querySelectorAll('.correct-inline').forEach(el => el.remove());
+    document.querySelectorAll('.ans-input').forEach(inp => {
+        inp.classList.remove('correct', 'incorrect');
+        inp.disabled = true;
+    });
+
+    for (let i = 31; i <= 40; i++) {
+        const key = 'q' + i;
+        const inp = document.getElementById(key);
+        const userAns = inp ? inp.value.trim() : '';
+        const correct = ANSWERS[key];
+        const ok = userAns.toLowerCase() === correct.toLowerCase();
+        if (ok) score++;
+
+        if (inp) {
+            inp.classList.add(ok ? 'correct' : 'incorrect');
+            if (!ok) {
+                const span = document.createElement('span');
+                span.className = 'correct-inline';
+                span.textContent = correct;
+                inp.insertAdjacentElement('afterend', span);
+            }
+        }
+
+        const btn = document.getElementById('sb' + i);
+        if (btn) {
+            btn.classList.remove('answered', 'active');
+            btn.classList.add(ok ? 'correct' : 'incorrect');
+        }
+
+        results.push({ q: i, user: userAns || '—', correct, ok });
+    }
+
+    // Band score (IELTS listening 40-question scale, Part 4 only = rough)
+    const band = getBand(score);
+
+    // Show transcription
+    const wrap = document.getElementById('mainWrap');
+    wrap.classList.add('results-mode');
+    const transText = document.getElementById('trans-data').innerHTML;
+    document.getElementById('transcription-text').innerHTML = transText;
+
+    // Populate modal
+    document.getElementById('score-summary').textContent =
+        `Part 4: ${score} / 10 correct  (Approx. Band ${band})`;
+
+    let tbl = `<table><thead><tr>
+        <th>#</th><th>Your Answer</th><th>Correct Answer</th><th>Result</th>
+    </tr></thead><tbody>`;
+    results.forEach(r => {
+        tbl += `<tr>
+            <td>${r.q}</td>
+            <td>${r.user}</td>
+            <td>${r.correct}</td>
+            <td class="${r.ok ? 'r-correct' : 'r-wrong'}">${r.ok ? '✔ Correct' : '✖ Wrong'}</td>
+        </tr>`;
+    });
+    tbl += '</tbody></table>';
+    document.getElementById('result-details').innerHTML = tbl;
+
+    // Swap button
+    const delBtn = document.getElementById('deliverBtn');
+    delBtn.textContent = 'My Results';
+    delBtn.classList.add('success');
+    delBtn.onclick = () => document.getElementById('resultModal').classList.remove('hidden');
+
+    // Open modal
+    document.getElementById('resultModal').classList.remove('hidden');
+}
+
+function getBand(raw40) {
+    // Scale raw score from 40-question test (rough approximation)
+    if (raw40 >= 10) return 9;
+    if (raw40 >= 9)  return 8.5;
+    if (raw40 >= 8)  return 8;
+    if (raw40 >= 7)  return 7;
+    if (raw40 >= 6)  return 6.5;
+    if (raw40 >= 5)  return 6;
+    if (raw40 >= 4)  return 5.5;
+    if (raw40 >= 3)  return 5;
+    if (raw40 >= 2)  return 4.5;
+    if (raw40 >= 1)  return 4;
+    return 0;
+}
+
+// ─── Highlighting ─────────────────────────────────────────────────────────────
+function doHighlight() {
+    if (!selRange || selRange.collapsed) { closeCtx(); return; }
+    try {
+        const span = document.createElement('span');
+        span.className = 'highlight';
+        selRange.surroundContents(span);
+    } catch(e) { console.warn('Highlight failed:', e); }
+    window.getSelection().removeAllRanges();
+    closeCtx();
+}
+function doComment() {
+    const txt = prompt('Enter comment:');
+    if (!txt || !selRange || selRange.collapsed) { closeCtx(); return; }
+    try {
+        const span = document.createElement('span');
+        span.className = 'comment-highlight';
+        const tip = document.createElement('span');
+        tip.className = 'comment-tooltip';
+        tip.textContent = txt;
+        span.appendChild(tip);
+        selRange.surroundContents(span);
+    } catch(e) { console.warn('Comment failed:', e); }
+    window.getSelection().removeAllRanges();
+    closeCtx();
+}
+function doClearOne() {
+    if (!ctxEl) { closeCtx(); return; }
+    const p = ctxEl.parentNode;
+    while (ctxEl.firstChild) {
+        if (!ctxEl.firstChild.classList?.contains('comment-tooltip'))
+            p.insertBefore(ctxEl.firstChild, ctxEl);
+        else ctxEl.removeChild(ctxEl.firstChild);
+    }
+    p.removeChild(ctxEl);
+    p.normalize();
+    closeCtx();
+}
+function doClearAll() {
+    document.querySelectorAll('.highlight, .comment-highlight').forEach(el => {
+        const frag = document.createDocumentFragment();
+        while (el.firstChild) {
+            if (el.firstChild.classList?.contains('comment-tooltip')) el.removeChild(el.firstChild);
+            else frag.appendChild(el.firstChild);
+        }
+        el.parentNode.replaceChild(frag, el);
+    });
+    closeCtx();
+}
+function closeCtx() {
+    document.getElementById('ctxMenu').style.display = 'none';
+    ctxEl = null;
+}
+</script>
+</body>
+</html>

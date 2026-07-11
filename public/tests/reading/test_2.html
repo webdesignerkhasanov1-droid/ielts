@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS CDI Listening Practice - Test 8 Part 4 (Cloud Science)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+            --primary-color: #1e6de6;
+            --secondary-bg: #f8f9fa;
+            --correct-color: #28a745;
+            --incorrect-color: #dc3545;
+            --highlight-color: #ffe066;
+            --highlight-text-color: #333333;
+            --telegram-color: #1e6de6;
+            --font-size: 16px;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --border-color: #444444;
+            --primary-color: #4a90e2;
+            --secondary-bg: #2d2d2d;
+            --correct-color: #2ecc71;
+            --incorrect-color: #e74c3c;
+            --highlight-color: #ffd700;
+            --highlight-text-color: #000000;
+            --telegram-color: #4a90e2;
+        }
+
+        .font-small {
+            --font-size: 14px;
+        }
+        .font-medium {
+            --font-size: 16px;
+        }
+        .font-large {
+            --font-size: 18px;
+        }
+        .font-xlarge {
+            --font-size: 20px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.4;
+            font-size: var(--font-size);
+            padding-bottom: 90px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body::after {
+            content: "@FOZILBEK_IELTS";
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(-20deg);
+            font-size: 72px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text-color);
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+            transition: color 0.3s;
+        }
+
+        /* Highlight Styles */
+        .highlight {
+            background-color: var(--highlight-color);
+            color: var(--highlight-text-color) !important;
+            font-weight: 600;
+            padding: 1px 3px;
+            border-radius: 2px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        [data-theme="dark"] .highlight {
+            background-color: var(--highlight-color);
+            color: #000000 !important;
+            text-shadow: none;
+        }
+        .comment-highlight {
+            background-color: #90EE90;
+            position: relative;
+            cursor: help;
+            color: #000000 !important;
+        }
+        [data-theme="dark"] .comment-highlight {
+            background-color: #006400;
+            color: #ffffff !important;
+        }
+        .comment-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .comment-highlight:hover .comment-tooltip {
+            opacity: 1;
+        }
+
+        .header {
+            background-color: var(--bg-color);
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: 60px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .ielts-logo {
+            height: 32px;
+            width: auto;
+            display: block;
+        }
+        .telegram-link {
+            color: var(--telegram-color) !important;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            background: none !important;
+            border: none !important;
+            line-height: 1;
+            transition: opacity 0.2s;
+        }
+        .telegram-link:hover {
+            opacity: 0.8;
+        }
+        .header-icons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        /* Font size controls */
+        .font-size-container {
+            position: relative;
+        }
+        .font-size-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .font-size-btn:hover {
+            background-color: var(--secondary-bg);
+        }
+        .font-size-options {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px 0;
+            min-width: 120px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .font-size-options.show {
+            display: block;
+        }
+        .font-size-options div {
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+        }
+        .font-size-options div:hover {
+            background-color: var(--secondary-bg);
+        }
+
+        /* Dark mode button */
+        .dark-mode-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .dark-mode-btn:hover {
+            background-color: var(--secondary-bg);
+        }
+        .sun-icon, .moon-icon {
+            position: absolute;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .sun-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .moon-icon {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        [data-theme="dark"] .sun-icon {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        [data-theme="dark"] .moon-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .main-container {
+            margin-top: 60px;
+            display: flex;
+            background: var(--bg-color);
+            padding-bottom: 100px;
+            transition: background-color 0.3s;
+        }
+        .main-container.results-mode {
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* Left Panel */
+        .left-panel {
+            width: 100%;
+            padding: 20px;
+            transition: width 0.4s ease;
+        }
+        .main-container.results-mode .left-panel {
+            width: 75%;
+            overflow-y: auto;
+            height: calc(100vh - 195px);
+        }
+
+        /* Right Panel */
+        .right-panel {
+            display: none;
+            width: 50%;
+            padding: 20px;
+            position: relative;
+            border-left: 1px solid var(--border-color);
+            overflow-y: auto;
+            height: calc(100vh - 195px);
+        }
+        .main-container.results-mode .right-panel {
+            display: block;
+            width: 25%;
+            border-left: 1px solid var(--border-color);
+            border-top: none;
+            height: calc(100vh - 195px);
+            overflow-y: auto;
+        }
+
+        #transcription-container h2 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        #transcription-text {
+            white-space: pre-wrap;
+            font-family: inherit;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .part-header {
+            background-color: var(--secondary-bg);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .part-header p {
+            margin: 0;
+        }
+
+        .question {
+            margin-bottom: 40px;
+        }
+        .question-prompt {
+            margin-bottom: 20px;
+        }
+        .centered-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .answer-input {
+            border: 1px solid #9aa3ad;
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            padding: 4px 8px;
+            font-size: 16px;
+            text-align: left;
+            margin-right: 4px;
+            width: 140px;
+            max-width: 160px;
+            min-width: 120px;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            height: 28px;
+            min-height: 28px;
+            line-height: 1.2;
+            vertical-align: middle;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .answer-input::placeholder {
+            color: #999;
+            font-weight: bold;
+            text-align: center;
+        }
+        .answer-input:focus {
+            outline: none;
+            border-color: #2c6bed;
+            border-width: 2px;
+        }
+        .answer-input.correct {
+            border-color: var(--correct-color);
+            background-color: #e9f7ef;
+        }
+        .answer-input.incorrect {
+            border-color: var(--incorrect-color);
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .correct-inline {
+            color: var(--correct-color);
+            font-weight: 700;
+            margin-left: 10px;
+            display: inline-block;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        .correct-inline::before {
+            content: "→ ";
+            font-weight: 700;
+        }
+
+        /* Navigation Arrows */
+        .nav-arrows {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            display: flex;
+            gap: 5px;
+            z-index: 101;
+        }
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            background: var(--text-color);
+            color: var(--bg-color);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .nav-arrow:hover {
+            background: #555;
+        }
+        .nav-arrow:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Bottom Navigation */
+        .nav-row {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-color);
+            border-top: 1px solid var(--border-color);
+            padding: 0;
+            display: flex;
+            align-items: center;
+            height: 80px;
+            z-index: 100;
+            transition: background-color 0.3s, border-color 0.3s;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        .footer__questionWrapper___1tZ46 {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        .footer__questionNo___3WNct {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.2s;
+        }
+        .footer__questionNo___3WNct:hover {
+            background-color: var(--secondary-bg);
+        }
+        .section-prefix {
+            font-size: 16px;
+        }
+        .sectionNr {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .attemptedCount {
+            font-size: 14px;
+            color: #666;
+            margin-left: 5px;
+            font-weight: 400;
+        }
+
+        .footer__subquestionWrapper___9GgoP {
+            display: none;
+            gap: 2px;
+            margin-left: 10px;
+        }
+        .footer__questionWrapper___1tZ46.selected .footer__subquestionWrapper___9GgoP {
+            display: flex;
+        }
+        .subQuestion {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            border-radius: 2px;
+        }
+        .subQuestion.answered {
+            background-color: var(--secondary-bg);
+            border-color: var(--border-color);
+        }
+        .subQuestion.correct {
+            background-color: var(--correct-color);
+            color: white;
+            border-color: var(--correct-color);
+        }
+        .subQuestion.incorrect {
+            background-color: var(--incorrect-color);
+            color: white;
+            border-color: var(--incorrect-color);
+        }
+        .subQuestion:hover {
+            background-color: var(--secondary-bg);
+            border-color: #999;
+        }
+        .subQuestion.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .footer__deliverButton___3FM07 {
+            margin-left: auto;
+            margin-right: 20px;
+            background-color: var(--secondary-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s, border-color 0.2s;
+            min-width: 170px;
+            justify-content: center;
+        }
+        .footer__deliverButton___3FM07:hover {
+            background-color: #e0e0e0;
+            border-color: #bbb;
+        }
+        .footer__deliverButton___3FM07.success {
+            background-color: var(--correct-color);
+            color: #fff;
+            border-color: var(--correct-color);
+        }
+        .footer__deliverButton___3FM07.success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        .footer__deliverButton___3FM07:disabled {
+            background: var(--secondary-bg);
+            color: #6c757d;
+            cursor: not-allowed;
+            border-color: var(--border-color);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Context Menu */
+        .context-menu {
+            position: absolute;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            min-width: 140px;
+        }
+        .context-menu-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 16px;
+            border-bottom: 1px solid var(--secondary-bg);
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .context-menu-item:hover {
+            background-color: var(--secondary-bg);
+        }
+        .context-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Result Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 20px;
+        }
+        .modal-content {
+            background: var(--bg-color);
+            width: 100%;
+            max-width: 900px;
+            max-height: 85vh;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--secondary-bg);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            font-size: 26px;
+            line-height: 1;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        .modal-close-btn:hover {
+            color: var(--text-color);
+        }
+        .modal-body {
+            padding: 16px 18px;
+            overflow: auto;
+        }
+        #score-summary {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color);
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .result-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .result-controls .spacer {
+            flex: 1;
+        }
+        .result-controls label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #374151;
+        }
+        .btn-secondary {
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        .btn-secondary:hover {
+            background: var(--secondary-bg);
+        }
+        #result-details {
+            overflow: auto;
+        }
+        #result-details table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--border-color);
+        }
+        #result-details th, #result-details td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+            font-size: 14px;
+        }
+        #result-details thead th {
+            position: sticky;
+            top: 0;
+            background: var(--secondary-bg);
+            z-index: 1;
+        }
+        #result-details tr:nth-child(even) td {
+            background: var(--secondary-bg);
+        }
+        #result-details td.result-correct {
+            color: #0f5132;
+            font-weight: 600;
+        }
+        #result-details td.result-incorrect {
+            color: #842029;
+            font-weight: 600;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        @keyframes flash {
+            0% { background-color: #e6f4ff; }
+            100% { background-color: transparent; }
+        }
+        .question.flash {
+            animation: flash 1s ease-out;
+        }
+        
+        /* Subsection styling */
+        .subsection-title {
+            font-weight: bold;
+            margin: 20px 0 10px 0;
+            color: var(--primary-color);
+            font-size: 18px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+        
+        .question-item {
+            margin-bottom: 15px;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <img src="https://d2snzxottmona5.cloudfront.net/releases/3.46.0/images/logo/ielts.svg" alt="IELTS Logo" class="ielts-logo">
+            <a href="https://t.me/FOZILBEK_IELTS" target="_blank" class="telegram-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-.38.24-1.07.7-.96.66-1.89 1.28-1.89 1.28s-.17.11-.49.03c-.32-.08-.72-.26-1.16-.47-.54-.26-1.17-.53-1.17-.53s-.87-.55.62-1.14c.32-.13 1.96-.84 2.99-1.2 1.05-.37 2.86-1.01 2.86-1.01s1.02-.4 1.02 0z" fill="currentColor"/>
+                </svg>
+                <span>@FOZILBEK_IELTS</span>
+            </a>
+        </div>
+        <div class="header-icons">
+            <div class="font-size-container" style="position: relative;">
+                <button class="font-size-btn" id="font-size-toggle" title="Adjust Font Size">A</button>
+                <div id="font-size-options" class="font-size-options">
+                    <div data-size="small">Small</div>
+                    <div data-size="medium">Medium</div>
+                    <div data-size="large">Large</div>
+                    <div data-size="xlarge">Extra Large</div>
+                </div>
+            </div>
+            <button class="dark-mode-btn" id="dark-mode-toggle" title="Toggle Dark Mode">
+                <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <div id="part-4" class="question-part">
+                <div class="part-header">
+                    <p><strong>Part 4</strong></p>
+                    <p>Listen and answer questions 31–40.</p>
+                </div>
+                <div class="questions-container">
+                    <div class="question">
+                        <div class="question-prompt">
+                            <p><strong>Questions 31-40</strong></p>
+                            <p>Complete the notes below.</p>
+                            <p>Write <strong>ONE WORD ONLY</strong> for each answer.</p>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <p class="centered-title"><strong>Cloud Science</strong></p>
+                            
+                            <div class="subsection-title">Origins</div>
+                            <div class="question-item">
+                                <p>A British scientist classified clouds into three shapes, with the second type (Cumulus) resembling a cone-shaped <input type="text" id="q31" class="answer-input" placeholder="31" autocomplete="off"></p>
+                            </div>
+                            <div class="question-item">
+                                <p>The third type of cloud was compared to a flat <input type="text" id="q32" class="answer-input" placeholder="32" autocomplete="off"></p>
+                            </div>
+                            <div class="question-item">
+                                <p>The scientist faced criticism for the <input type="text" id="q33" class="answer-input" placeholder="33" autocomplete="off"> used in naming clouds, as English was not his native language.</p>
+                            </div>
+                            <div class="question-item">
+                                <p>Despite the critiques, he gained fame as a scientific celebrity and even composed <input type="text" id="q34" class="answer-input" placeholder="34" autocomplete="off"> praising the beauty of clouds.</p>
+                            </div>
+
+                            <div class="subsection-title">Cultural and Artistic Impacts</div>
+                            <div class="question-item">
+                                <p>The <input type="text" id="q35" class="answer-input" placeholder="35" autocomplete="off"> influenced British art, inspiring artists to incorporate cloud depictions into their works.</p>
+                            </div>
+                            <div class="question-item">
+                                <p>Scientists experimented with altering weather conditions, such as increasing or decreasing rainfall or <input type="text" id="q36" class="answer-input" placeholder="36" autocomplete="off"></p>
+                            </div>
+                            <div class="question-item">
+                                <p><input type="text" id="q37" class="answer-input" placeholder="37" autocomplete="off"> were sometimes employed to deliver man-made materials for weather modification.</p>
+                            </div>
+
+                            <div class="subsection-title">Modern Weather Science</div>
+                            <div class="question-item">
+                                <p>The use of silver iodide in weather experiments led to water pollution, as observed in a <input type="text" id="q38" class="answer-input" placeholder="38" autocomplete="off"> in Australia.</p>
+                            </div>
+                            <div class="question-item">
+                                <p>Today, some research focuses on using <input type="text" id="q39" class="answer-input" placeholder="39" autocomplete="off"> as a safer alternative for weather manipulation.</p>
+                            </div>
+                            <div class="question-item">
+                                <p>Research into the psychological effects of weather shows that weather changes can significantly impact people's <input type="text" id="q40" class="answer-input" placeholder="40" autocomplete="off"> abilities.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel (for transcription in results mode) -->
+        <div class="right-panel">
+            <div id="transcription-container">
+                <h2>Transcription</h2>
+                <div id="transcription-text"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden transcription data -->
+    <div id="transcription-data" style="display:none;">
+        <div data-part="4">
+            <strong>SECTION 4</strong><br><br>
+            Today we're exploring the fascinating history and implications of cloud science. This field has had a profound impact on meteorology, culture, and even human psychology.<br><br>
+            Let's start by going back to the early 19th century, when the first major strides in cloud classification were made. A British scientist laid the foundation of modern cloud science by introducing a system to categorize clouds based on their shapes. He identified three main types.<br><br>
+            One of them, which he called cumulus, was noted for its towering vertical appearance and likened to a tower because of its cone-shaped form that stretches high into the atmosphere.<br><br>
+            Another type, in contrast, was more spread out and flat, resembling a sheet that blankets the sky.<br><br>
+            This innovative classification helped scientists understand atmospheric behavior, but it wasn't without criticism. Many scholars questioned the terminology he used, as it mixed Latin and English. Some critics argued that his language choices were awkward and reflected his challenges as a non-native English speaker.<br><br>
+            Despite these initial hurdles, the scientist became widely celebrated for his work. He even turned to the arts, composing poetry that reflected his admiration for clouds, blending his scientific insights with a deep appreciation for their beauty.<br><br>
+            Moving beyond its scientific origins, the study of clouds began influencing cultural and artistic movements, especially in Britain. The newly established system of cloud classification had a significant impact on Romantic-era painters, who started incorporating intricate cloud formations into their landscapes. This was a powerful example of how scientific observation could inspire creativity.<br><br>
+            Meanwhile, scientists of the time sought practical applications for their newfound knowledge. They experimented with altering weather patterns, attempting to increase rainfall or even create fog in controlled environments. To achieve these goals, they employed innovative methods, such as launching rockets filled with substances intended to influence atmospheric conditions.<br><br>
+            As we move into the 20th century, cloud science continued to evolve, but not without challenges. One of the most notable experiments involved using silver iodide to seed clouds and encourage rainfall. However, this practice raised environmental concerns. For instance, in Australia, researchers discovered that a lake had been polluted as a direct result of these activities, sparking debates about the sustainability of weather modification.<br><br>
+            In response, scientists began exploring alternative approaches. One promising method involves using salt particles instead of chemicals, which poses less risk to ecosystems while achieving similar results.<br><br>
+            Lastly, cloud science has shed light on the relationship between weather and human behavior. Recent studies have revealed that changes in atmospheric conditions can significantly affect cognitive functions. For example, shifts in humidity or temperature have been shown to influence people's memory, either enhancing or impairing it depending on the circumstances.<br><br>
+            This underscores the interconnectedness of our environment, our minds, and the skies above.<br><br>
+            That is the end of Section 4. You now have half a minute to check your answers.
+        </div>
+    </div>
+
+    <!-- Hidden answer key -->
+    <div id="answer-key" style="display:none;">
+        <h3>Correct Answers:</h3>
+        <p><strong>Part 4:</strong></p>
+        <p>
+            31. tower<br>
+            32. sheet<br>
+            33. terminology<br>
+            34. poetry<br>
+            35. classification<br>
+            36. fog<br>
+            37. rockets<br>
+            38. lake<br>
+            39. salt<br>
+            40. memory
+        </p>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <div class="nav-arrows">
+        <button class="nav-arrow" onclick="previousQuestion()" id="prevBtn">‹</button>
+        <button class="nav-arrow" onclick="nextQuestion()" id="nextBtn">›</button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="nav-row perScorableItem" aria-label="Questions">
+        <div class="footer__questionWrapper___1tZ46 selected multiple" role="tablist">
+            <button role="tab" class="footer__questionNo___3WNct">
+                <span>
+                    <span aria-hidden="true" class="section-prefix">Part </span>
+                    <span class="sectionNr" aria-hidden="true">4</span>
+                    <span class="attemptedCount" aria-hidden="true">0 of 10</span>
+                </span>
+            </button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion scorable-item" onclick="goToQuestion(31)"><span class="sr-only">Question 31</span><span aria-hidden="true">31</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(32)"><span class="sr-only">Question 32</span><span aria-hidden="true">32</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(33)"><span class="sr-only">Question 33</span><span aria-hidden="true">33</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(34)"><span class="sr-only">Question 34</span><span aria-hidden="true">34</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(35)"><span class="sr-only">Question 35</span><span aria-hidden="true">35</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(36)"><span class="sr-only">Question 36</span><span aria-hidden="true">36</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(37)"><span class="sr-only">Question 37</span><span aria-hidden="true">37</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(38)"><span class="sr-only">Question 38</span><span aria-hidden="true">38</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(39)"><span class="sr-only">Question 39</span><span aria-hidden="true">39</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(40)"><span class="sr-only">Question 40</span><span aria-hidden="true">40</span></button>
+            </div>
+        </div>
+
+        <button id="deliver-button" aria-label="Review your answers" class="footer__deliverButton___3FM07">
+            <i class="fa fa fa-check" aria-hidden="true"></i>
+            <span>Check Answers</span>
+        </button>
+    </nav>
+
+    <!-- Context Menu -->
+    <div id="contextMenu" class="context-menu">
+        <div class="context-menu-item" id="highlight-item" onclick="highlightText()">
+            <span class="context-menu-icon">
+                <svg viewBox="0 0 24 24" fill="black"><path d="M15.24 12.32L12.28 9.36l-1.04 1.04-1.04-1.04-1.04 1.04-1.04-1.04-1.04 1.04-1.04-1.04-3.12 3.12c-.59.58-1.54.58-2.12 0l-1.04-1.04c-.58-.59-.58-1.54 0-2.12L7.88.88c.59-.58 1.54-.58 2.12 0l1.04 1.04 1.04-1.04 1.04 1.04 1.04-1.04 1.04 1.04 1.04-1.04 3.12 3.12c.58.59.58 1.54 0 2.12l-1.04 1.04c-.58.59-1.54.59-2.12 0zM12 15l-3 3-7-7 3-3 7 7zm-9-5l-2.29 2.29c-.39.39-.39 1.02 0 1.41l8.29 8.29c.39.39 1.02.39 1.41 0L22.7 8.41c.39-.39.39-1.02 0-1.41L14.42.29c-.39-.39-1.02-.39-1.41 0L3 10z"/></svg>
+            </span>
+            <span>Highlight</span>
+        </div>
+        <div class="context-menu-item" id="comment-item" onclick="addComment()">
+            <span class="context-menu-icon">
+                <svg viewBox="0 0 24 24" fill="black"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 12H5.17L4 15.17V4h16v10z"/></svg>
+            </span>
+            <span>Comment</span>
+        </div>
+        <div class="context-menu-item" id="clear-item" onclick="clearHighlight()" style="display:none;">
+            <span class="context-menu-icon">
+                <svg viewBox="0 0 24 24" fill="black"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+            </span>
+            <span>Clear</span>
+        </div>
+        <div class="context-menu-item" onclick="clearAllHighlights()">
+            <span class="context-menu-icon">
+                <svg viewBox="0 0 24 24" fill="black"><path d="M16 9h-2.29l3-3-1.42-1.42-3 3V5h-2v2.29l-3-3-1.42 1.42 3 3H5v2h2.29l-3 3 1.42 1.42 3-3V17h2v-2.29l3 3 1.42-1.42-3-3H17V9h-2zm-4 4h-2v-2h2v2z"/></svg>
+            </span>
+            <span>Clear All</span>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Your Results</h2>
+                <button id="modal-close-button" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="score-summary"></p>
+                <div id="result-details"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ GLOBAL VARIABLES ============
+        let currentQuestion = 31;
+        let selectedText = '';
+        let selectedRange = null;
+        let contextElement = null;
+
+        // Correct answers for Test 8 Part 4 (Cloud Science)
+        const correctAnswers = {
+            q31: 'tower',
+            q32: 'sheet',
+            q33: 'terminology',
+            q34: 'poetry',
+            q35: 'classification',
+            q36: 'fog',
+            q37: 'rockets',
+            q38: 'lake',
+            q39: 'salt',
+            q40: 'memory'
+        };
+
+        // ============ INITIALIZATION ============
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize dark mode
+            initDarkMode();
+            
+            // Initialize font size
+            initFontSize();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Initialize navigation
+            updateNavigation();
+            updateAnsweredIndicators();
+        });
+
+        // ============ DARK MODE ============
+        function initDarkMode() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                document.body.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // ============ FONT SIZE ============
+        function initFontSize() {
+            const savedSize = localStorage.getItem('fontSize') || 'medium';
+            changeFontSize(savedSize);
+        }
+
+        function changeFontSize(size) {
+            const body = document.body;
+            body.classList.remove('font-small', 'font-medium', 'font-large', 'font-xlarge');
+            body.classList.add(`font-${size}`);
+            localStorage.setItem('fontSize', size);
+            document.getElementById('font-size-options').classList.remove('show');
+        }
+
+        // ============ NAVIGATION ============
+        function goToQuestion(questionNumber) {
+            currentQuestion = questionNumber;
+            updateNavigation();
+            
+            // Scroll to the question
+            const questionElement = document.getElementById(`q${questionNumber}`);
+            if (questionElement) {
+                const questionContainer = questionElement.closest('.question-item') || questionElement.closest('.question');
+                if (questionContainer) {
+                    questionContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    questionContainer.classList.add('flash');
+                    setTimeout(() => {
+                        questionContainer.classList.remove('flash');
+                    }, 1000);
+                }
+            }
+            
+            // Update subquestion buttons
+            document.querySelectorAll('.subQuestion').forEach(btn => btn.classList.remove('active'));
+            const questionBtn = document.querySelector(`.subQuestion[onclick="goToQuestion(${questionNumber})"]`);
+            if (questionBtn) questionBtn.classList.add('active');
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < 40) {
+                goToQuestion(currentQuestion + 1);
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 31) {
+                goToQuestion(currentQuestion - 1);
+            }
+        }
+
+        function updateNavigation() {
+            document.getElementById('prevBtn').disabled = currentQuestion === 31;
+            document.getElementById('nextBtn').disabled = currentQuestion === 40;
+        }
+
+        // ============ ANSWER TRACKING ============
+        function updateAnsweredIndicators() {
+            let answeredCount = 0;
+            
+            for (let qNum = 31; qNum <= 40; qNum++) {
+                const btn = document.querySelector(`.subQuestion[onclick="goToQuestion(${qNum})"]`);
+                if (!btn) continue;
+                
+                // Don't change if already marked
+                if (btn.classList.contains('correct') || btn.classList.contains('incorrect')) {
+                    continue;
+                }
+                
+                const input = document.getElementById(`q${qNum}`);
+                const isAnswered = input && input.value.trim() !== '';
+                
+                if (isAnswered) {
+                    btn.classList.add('answered');
+                    answeredCount++;
+                } else {
+                    btn.classList.remove('answered');
+                }
+            }
+            
+            // Update attempted count
+            const countDisplay = document.querySelector('.attemptedCount');
+            if (countDisplay) {
+                countDisplay.textContent = `${answeredCount} of 10`;
+            }
+        }
+
+        // ============ CHECK ANSWERS ============
+        function checkAnswers() {
+            let score = 0;
+            let resultsData = [];
+            
+            // Clear previous markings
+            document.querySelectorAll('.correct, .incorrect, .correct-inline').forEach(el => {
+                el.classList.remove('correct', 'incorrect');
+                if (el.classList.contains('correct-inline')) {
+                    el.remove();
+                }
+            });
+            
+            // Check each question
+            for (let qNum = 31; qNum <= 40; qNum++) {
+                const input = document.getElementById(`q${qNum}`);
+                const userAnswer = input ? input.value.trim().toLowerCase() : '';
+                const correctAnswer = correctAnswers[`q${qNum}`];
+                const isCorrect = userAnswer === correctAnswer;
+                
+                // Mark input
+                if (input) {
+                    input.classList.add(isCorrect ? 'correct' : 'incorrect');
+                    
+                    // Show correct answer if wrong
+                    if (!isCorrect) {
+                        const correctAnswerSpan = document.createElement('span');
+                        correctAnswerSpan.className = 'correct-inline';
+                        correctAnswerSpan.textContent = correctAnswer;
+                        input.insertAdjacentElement('afterend', correctAnswerSpan);
+                    }
+                }
+                
+                // Mark button
+                const btn = document.querySelector(`.subQuestion[onclick="goToQuestion(${qNum})"]`);
+                if (btn) {
+                    btn.classList.remove('answered');
+                    btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+                
+                // Update score and results data
+                if (isCorrect) score++;
+                resultsData.push({
+                    question: qNum,
+                    userAnswer: userAnswer || 'No Answer',
+                    correctAnswer: correctAnswer,
+                    isCorrect: isCorrect
+                });
+            }
+            
+            // Calculate band score
+            const band = calculateBand(score);
+            
+            // Disable inputs after grading
+            document.querySelectorAll('.answer-input').forEach(input => {
+                input.disabled = true;
+            });
+            
+            // Enable results mode with transcription
+            document.querySelector('.main-container').classList.add('results-mode');
+            showTranscription();
+            highlightAnswersInTranscription();
+            
+            // Update deliver button to "My Results"
+            const deliverButton = document.getElementById('deliver-button');
+            deliverButton.classList.add('success');
+            deliverButton.innerHTML = '<span>My Results</span>';
+            
+            // Replace button with new one that opens modal
+            const myResultsBtn = deliverButton.cloneNode(true);
+            deliverButton.parentNode.replaceChild(myResultsBtn, deliverButton);
+            myResultsBtn.addEventListener('click', showResultsModal);
+            
+            // Populate and show results modal
+            populateResultsModal(score, band, resultsData);
+            showResultsModal();
+        }
+
+        function calculateBand(score) {
+            const totalQuestions = Object.keys(correctAnswers).length;
+            let finalScore = score;
+            if (totalQuestions < 30 && totalQuestions > 0) {
+                finalScore = Math.round((score / totalQuestions) * 40);
+            }
+            score = finalScore;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            let finalScore = score;
+            if (totalQuestions < 30) {
+                finalScore = Math.round((score / totalQuestions) * 40);
+            }
+            const totalQuestions = Object.keys(correctAnswers).length;
+            let finalScore = score;
+            if (totalQuestions < 30) {
+                finalScore = Math.round((score / totalQuestions) * 40);
+            }
+            if (finalScore >= 39) return 9;
+            if (score >= 37) return 8.5;
+            if (score >= 35) return 8;
+            if (score >= 32) return 7.5;
+            if (score >= 30) return 7;
+            if (score >= 26) return 6.5;
+            if (score >= 23) return 6;
+            if (score >= 18) return 5.5;
+            if (score >= 16) return 5;
+            if (score >= 13) return 4.5;
+            if (score >= 10) return 4;
+            if (score >= 8) return 3.5;
+            if (score >= 6) return 3;
+            if (score >= 4) return 2.5;
+            if (score >= 2) return 2;
+            if (score === 1) return 1.5;
+            return 0;
+        }
+
+        // ============ TRANSCRIPTION ============
+        function showTranscription() {
+            const transcriptionSource = document.querySelector('#transcription-data [data-part="4"]');
+            const transcriptionTarget = document.getElementById('transcription-text');
+            if (transcriptionSource && transcriptionTarget) {
+                transcriptionTarget.innerHTML = transcriptionSource.innerHTML;
+            }
+        }
+
+        function highlightAnswersInTranscription() {
+            const transcriptionText = document.getElementById('transcription-text');
+            if (!transcriptionText) return;
+            
+            let html = transcriptionText.innerHTML;
+            
+            // Highlight each correct answer in the transcription
+            Object.values(correctAnswers).forEach(answer => {
+                if (answer) {
+                    const regex = new RegExp(`\\b(${answer})\\b`, 'gi');
+                    html = html.replace(regex, '<span class="highlight">$1</span>');
+                }
+            });
+            
+            transcriptionText.innerHTML = html;
+        }
+
+        // ============ RESULTS MODAL ============
+        function populateResultsModal(score, band, resultsData) {
+            const scoreSummary = document.getElementById('score-summary');
+            const resultDetails = document.getElementById('result-details');
+            
+            scoreSummary.textContent = `You scored ${score} out of 10 (Band ${band}).`;
+            
+            let tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>Your Answer</th>
+                            <th>Correct Answer</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            resultsData.forEach(res => {
+                tableHTML += `
+                    <tr>
+                        <td>${res.question}</td>
+                        <td>${res.userAnswer}</td>
+                        <td>${res.correctAnswer}</td>
+                        <td class="${res.isCorrect ? 'result-correct' : 'result-incorrect'}">
+                            ${res.isCorrect ? '✔ Correct' : '✖ Incorrect'}
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += '</tbody></table>';
+            resultDetails.innerHTML = tableHTML;
+        }
+
+        function showResultsModal() {
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        // ============ HIGHLIGHTING FUNCTIONS ============
+        function highlightText() {
+            if (!selectedRange || selectedRange.collapsed) {
+                closeContextMenu();
+                return;
+            }
+            
+            try {
+                const span = document.createElement('span');
+                span.className = 'highlight';
+                selectedRange.surroundContents(span);
+            } catch(err) {
+                console.warn('Highlighting failed:', err);
+                try {
+                    document.execCommand('backColor', false, 'yellow');
+                } catch(e2) {
+                    alert('Highlighting failed for this selection. Please try selecting smaller portions of text.');
+                }
+            }
+            
+            window.getSelection().removeAllRanges();
+            closeContextMenu();
+        }
+
+        function addComment() {
+            const commentText = prompt('Enter your comment:');
+            if (!commentText || !selectedRange || selectedRange.collapsed) {
+                closeContextMenu();
+                return;
+            }
+            
+            try {
+                const span = document.createElement('span');
+                span.className = 'comment-highlight';
+                const tooltip = document.createElement('span');
+                tooltip.className = 'comment-tooltip';
+                tooltip.textContent = commentText;
+                span.appendChild(tooltip);
+                selectedRange.surroundContents(span);
+            } catch(err) {
+                console.warn('Adding comment failed:', err);
+            }
+            
+            window.getSelection().removeAllRanges();
+            closeContextMenu();
+        }
+
+        function clearHighlight() {
+            const elementToClear = contextElement;
+            if (!elementToClear) {
+                closeContextMenu();
+                return;
+            }
+            
+            const parent = elementToClear.parentNode;
+            while (elementToClear.firstChild) {
+                if (!elementToClear.firstChild.classList?.contains('comment-tooltip')) {
+                    parent.insertBefore(elementToClear.firstChild, elementToClear);
+                } else {
+                    elementToClear.removeChild(elementToClear.firstChild);
+                }
+            }
+            parent.removeChild(elementToClear);
+            parent.normalize();
+            closeContextMenu();
+        }
+
+        function clearAllHighlights() {
+            document.querySelectorAll('.highlight, .comment-highlight').forEach(element => {
+                const parent = element.parentNode;
+                const fragment = document.createDocumentFragment();
+                while (element.firstChild) {
+                    if (element.firstChild.nodeType === 1 && 
+                        element.firstChild.classList.contains('comment-tooltip')) {
+                        element.removeChild(element.firstChild);
+                    } else {
+                        fragment.appendChild(element.firstChild);
+                    }
+                }
+                parent.replaceChild(fragment, element);
+            });
+            closeContextMenu();
+        }
+
+        function closeContextMenu() {
+            document.getElementById('contextMenu').style.display = 'none';
+            contextElement = null;
+        }
+
+        // ============ EVENT LISTENERS SETUP ============
+        function setupEventListeners() {
+            // Dark mode toggle
+            document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode);
+            
+            // Font size toggle
+            document.getElementById('font-size-toggle').addEventListener('click', () => {
+                document.getElementById('font-size-options').classList.toggle('show');
+            });
+            
+            // Font size options
+            document.querySelectorAll('.font-size-options div').forEach(option => {
+                option.addEventListener('click', () => {
+                    const size = option.getAttribute('data-size');
+                    changeFontSize(size);
+                });
+            });
+            
+            // Close font size dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.font-size-container')) {
+                    document.getElementById('font-size-options').classList.remove('show');
+                }
+            });
+            
+            // Original deliver button
+            document.getElementById('deliver-button').addEventListener('click', checkAnswers);
+            
+            // Modal close button
+            document.getElementById('modal-close-button').addEventListener('click', () => {
+                document.getElementById('result-modal').style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            document.getElementById('result-modal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('result-modal')) {
+                    document.getElementById('result-modal').style.display = 'none';
+                }
+            });
+            
+            // Answer input tracking
+            document.querySelectorAll('.answer-input').forEach(input => {
+                input.addEventListener('input', updateAnsweredIndicators);
+                input.addEventListener('change', updateAnsweredIndicators);
+            });
+            
+            // Context menu for text selection
+            document.body.addEventListener('contextmenu', function(e) {
+                const text = window.getSelection().toString();
+                if (!text) return;
+                
+                e.preventDefault();
+                const menu = document.getElementById('contextMenu');
+                menu.style.left = e.pageX + 'px';
+                menu.style.top = e.pageY + 'px';
+                menu.style.display = 'block';
+                
+                const target = e.target;
+                const clearItem = document.getElementById('clear-item');
+                contextElement = target.closest('.highlight, .comment-highlight');
+                
+                if (contextElement) {
+                    clearItem.style.display = 'block';
+                } else {
+                    clearItem.style.display = 'none';
+                }
+                
+                // Store selection
+                const sel = window.getSelection();
+                if (sel.rangeCount > 0) {
+                    selectedRange = sel.getRangeAt(0);
+                    selectedText = sel.toString();
+                }
+            });
+            
+            // Close context menu on click elsewhere
+            document.body.addEventListener('click', function(e) {
+                if (!e.target.closest('.context-menu')) {
+                    document.getElementById('contextMenu').style.display = 'none';
+                }
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Go to question with number keys (when not in input)
+                if (e.key >= '1' && e.key <= '9' && document.activeElement.tagName !== 'INPUT') {
+                    const num = parseInt(e.key);
+                    if (num >= 1 && num <= 9) {
+                        const qNum = 30 + num;
+                        if (qNum >= 31 && qNum <= 39) {
+                            goToQuestion(qNum);
+                        }
+                    } else if (num === 0) {
+                        goToQuestion(40);
+                    }
+                }
+                
+                // Arrow key navigation
+                if (e.key === 'ArrowRight') nextQuestion();
+                if (e.key === 'ArrowLeft') previousQuestion();
+                
+                // Enter to check answers when on deliver button
+                if (e.key === 'Enter' && document.activeElement.id === 'deliver-button') {
+                    checkAnswers();
+                }
+                
+                // Escape to close modals/menus
+                if (e.key === 'Escape') {
+                    document.getElementById('contextMenu').style.display = 'none';
+                    document.getElementById('result-modal').style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,505 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* HSL Colors - Light Academic Theme (Default, Diyorbek / Mocky.uz Style) */
+  --bg-primary: 210 20% 98%;
+  --bg-secondary: 0 0% 100%;
+  --bg-tertiary: 210 20% 93%;
+  
+  --primary: 224 80% 22%;        /* American School Navy */
+  --primary-hover: 224 80% 28%;
+  --secondary: 155 79% 30%;      /* American School Green Accent */
+  --secondary-hover: 155 79% 35%;
+  
+  --accent-purple: 260 70% 50%;
+  --accent-green: 155 79% 30%;
+  --accent-red: 155 79% 30%;      /* Replaced Red with American School Green */
+  --accent-orange: 25 90% 50%;
+  
+  --text-primary: 222 47% 10%;
+  --text-secondary: 222 20% 35%;
+  --text-muted: 222 15% 55%;
+  
+  --border-glow: rgba(15, 23, 42, 0.08);
+  --border-subtle: #e2e8f0;
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: #cbd5e1;
+  --shadow-neon: 0 4px 20px rgba(15, 23, 42, 0.05);
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Zoom UI specific styles */
+  --zoom-bg: #1e1e1e;
+  --zoom-darker: #0d0d0d;
+}
+
+/* Dark Mode Variables (if switched) */
+.dark-theme {
+  --bg-primary: 222 47% 6%;
+  --bg-secondary: 222 47% 10%;
+  --bg-tertiary: 222 40% 14%;
+  
+  --primary: 250 95% 68%;
+  --primary-hover: 250 95% 75%;
+  --secondary: 190 90% 50%;
+  --secondary-hover: 190 90% 60%;
+  
+  --text-primary: 210 40% 98%;
+  --text-secondary: 215 20% 70%;
+  --text-muted: 215 15% 45%;
+  
+  --border-glow: rgba(99, 102, 241, 0.15);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --glass-bg: rgba(10, 15, 30, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --shadow-neon: 0 0 25px rgba(99, 102, 241, 0.15);
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-image: linear-gradient(135deg, rgba(230, 238, 250, 0.85) 0%, rgba(215, 248, 230, 0.85) 100%), url('/bg_academic_pattern.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: hsl(var(--text-primary));
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: hsl(var(--text-primary));
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+}
+
+/* Glassmorphism Classes (adapted to light/dark) */
+.glass-panel {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-neon);
+  transition: background var(--transition-normal), border-color var(--transition-normal);
+}
+
+.glass-card {
+  background: hsl(var(--bg-secondary));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all var(--transition-normal);
+}
+
+.glass-card:hover {
+  border-color: hsl(var(--primary));
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--bg-primary));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--bg-tertiary));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--text-muted));
+}
+
+/* Interactive Utility classes */
+.btn-primary {
+  background: hsl(var(--primary));
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+}
+
+.btn-primary:hover {
+  opacity: 0.95;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
+}
+
+.btn-secondary {
+  background: hsl(var(--bg-secondary));
+  color: hsl(var(--text-primary));
+  border: 1px solid var(--glass-border);
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-secondary:hover {
+  background: hsl(var(--bg-tertiary));
+}
+
+/* IELTS Specific Simulator Layouts */
+.ielts-layout {
+  display: flex;
+  height: calc(100vh - 70px);
+  overflow: hidden;
+}
+
+.reading-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.passage-panel {
+  padding: 30px;
+  overflow-y: auto;
+  border-right: 1px solid var(--border-subtle);
+  background: hsl(var(--bg-secondary));
+}
+
+.questions-panel {
+  padding: 30px;
+  overflow-y: auto;
+  background: hsl(var(--bg-primary));
+}
+
+.question-group {
+  margin-bottom: 24px;
+  padding: 18px;
+  background: hsl(var(--bg-secondary));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.question-title {
+  font-size: 1rem;
+  margin-bottom: 12px;
+  color: hsl(var(--primary));
+  font-weight: 600;
+}
+
+/* Audio wave simulator for speaking */
+.audio-waves {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 40px;
+}
+
+.audio-bar {
+  width: 4px;
+  height: 100%;
+  background: hsl(var(--accent-red));
+  border-radius: 2px;
+  animation: wave 1.2s infinite ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+/* Zoom UI simulator styles */
+.zoom-call-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--zoom-darker);
+  color: white;
+  position: relative;
+}
+
+.zoom-call-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 20px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.zoom-screen {
+  background-color: var(--zoom-bg);
+  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.zoom-screen.active-speaker {
+  border-color: hsl(var(--accent-red));
+}
+
+.zoom-avatar-container {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent-purple)));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.zoom-candidate-avatar {
+  background: linear-gradient(135deg, hsl(var(--accent-red)), hsl(var(--accent-orange)));
+}
+
+.zoom-screen-name {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(0,0,0,0.6);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.zoom-audio-indicator {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.6);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zoom-controls-bar {
+  background-color: var(--zoom-darker);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.zoom-controls-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.zoom-control-btn {
+  background: transparent;
+  border: none;
+  color: #cccccc;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+}
+
+.zoom-control-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.zoom-control-btn.active {
+  color: #ea4335;
+}
+
+.zoom-control-btn span {
+  font-size: 0.7rem;
+}
+
+.zoom-captions {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 600px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  z-index: 10;
+}
+
+/* IELTS TRF Certificate specific CSS */
+.trf-container {
+  width: 800px;
+  background-color: #ffffff;
+  border: 1px solid #c2cbd6;
+  padding: 30px;
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  margin: 30px auto;
+  border-radius: 4px;
+}
+
+.trf-watermark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #000 0px,
+    #000 20px,
+    transparent 20px,
+    transparent 100px
+  );
+  z-index: 1;
+}
+
+.trf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #000000;
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+  z-index: 2;
+  position: relative;
+}
+
+.trf-title {
+  text-align: center;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  color: #000000;
+}
+
+.trf-box {
+  border: 1px solid #000000;
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  margin-bottom: 18px;
+}
+
+.trf-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 18px;
+  font-size: 0.8rem;
+}
+
+.trf-table th, .trf-table td {
+  border: 1px solid #000000;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.trf-table th {
+  background-color: #f1f5f9;
+  font-weight: 700;
+}
+
+/* Print Styling */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  
+  header, main > :not(.printable-area), .btn-primary, .btn-secondary, button {
+    display: none !important;
+  }
+  
+  .printable-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* Premium Floating Background Animations */
+@keyframes float-slow {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(6%, 4%) scale(1.08);
+  }
+  100% {
+    transform: translate(-3%, 2%) scale(0.95);
+  }
+}
+
+@keyframes float-slow-reverse {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-5%, -4%) scale(0.92);
+  }
+  100% {
+    transform: translate(4%, -2%) scale(1.06);
+  }
+}
+
