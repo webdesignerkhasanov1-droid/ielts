@@ -31,7 +31,9 @@ const CANDIDATES_KEY = 'american_school_candidates';
 const RESULTS_KEY = 'american_school_results';
 const CONFIG_KEY = 'american_school_telegram_config';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+// In production (Render), frontend & backend are the same server → use relative path
+// In development (localhost), use localhost:5001 via Vite proxy
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 export const db = {
   // Candidate Database
