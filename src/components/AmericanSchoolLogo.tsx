@@ -6,7 +6,7 @@ interface LogoProps {
   showText?: boolean;
 }
 
-export const AmericanSchoolLogo: React.FC<LogoProps> = ({ size = 36, textColor = 'currentColor', showText = true }) => {
+export const AmericanSchoolLogo: React.FC<LogoProps> = ({ size = 36, textColor: _textColor = 'currentColor', showText = true }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (

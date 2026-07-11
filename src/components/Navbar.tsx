@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe, Award, Sun, Moon, Shield } from 'lucide-react';
+import { Award, Sun, Moon, Shield } from 'lucide-react';
 import { AmericanSchoolLogo } from './AmericanSchoolLogo';
 
 interface NavbarProps {

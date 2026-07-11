@@ -132,7 +132,7 @@ function App() {
     }
   };
 
-  const startSectionalTestFromDashboard = (category: 'listening' | 'reading' | 'writing', setNumber: number) => {
+  const _startSectionalTestFromDashboard = (category: 'listening' | 'reading' | 'writing', setNumber: number) => {
     // Save registered candidate to local database
     db.saveCandidate(candidateInfo.fullName, candidateInfo.phone, candidateInfo.telegram);
 

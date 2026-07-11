@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Headphones, BookOpen, PenTool, Mic, Play, ArrowRight, User, Phone, Send, Info, Library } from 'lucide-react';
+import { Headphones, BookOpen, PenTool, Play, ArrowRight, Library } from 'lucide-react';
 
 interface DashboardProps {
   lang: 'UZ' | 'EN';
   onStartFullTest: (setIndex: number) => void;
   onSelectSectionalCategory: (category: 'listening' | 'reading' | 'writing') => void;
-  onSelectSection: (section: 'vocabulary' | 'library') => void;
+  onSelectSection?: (section: 'vocabulary' | 'library') => void;
   candidateInfo: {
     fullName: string;
     phone: string;
@@ -18,9 +18,8 @@ interface DashboardProps {
   }>>;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onSelectSectionalCategory, onSelectSection, candidateInfo, setCandidateInfo }) => {
+export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onSelectSectionalCategory, onSelectSection, candidateInfo, setCandidateInfo }) => {  // eslint-disable-line
   const [formError, setFormError] = useState('');
-  const [selectedSet, setSelectedSet] = useState<number>(1);
 
   const content = {
     title: lang === 'UZ' ? "American School Mock" : "American School Mock",
@@ -274,7 +273,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onS
                 </div>
               </div>
               <button 
-                onClick={() => validateAndStart('library')}
+                onClick={() => onSelectSection ? onSelectSection('library') : undefined}
                 style={{
                   background: 'linear-gradient(135deg, #2563eb, #1e40af)',
                   color: 'white', border: 'none', borderRadius: '10px',
@@ -308,7 +307,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onS
                 </p>
               </div>
               <button 
-                onClick={() => validateAndStart('vocabulary')}
+                onClick={() => onSelectSection ? onSelectSection('vocabulary') : undefined}
                 className="btn-primary"
                 style={{ background: 'hsl(var(--secondary))', fontSize: '0.8rem', padding: '8px 16px' }}
               >

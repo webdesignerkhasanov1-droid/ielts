@@ -56,11 +56,7 @@ const TEST_CATEGORIES: TestCategory[] = [
   }
 ];
 
-const difficultyColors: Record<string, { bg: string; text: string }> = {
-  'Beginner': { bg: '#dcfce7', text: '#166534' },
-  'Intermediate': { bg: '#fef9c3', text: '#854d0e' },
-  'Advanced': { bg: '#fee2e2', text: '#991b1b' },
-};
+
 
 interface TestLibraryProps {
   lang: 'UZ' | 'EN';
