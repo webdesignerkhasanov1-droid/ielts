@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node server.cjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "jimp": "^1.6.1",

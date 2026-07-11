@@ -5,7 +5,7 @@ const path = require('path');
 const { Jimp, loadFont } = require('jimp');
 const { SANS_16_BLACK, SANS_32_BLACK } = require('jimp/fonts');
 
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 const DB_FILE = path.join(__dirname, 'database.json');
 const BOT_TOKEN = '8783518807:AAEd4t8OtZqQXDpGqtaM1NsgyGcQuobZH3Y';
 
@@ -572,12 +572,13 @@ const searchAndSendResults = async (chatId, rawPhone) => {
   const candidateResults = dbData.results.filter(r => cleanPhone(r.phone) === cleaned);
 
   if (candidateResults.length === 0) {
+    const siteUrl = process.env.RENDER_EXTERNAL_URL || 'http://localhost:5173';
     const errorText = `❌ *Natija topilmadi!*
 
 Telefon raqam: \`+${cleaned}\`
 
 Ushbu raqam bo'yicha bazada mock test natijalari topilmadi. Oldin test topshiring:
-👉 http://localhost:5173/`;
+👉 ${siteUrl}`;
 
     sendTelegramMessage(chatId, errorText);
     return;

@@ -1,0 +1,33 @@
+services:
+  # ── BACKEND + TELEGRAM BOT ──
+  - type: web
+    name: ielts-backend
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.cjs
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: RENDER_EXTERNAL_URL
+        fromService:
+          name: ielts-frontend
+          type: web
+          property: host
+
+  # ── FRONTEND (React + Vite) ──
+  - type: web
+    name: ielts-frontend
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: ielts-backend
+          type: web
+          property: host
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

@@ -31,6 +31,8 @@ const CANDIDATES_KEY = 'american_school_candidates';
 const RESULTS_KEY = 'american_school_results';
 const CONFIG_KEY = 'american_school_telegram_config';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
 export const db = {
   // Candidate Database
   saveCandidate: (fullName: string, phone: string, telegram: string): Candidate => {
@@ -60,7 +62,7 @@ export const db = {
     }
 
     // Sync to backend API asynchronously
-    fetch('http://localhost:5001/api/register', {
+    fetch(`${API_URL}/api/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ fullName, phone, telegram })
@@ -90,7 +92,7 @@ export const db = {
     localStorage.setItem(RESULTS_KEY, JSON.stringify(results));
 
     // Sync to backend API asynchronously
-    fetch('http://localhost:5001/api/result', {
+    fetch(`${API_URL}/api/result`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ phone, candidateName, testType, testTitle, scores })
