@@ -180,55 +180,75 @@ const generateTRFImage = async (candidateName, phone, date, scores, outputPath) 
   }
 
   image.print({ font: font32, x: 230, y: 50, text: "AMERICAN MOCK TESTING" });
+  image.print({ font: font32, x: 231, y: 50, text: "AMERICAN MOCK TESTING" }); // BOLD
   image.print({ font: font16, x: 230, y: 88, text: "Official IELTS Mock Examination System" });
-  drawHLine(image, 50, 150, 700, 2, navyColor);
+  image.print({ font: font16, x: 231, y: 88, text: "Official IELTS Mock Examination System" }); // BOLD
+  drawHLine(image, 50, 150, 700, 3, navyColor); // Thick divider line (3px)
 
   // Document Title
   image.print({ font: font32, x: 220, y: 165, text: "TEST REPORT FORM" });
+  image.print({ font: font32, x: 221, y: 165, text: "TEST REPORT FORM" }); // BOLD
 
   // 4. Candidate Information
   image.print({ font: font16, x: 50, y: 225, text: "Candidate Name:" });
+  image.print({ font: font16, x: 51, y: 225, text: "Candidate Name:" }); // BOLD
   image.print({ font: font32, x: 220, y: 215, text: candidateName });
+  image.print({ font: font32, x: 221, y: 215, text: candidateName }); // BOLD
 
   image.print({ font: font16, x: 50, y: 265, text: "Phone Number:" });
+  image.print({ font: font16, x: 51, y: 265, text: "Phone Number:" }); // BOLD
   image.print({ font: font16, x: 220, y: 265, text: phone });
+  image.print({ font: font16, x: 221, y: 265, text: phone }); // BOLD
 
   image.print({ font: font16, x: 50, y: 300, text: "Date of Test:" });
+  image.print({ font: font16, x: 51, y: 300, text: "Date of Test:" }); // BOLD
   image.print({ font: font16, x: 220, y: 300, text: date });
+  image.print({ font: font16, x: 221, y: 300, text: date }); // BOLD
 
   // 5. Scores Table Grid
   drawRect(image, 50, 350, 700, 40, 0xF1F5F9FF);
   
-  drawHLine(image, 50, 350, 700, 2, navyColor); // Table Top
-  drawHLine(image, 50, 390, 700, 1, navyColor); // Header Divider
-  drawHLine(image, 50, 450, 700, 2, navyColor); // Table Bottom
+  drawHLine(image, 50, 350, 700, 3, navyColor); // Table Top (3px)
+  drawHLine(image, 50, 390, 700, 2, navyColor); // Header Divider (2px)
+  drawHLine(image, 50, 450, 700, 3, navyColor); // Table Bottom (3px)
 
-  drawVLine(image, 50, 350, 100, 2, navyColor); // Left Outer
-  drawVLine(image, 190, 350, 100, 1, navyColor); // Col 1
-  drawVLine(image, 330, 350, 100, 1, navyColor); // Col 2
-  drawVLine(image, 470, 350, 100, 1, navyColor); // Col 3
-  drawVLine(image, 610, 350, 100, 1, navyColor); // Col 4
-  drawVLine(image, 750, 350, 100, 2, navyColor); // Right Outer
+  drawVLine(image, 50, 350, 100, 3, navyColor); // Left Outer (3px)
+  drawVLine(image, 190, 350, 100, 2, navyColor); // Col 1 (2px)
+  drawVLine(image, 330, 350, 100, 2, navyColor); // Col 2 (2px)
+  drawVLine(image, 470, 350, 100, 2, navyColor); // Col 3 (2px)
+  drawVLine(image, 610, 350, 100, 2, navyColor); // Col 4 (2px)
+  drawVLine(image, 750, 350, 100, 3, navyColor); // Right Outer (3px)
 
   image.print({ font: font16, x: 75, y: 360, text: "Listening" });
+  image.print({ font: font16, x: 76, y: 360, text: "Listening" }); // BOLD
   image.print({ font: font16, x: 220, y: 360, text: "Reading" });
+  image.print({ font: font16, x: 221, y: 360, text: "Reading" }); // BOLD
   image.print({ font: font16, x: 360, y: 360, text: "Writing" });
+  image.print({ font: font16, x: 361, y: 360, text: "Writing" }); // BOLD
   image.print({ font: font16, x: 500, y: 360, text: "Speaking" });
+  image.print({ font: font16, x: 501, y: 360, text: "Speaking" }); // BOLD
   image.print({ font: font16, x: 630, y: 360, text: "Overall Band" });
+  image.print({ font: font16, x: 631, y: 360, text: "Overall Band" }); // BOLD
 
   const getScoreStr = (score) => (score ? score.toFixed(1) : "0.0");
   image.print({ font: font32, x: 95, y: 400, text: getScoreStr(scores.listening) });
+  image.print({ font: font32, x: 96, y: 400, text: getScoreStr(scores.listening) }); // BOLD
   image.print({ font: font32, x: 235, y: 400, text: getScoreStr(scores.reading) });
+  image.print({ font: font32, x: 236, y: 400, text: getScoreStr(scores.reading) }); // BOLD
   image.print({ font: font32, x: 375, y: 400, text: getScoreStr(scores.writing) });
+  image.print({ font: font32, x: 376, y: 400, text: getScoreStr(scores.writing) }); // BOLD
   image.print({ font: font32, x: 515, y: 400, text: getScoreStr(scores.speaking) });
+  image.print({ font: font32, x: 516, y: 400, text: getScoreStr(scores.speaking) }); // BOLD
   
   drawRect(image, 611, 391, 138, 58, 0xE0F2FEFF); // highlight background
   image.print({ font: font32, x: 650, y: 400, text: getScoreStr(scores.overall) });
+  image.print({ font: font32, x: 651, y: 400, text: getScoreStr(scores.overall) }); // BOLD
 
   // 6. Footer - Centered VERIFIED Stamp
   drawRect(image, 310, 490, 180, 50, greenColor);
   drawRect(image, 314, 494, 172, 42, 0xFFFFFFFF);
   image.print({ font: font16, x: 360, y: 505, text: "VERIFIED" });
+  image.print({ font: font16, x: 361, y: 505, text: "VERIFIED" }); // BOLD
 
   await image.write(outputPath);
 };
