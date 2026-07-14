@@ -70,6 +70,90 @@ const vocabularyData: WordItem[] = [
     synonyms: "speech gene", 
     uzbekTranslation: "Nutq va til rivojlanishini boshqaruvchi maxsus gen",
     example: "Mutations in the FOXP2 gene can lead to severe speech and language disorders."
+  },
+  { 
+    word: "Acquire", 
+    definition: "Buy or obtain an asset or object; learn or develop a skill", 
+    synonyms: "obtain, gain, attain", 
+    uzbekTranslation: "Egallamoq, orttirmoq, sotib olmoq",
+    example: "Children acquire language naturally through exposure and interaction."
+  },
+  { 
+    word: "Ambiguous", 
+    definition: "Open to more than one interpretation; having a double meaning", 
+    synonyms: "vague, unclear, uncertain", 
+    uzbekTranslation: "Ikki ma'noli, noaniq, tushunarsiz",
+    example: "The instructions were ambiguous, leading to confusion among the candidates."
+  },
+  { 
+    word: "Cognitive", 
+    definition: "Relating to the mental action or process of acquiring knowledge and understanding", 
+    synonyms: "intellectual, mental, reasoning", 
+    uzbekTranslation: "Kognitiv, aqliy, bilishga oid",
+    example: "Reading stimulates cognitive development and improves analytical thinking."
+  },
+  { 
+    word: "Corroborate", 
+    definition: "Confirm or give support to a statement, theory, or finding", 
+    synonyms: "confirm, verify, validate", 
+    uzbekTranslation: "Tasdiqlamoq, quvvatlamoq, isbotlamoq",
+    example: "Several studies corroborate the theory that sleep benefits long-term memory."
+  },
+  { 
+    word: "Differentiate", 
+    definition: "Recognize or identify the difference between two or more things", 
+    synonyms: "distinguish, separate, discriminate", 
+    uzbekTranslation: "Farqlamoq, ajratmoq, farqini bilmoq",
+    example: "It is crucial to differentiate between reliable news sources and misinformation."
+  },
+  { 
+    word: "Empirical", 
+    definition: "Based on, concerned with, or verifiable by observation or experience rather than theory", 
+    synonyms: "factual, experimental, observed", 
+    uzbekTranslation: "Empirik, tajriba va kuzatishga asoslangan",
+    example: "The scientist presented empirical evidence to support her hypothesis."
+  },
+  { 
+    word: "Equivocal", 
+    definition: "Open to more than one interpretation; ambiguous or undecided", 
+    synonyms: "ambiguous, indefinite, vague", 
+    uzbekTranslation: "Noaniq, shubhali, chalkash",
+    example: "The results of the preliminary trial were equivocal, requiring further research."
+  },
+  { 
+    word: "Fluctuate", 
+    definition: "Rise and fall irregularly in number or amount", 
+    synonyms: "vary, shift, alternate", 
+    uzbekTranslation: "Tebranmoq, doimiy o'zgarib turmoq",
+    example: "Prices of imports fluctuate depending on the global exchange rate."
+  },
+  { 
+    word: "Hypothesis", 
+    definition: "A proposed explanation made on the basis of limited evidence as a starting point for investigation", 
+    synonyms: "theory, premise, assumption", 
+    uzbekTranslation: "Gipotiza, faraz, taxmin",
+    example: "The researchers formulated a hypothesis about the causes of the economic recession."
+  },
+  { 
+    word: "Implicate", 
+    definition: "Show someone to be involved in a crime or event; convey a meaning indirectly", 
+    synonyms: "incriminate, involve, imply", 
+    uzbekTranslation: "Aloqadorligini ko'rsatmoq, aybdor deb hisoblamoq",
+    example: "The discovery of the documents implicated several high-ranking officials."
+  },
+  { 
+    word: "Pragmatic", 
+    definition: "Dealing with things sensibly and realistically in a way that is based on practical considerations", 
+    synonyms: "practical, realistic, sensible", 
+    uzbekTranslation: "Pragmatik, amaliy, hayotiy",
+    example: "A pragmatic approach to education focuses on developing employable skills."
+  },
+  { 
+    word: "Subsequent", 
+    definition: "Coming after something in time; following", 
+    synonyms: "following, succeeding, later", 
+    uzbekTranslation: "Keyingi, ketma-ket keladigan",
+    example: "The initial failure did not deter him from achieving success in subsequent attempts."
   }
 ];
 
