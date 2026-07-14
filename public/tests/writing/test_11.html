@@ -698,6 +698,12 @@
                 <div id="part-1" class="writing-part">
                     <div class="task-prompt">
                         <p><strong>The table below shows the responses of two different group (club members, general public) theater goers in one town in 2012.</strong></p>
+                        <p><strong>Summarise the information by selecting and reporting the main features, and make comparisons where relevant.</strong></p>
+                    </div>
+                    <div class="chart-container">
+                        <div class="image-container">
+                            <img src="writing_test_11.png" alt="Responses of theater goers table" style="max-width:100%; height:auto; border:1px solid #ccc;"/>
+                        </div>
                     </div>
                 </div>
 
@@ -992,43 +998,73 @@
             };
         }
 
-        function calculateBandScore(analysis, partNumber) {
-            let taskScore = 5;
-            let coherenceScore = 5;
-            let lexicalScore = 5;
-            let grammarScore = 5;
+                function calculateBandScore(analysis, partNumber) {
+            const wc = analysis.wordCount;
+            if (wc === 0) {
+                return { task: 0, coherence: 0, lexical: 0, grammar: 0 };
+            }
+            if (wc < 15) {
+                return { task: 1.0, coherence: 1.0, lexical: 1.0, grammar: 1.0 };
+            }
 
-            // Task Achievement/Response scoring
-            if (analysis.meetsWordRequirement) {
-                taskScore += 1;
-                if (analysis.wordCount >= (partNumber === 1 ? 180 : 300)) {
+            let taskScore = 4.0;
+            let coherenceScore = 4.0;
+            let lexicalScore = 4.0;
+            let grammarScore = 4.0;
+
+            const reqWordCount = partNumber === 1 ? 150 : 250;
+            if (wc < reqWordCount) {
+                taskScore = 2.0 + (wc / reqWordCount) * 3.0;
+                coherenceScore = 2.5 + (wc / reqWordCount) * 2.5;
+                lexicalScore = 2.5 + (wc / reqWordCount) * 2.5;
+                grammarScore = 2.5 + (wc / reqWordCount) * 2.5;
+            } else {
+                taskScore = 6.0;
+                coherenceScore = 5.5;
+                lexicalScore = 5.5;
+                grammarScore = 5.5;
+
+                const targetRobust = partNumber === 1 ? 180 : 300;
+                if (wc >= targetRobust) {
+                    taskScore += 1.0;
+                } else {
                     taskScore += 0.5;
+                }
+
+                if (analysis.hasLinkingWords) {
+                    coherenceScore += 1.5;
+                }
+                if (analysis.sentences >= (partNumber === 1 ? 8 : 14)) {
+                    coherenceScore += 1.0;
+                }
+
+                const variety = analysis.vocabularyVariety;
+                if (variety >= 0.65) {
+                    lexicalScore += 1.5;
+                } else if (variety >= 0.50) {
+                    lexicalScore += 1.0;
+                } else if (variety >= 0.40) {
+                    lexicalScore += 0.5;
+                }
+
+                if (analysis.hasComplexSentences) {
+                    grammarScore += 1.5;
+                }
+                if (analysis.avgWordsPerSentence >= 12 && analysis.avgWordsPerSentence <= 22) {
+                    grammarScore += 1.0;
                 }
             }
 
-            // Coherence and Cohesion
-            if (analysis.hasLinkingWords) coherenceScore += 1;
-            if (analysis.sentences >= (partNumber === 1 ? 8 : 12)) coherenceScore += 0.5;
-
-            // Lexical Resource
-            if (analysis.vocabularyVariety >= 70) lexicalScore += 1;
-            if (analysis.vocabularyVariety >= 85) lexicalScore += 0.5;
-
-            // Grammar and Accuracy
-            if (analysis.hasComplexSentences) grammarScore += 1;
-            if (analysis.avgWordsPerSentence >= 15) grammarScore += 0.5;
-
-            // Cap scores at 9
-            taskScore = Math.min(9, taskScore);
-            coherenceScore = Math.min(9, coherenceScore);
-            lexicalScore = Math.min(9, lexicalScore);
-            grammarScore = Math.min(9, grammarScore);
+            const roundToHalf = (val) => {
+                const rounded = Math.round(val * 2) / 2;
+                return Math.max(1.0, Math.min(9.0, rounded));
+            };
 
             return {
-                task: Math.round(taskScore * 2) / 2,
-                coherence: Math.round(coherenceScore * 2) / 2,
-                lexical: Math.round(lexicalScore * 2) / 2,
-                grammar: Math.round(grammarScore * 2) / 2
+                task: roundToHalf(taskScore),
+                coherence: roundToHalf(coherenceScore),
+                lexical: roundToHalf(lexicalScore),
+                grammar: roundToHalf(grammarScore)
             };
         }
 

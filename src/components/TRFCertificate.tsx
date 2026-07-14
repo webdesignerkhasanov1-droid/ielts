@@ -195,7 +195,7 @@ export const TRFCertificate: React.FC<TRFCertificateProps> = ({ lang, candidateI
           {/* Verification stamp area and footer signature */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '20px', borderTop: '1px solid #e2e8f0', paddingTop: '15px' }}>
             <div style={{ fontSize: '0.65rem', color: '#64748b' }}>
-              Designed by American School Mock Test Engine. Verified by American School Team.
+              Designed by American Mock Testing Engine. Verified by American Mock Testing Team.
             </div>
             
             {/* Stamp simulation */}
@@ -222,7 +222,7 @@ export const TRFCertificate: React.FC<TRFCertificateProps> = ({ lang, candidateI
 
           {/* Bottom Copyright */}
           <div style={{ textAlign: 'center', fontSize: '0.65rem', color: '#94a3b8', marginTop: '30px', borderTop: '1px solid #f1f5f9', paddingTop: '10px' }}>
-            © 2026 mocky. American School IELTS Mock Center. All rights reserved.
+            © 2026 mocky. American Mock Testing Center. All rights reserved.
           </div>
         </div>
       </div>

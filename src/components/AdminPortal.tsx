@@ -31,7 +31,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ lang, onBack }) => {
     setResults(db.getResults());
 
     // Fetch from backend to sync fresh database
-    fetch('http://localhost:5001/api/results')
+    fetch('/api/results')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -40,7 +40,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ lang, onBack }) => {
       })
       .catch(err => console.warn("Failed to fetch fresh results from backend:", err));
 
-    fetch('http://localhost:5001/api/candidates')
+    fetch('/api/candidates')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -62,7 +62,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ lang, onBack }) => {
     setUpdatingId(resultId);
     
     try {
-      const response = await fetch('http://localhost:5001/api/result/update-speaking', {
+      const response = await fetch('/api/result/update-speaking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resultId, speaking: speakingVal })

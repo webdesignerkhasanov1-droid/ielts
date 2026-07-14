@@ -179,12 +179,20 @@ export const TestRunner: React.FC<TestRunnerProps> = ({
         const iframeWin = iframe.contentWindow as any;
         if (!iframeDoc || !iframeWin) return;
 
+        const isElementVisible = (el: HTMLElement | null) => {
+          if (!el) return false;
+          try {
+            const style = iframeWin.getComputedStyle(el);
+            return style.display !== 'none' && style.visibility !== 'hidden';
+          } catch (e) {
+            return el.offsetWidth > 0 || el.offsetHeight > 0;
+          }
+        };
+
         // 1. Listening completion check
         if (testCategory === 'listening') {
-          // Check if completion modal is visible or _lastCorrectCount is set
-          const isSubmitted = iframeDoc.getElementById('completion-modal')?.style.display === 'flex' ||
-                              iframeDoc.body.classList.contains('test-submitted') ||
-                              iframeDoc.getElementById('resultModal') && !iframeDoc.getElementById('resultModal')?.classList.contains('hidden');
+          const compModal = iframeDoc.getElementById('completion-modal') || iframeDoc.getElementById('resultModal');
+          const isSubmitted = isElementVisible(compModal) || iframeDoc.body.classList.contains('test-submitted');
 
           if (isSubmitted && iframeWin._lastCorrectCount !== undefined) {
             const correctCount = iframeWin._lastCorrectCount;
@@ -203,7 +211,7 @@ export const TestRunner: React.FC<TestRunnerProps> = ({
         // 2. Reading completion check
         if (testCategory === 'reading') {
           const resultsModal = iframeDoc.getElementById('results-modal') || iframeDoc.getElementById('resultModal');
-          const isSubmitted = resultsModal && !resultsModal.classList.contains('hidden');
+          const isSubmitted = isElementVisible(resultsModal);
 
           if (isSubmitted) {
             const scoreText = iframeDoc.getElementById('results-score')?.textContent || 
@@ -224,7 +232,7 @@ export const TestRunner: React.FC<TestRunnerProps> = ({
         // 3. Writing completion check
         if (testCategory === 'writing') {
           const resultsContainer = iframeDoc.getElementById('resultsContainer') || iframeDoc.getElementById('resultModal');
-          const isSubmitted = resultsContainer && (resultsContainer.style.display === 'block' || !resultsContainer.classList.contains('hidden'));
+          const isSubmitted = isElementVisible(resultsContainer);
 
           if (isSubmitted) {
             const overallBandText = iframeDoc.getElementById('overallBand')?.textContent || 

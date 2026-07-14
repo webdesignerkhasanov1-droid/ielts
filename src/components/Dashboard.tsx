@@ -22,10 +22,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onS
   const [formError, setFormError] = useState('');
 
   const content = {
-    title: lang === 'UZ' ? "American School Mock" : "American School Mock",
+    title: lang === 'UZ' ? "American Mock Testing" : "American Mock Testing",
     subtitle: lang === 'UZ' 
-      ? "American School uslubidagi rasmiy va akademik test topshirish tizimi. Natijalarni TRF sertifikati ko'rinishida oling."
-      : "Official academic mock testing platform by American School. Get your official-style TRF certificate.",
+      ? "American Mock Testing uslubidagi rasmiy va akademik test topshirish tizimi. Natijalarni TRF sertifikati ko'rinishida oling."
+      : "Official academic mock testing platform by American Mock Testing. Get your official-style TRF certificate.",
     candidateHeading: lang === 'UZ' ? "Nomzod Ma'lumotlari (TRF uchun)" : "Candidate Information (for TRF)",
     nameLabel: lang === 'UZ' ? "To'liq ism-sharifingiz" : "Full Name",
     phoneLabel: lang === 'UZ' ? "Telefon raqamingiz" : "Phone Number",

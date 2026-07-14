@@ -139,7 +139,19 @@ const generateTRFImage = async (candidateName, phone, date, scores, outputPath) 
   const navyColor = 0x0B2265FF;
   const greenColor = 0x108B58FF;
 
-  // 1. Draw Borders
+  // 1. Composite academic pattern background first for watermarked premium look
+  try {
+    const bgPath = path.join(__dirname, 'public', 'bg_academic_pattern.png');
+    if (fs.existsSync(bgPath)) {
+      const bgImage = await Jimp.read(bgPath);
+      bgImage.resize({ w: 800, h: 600 });
+      image.composite(bgImage, 0, 0);
+    }
+  } catch (err) {
+    console.warn("Failed to load background pattern watermark:", err);
+  }
+
+  // 2. Draw Borders
   drawHLine(image, 15, 15, 770, 5, navyColor); // Top
   drawHLine(image, 15, 580, 770, 5, navyColor); // Bottom
   drawVLine(image, 15, 15, 570, 5, navyColor); // Left
@@ -150,24 +162,25 @@ const generateTRFImage = async (candidateName, phone, date, scores, outputPath) 
   drawVLine(image, 23, 23, 554, 2, greenColor); // Left
   drawVLine(image, 775, 23, 554, 2, greenColor); // Right
 
-  // 2. Load Fonts
+  // 3. Load Fonts
   const font32 = await loadFont(SANS_32_BLACK);
   const font16 = await loadFont(SANS_16_BLACK);
 
-  // 3. Load and Composite the High Definition Logo Image
+  // 4. Load and Composite the Transparent HD Logo Image (preserving 16:9 aspect ratio)
+  // 4. Load and Composite the Cropped HD Logo Image (preserving aspect ratio, margins trimmed)
   try {
-    const logoPath = path.join(__dirname, 'public', 'logo.png');
+    const logoPath = path.join(__dirname, 'public', 'logo_cropped.png');
     const logoImage = await Jimp.read(logoPath);
-    logoImage.resize({ width: 90, height: 90 });
-    image.composite(logoImage, 50, 45);
+    logoImage.resize({ w: 160, h: 102 });
+    image.composite(logoImage, 50, 35);
   } catch (err) {
     console.error("Failed to load logo image in Jimp, falling back to basic drawing:", err);
     // Draw fallback basic border if image fails to load
-    drawRect(image, 50, 45, 90, 90, navyColor);
+    drawRect(image, 50, 35, 160, 102, navyColor);
   }
 
-  image.print({ font: font32, x: 160, y: 50, text: "AMERICAN SCHOOL" });
-  image.print({ font: font16, x: 160, y: 88, text: "INTERNATIONAL IELTS MOCK TESTING PORTAL" });
+  image.print({ font: font32, x: 230, y: 50, text: "AMERICAN MOCK TESTING" });
+  image.print({ font: font16, x: 230, y: 88, text: "Official IELTS Mock Examination System" });
   drawHLine(image, 50, 150, 700, 2, navyColor);
 
   // Document Title
@@ -212,13 +225,10 @@ const generateTRFImage = async (candidateName, phone, date, scores, outputPath) 
   drawRect(image, 611, 391, 138, 58, 0xE0F2FEFF); // highlight background
   image.print({ font: font32, x: 650, y: 400, text: getScoreStr(scores.overall) });
 
-  // 6. Footer
-  drawHLine(image, 100, 540, 200, 1, navyColor);
-  image.print({ font: font16, x: 120, y: 545, text: "Administrator Signature" });
-
-  drawRect(image, 530, 490, 180, 50, greenColor);
-  drawRect(image, 534, 494, 172, 42, 0xFFFFFFFF);
-  image.print({ font: font16, x: 580, y: 505, text: "VERIFIED" });
+  // 6. Footer - Centered VERIFIED Stamp
+  drawRect(image, 310, 490, 180, 50, greenColor);
+  drawRect(image, 314, 494, 172, 42, 0xFFFFFFFF);
+  image.print({ font: font16, x: 360, y: 505, text: "VERIFIED" });
 
   await image.write(outputPath);
 };
@@ -337,6 +347,25 @@ const server = http.createServer((req, res) => {
         dbData.results.push(result);
         writeDB(dbData);
 
+        // If it is a Full Mock Test, notify the Admin immediately for Speaking evaluation
+        if (testType === 'full') {
+          const adminNotifyText = `🔔 *YANGI MOCK TOPSHIRILDI!* (American Mock Testing)
+
+👤 *Nomzod:* ${result.candidateName}
+📞 *Tel:* \`+${cleanPhone(phone)}\`
+📚 *Test:* ${result.testTitle}
+
+📊 *AI Natijalari:*
+🎧 Listening: *${(scores.listening || 0).toFixed(1)}*
+📖 Reading: *${(scores.reading || 0).toFixed(1)}*
+✍️ Writing: *${(scores.writing || 0).toFixed(1)}*
+
+⏳ *Speaking bo'limi baholanishi kutilmoqda.*
+👉 Admin panelga kirib baholang!`;
+
+          sendTelegramMessage('6241470340', adminNotifyText);
+        }
+
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
       } catch (e) {
@@ -391,11 +420,14 @@ const server = http.createServer((req, res) => {
         );
 
         // 4. Send updated certificate via Telegram
-        const caption = `🎓 *YANGILANGAN IMTIHON SERTIFIKATI* (American School)
+        const caption = `🎓 *IMTIHON SERTIFIKATI* (American Mock Testing)
 
 👤 *Nomzod:* ${result.candidateName}
 📚 *Test:* ${result.testTitle}
-⭐ *Speaking Band:* *${result.scores.speaking.toFixed(1)}*
+🎧 Listening: *${(result.scores.listening || 0).toFixed(1)}*
+📖 Reading: *${(result.scores.reading || 0).toFixed(1)}*
+✍️ Writing: *${(result.scores.writing || 0).toFixed(1)}*
+🗣️ Speaking: *${result.scores.speaking.toFixed(1)}*
 🏆 *Overall Band:* *${result.scores.overall.toFixed(1)}*`;
 
         // Send to candidate if telegramChatId exists
@@ -588,9 +620,9 @@ const handleBotUpdate = (update) => {
 };
 
 const sendWelcomeMessage = (chatId) => {
-  const welcomeText = `🏫 *American School IELTS Mock Bot-ga xush kelibsiz!*
+  const welcomeText = `🏫 *American Mock Testing IELTS Bot-ga xush kelibsiz!*
 
-Fleshkartalar, so'nggi mock natijalar va shaxsiy sertifikat kartangizni olish uchun pastdagi tugmani bosing yoki telefon raqamingizni yozib yuboring (masalan: \`+998500758444\`).`;
+Natijalar va shaxsiy TRF sertifikat kartangizni olish uchun pastdagi tugmani bosing yoki telefon raqamingizni yozib yuboring (masalan: \`+998500758444\`).`;
 
   const replyMarkup = {
     keyboard: [
@@ -606,6 +638,7 @@ Fleshkartalar, so'nggi mock natijalar va shaxsiy sertifikat kartangizni olish uc
 const searchAndSendResults = async (chatId, rawPhone) => {
   const cleaned = cleanPhone(rawPhone);
   const dbData = readDB();
+  const siteUrl = process.env.RENDER_EXTERNAL_URL || 'http://127.0.0.1';
 
   // Link telegramChatId to candidate
   let candidate = dbData.candidates.find(c => cleanPhone(c.phone) === cleaned);
@@ -617,7 +650,6 @@ const searchAndSendResults = async (chatId, rawPhone) => {
   const candidateResults = dbData.results.filter(r => cleanPhone(r.phone) === cleaned);
 
   if (candidateResults.length === 0) {
-    const siteUrl = process.env.RENDER_EXTERNAL_URL || 'http://localhost:5173';
     const errorText = `❌ *Natija topilmadi!*
 
 Telefon raqam: \`+${cleaned}\`
@@ -629,26 +661,53 @@ Ushbu raqam bo'yicha bazada mock test natijalari topilmadi. Oldin test topshirin
     return;
   }
 
-  candidateResults.sort((a, b) => new Date(b.date) - new Date(a.date));
-  const latestResult = candidateResults[0];
+  // Filter for Full Mock results
+  const fullMockResults = candidateResults.filter(r => r.testType === 'full');
 
+  if (fullMockResults.length === 0) {
+    const msgText = `ℹ️ *Sertifikat faqat to'liq imtihon (Full Mock Test) uchun beriladi.*
+
+Siz faqat alohida bo'limli mashq testlarini topshirgansiz. To'liq Mock topshirish uchun portalga kiring:
+👉 ${siteUrl}`;
+    sendTelegramMessage(chatId, msgText);
+    return;
+  }
+
+  fullMockResults.sort((a, b) => new Date(b.date) - new Date(a.date));
+  const latestFullResult = fullMockResults[0];
+
+  // Check if Speaking is evaluated
+  if (!latestFullResult.scores.speaking || latestFullResult.scores.speaking === 0) {
+    const pendingText = `⏳ *Sizning to'liq Mock imtihoningiz qabul qilindi!*
+
+Hozirda examinerlarimiz tomonidan *Speaking* bo'limi baholanmoqda.
+Baholash yakunlangach, rasmiy TRF sertifikatingiz ushbu bot orqali sizga **avtomatik ravishda** yuboriladi! 🎓`;
+    sendTelegramMessage(chatId, pendingText);
+    return;
+  }
+
+  // If Speaking is evaluated, send certificate
   sendTelegramMessage(chatId, "⏳ *Sertifikatingiz tayyorlanmoqda...*");
 
   const tempPath = path.join(__dirname, `cert_${cleaned}.png`);
 
   await generateTRFImage(
-    latestResult.candidateName,
-    latestResult.phone,
-    new Date(latestResult.date).toLocaleDateString('uz-UZ'),
-    latestResult.scores,
+    latestFullResult.candidateName,
+    latestFullResult.phone,
+    new Date(latestFullResult.date).toLocaleDateString('uz-UZ'),
+    latestFullResult.scores,
     tempPath
   );
 
-  const caption = `🎓 *IMTIHON SERTIFIKATI* (American School)
+  const caption = `🎓 *IMTIHON SERTIFIKATI* (American Mock Testing)
 
-👤 *Nomzod:* ${latestResult.candidateName}
-📚 *Test:* ${latestResult.testTitle}
-⭐ *Overall Band:* *${latestResult.scores.overall.toFixed(1)}*`;
+👤 *Nomzod:* ${latestFullResult.candidateName}
+📚 *Test:* ${latestFullResult.testTitle}
+🎧 Listening: *${latestFullResult.scores.listening.toFixed(1)}*
+📖 Reading: *${latestFullResult.scores.reading.toFixed(1)}*
+✍️ Writing: *${latestFullResult.scores.writing.toFixed(1)}*
+🗣️ Speaking: *${latestFullResult.scores.speaking.toFixed(1)}*
+🏆 *Overall Band:* *${latestFullResult.scores.overall.toFixed(1)}*`;
 
   sendTelegramPhoto(chatId, tempPath, caption);
 

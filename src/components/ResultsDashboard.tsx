@@ -35,6 +35,34 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ lang, answer
     isFullMock ? 'trf' : 'analysis'
   );
   const [telegramStatus, setTelegramStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [serverHistory, setServerHistory] = useState<any[]>([]);
+
+  // Fetch results from the server database for multi-device sync
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await fetch('/api/results');
+        if (response.ok) {
+          const data = await response.json();
+          const cleanPhone = (p: string) => p.replace(/\D/g, '');
+          const filtered = data
+            .filter((item: any) => cleanPhone(item.phone) === cleanPhone(candidateInfo.phone))
+            .map((item: any) => ({
+              key: item.id || `${item.phone}_${item.scores.overall}_${new Date(item.date).toDateString()}`,
+              candidateName: item.candidateName,
+              phone: item.phone,
+              date: new Date(item.date).toLocaleDateString('uz-UZ'),
+              timestamp: new Date(item.date).getTime(),
+              scores: item.scores
+            }));
+          setServerHistory(filtered);
+        }
+      } catch (err) {
+        console.warn("Failed to fetch server-side mock history:", err);
+      }
+    };
+    fetchHistory();
+  }, [candidateInfo.phone]);
 
   // Grammar check rule-engine database
   const checkGrammar = (text: string) => {
@@ -382,7 +410,7 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ lang, answer
 
 American School Mock Test tizimi orqali topshirildi!`;
   
-  const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent('https://moydionov-mock.uz')}&text=${encodeURIComponent(shareText)}`;
+  const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent('http://127.0.0.1')}&text=${encodeURIComponent(shareText)}`;
 
   return (
     <div className="animate-fade-in" style={{
@@ -745,8 +773,19 @@ American School Mock Test tizimi orqali topshirildi!`;
             
             {(() => {
               const localHistoryStr = localStorage.getItem('ielts_mock_history') || '[]';
-              const candidateHistory = JSON.parse(localHistoryStr)
-                .filter((item: any) => item.phone === candidateInfo.phone)
+              const localHistory = JSON.parse(localHistoryStr)
+                .filter((item: any) => item.phone === candidateInfo.phone);
+
+              // Merge local and server history by unique key to prevent duplicates
+              const mergedMap = new Map();
+              serverHistory.forEach((item: any) => mergedMap.set(item.key, item));
+              localHistory.forEach((item: any) => {
+                if (!mergedMap.has(item.key)) {
+                  mergedMap.set(item.key, item);
+                }
+              });
+
+              const candidateHistory = Array.from(mergedMap.values())
                 .sort((a: any, b: any) => a.timestamp - b.timestamp);
 
               if (candidateHistory.length === 0) {

@@ -58,6 +58,12 @@ function App() {
     telegram: '@amoyd1novvv'
   });
 
+  // Admin Auth States
+  const [isAdminAuthModalOpen, setIsAdminAuthModalOpen] = useState(false);
+  const [adminUsername, setAdminUsername] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
+  const [adminAuthError, setAdminAuthError] = useState('');
+
   // Listening 2-minute transfer countdown timer
   useEffect(() => {
     if (listeningTransferTimeLeft === null) return;
@@ -307,7 +313,7 @@ function App() {
         resetTest={handleRestart}
         theme={theme}
         toggleTheme={toggleTheme}
-        onAdminClick={() => setCurrentSection('admin')}
+        onAdminClick={() => setIsAdminAuthModalOpen(true)}
       />
 
       <main style={{ flex: 1 }}>
@@ -684,6 +690,145 @@ function App() {
             }
           }}
         />
+      )}
+
+      {/* Admin Verification PIN Modal */}
+      {isAdminAuthModalOpen && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(15, 23, 42, 0.65)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '20px'
+        }}>
+          <div className="glass-panel" style={{
+            width: '100%',
+            maxWidth: '420px',
+            background: 'white',
+            borderRadius: '20px',
+            padding: '32px',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
+            border: '1px solid #e2e8f0',
+            textAlign: 'center'
+          }}>
+            <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'hsl(var(--primary))', marginBottom: '8px' }}>
+              🔒 {lang === 'UZ' ? 'Admin Tizimga Kirish' : 'Admin Portal Login'}
+            </h3>
+            <p style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '24px' }}>
+              {lang === 'UZ' 
+                ? 'Admin panelga kirish uchun login va parolni kiriting:'
+                : 'Enter your admin login credentials to gain access:'}
+            </p>
+
+            {adminAuthError && (
+              <div style={{
+                background: '#fef2f2',
+                border: '1px solid #fca5a5',
+                color: '#ef4444',
+                padding: '10px 14px',
+                borderRadius: '8px',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                marginBottom: '16px',
+                textAlign: 'left'
+              }}>
+                ⚠️ {adminAuthError}
+              </div>
+            )}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px', textAlign: 'left' }}>
+              <div>
+                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '6px' }}>
+                  {lang === 'UZ' ? 'Login' : 'Username'}
+                </label>
+                <input 
+                  type="text" 
+                  value={adminUsername}
+                  onChange={(e) => {
+                    setAdminUsername(e.target.value);
+                    setAdminAuthError('');
+                  }}
+                  placeholder="admin"
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px',
+                    borderRadius: '8px',
+                    border: '1px solid #cbd5e1',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                    color: '#334155',
+                    background: '#ffffff'
+                  }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '6px' }}>
+                  {lang === 'UZ' ? 'Parol' : 'Password'}
+                </label>
+                <input 
+                  type="password" 
+                  value={adminPassword}
+                  onChange={(e) => {
+                    setAdminPassword(e.target.value);
+                    setAdminAuthError('');
+                  }}
+                  placeholder="••••••••"
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px',
+                    borderRadius: '8px',
+                    border: '1px solid #cbd5e1',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                    color: '#334155',
+                    background: '#ffffff'
+                  }}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button 
+                onClick={() => {
+                  setIsAdminAuthModalOpen(false);
+                  setAdminUsername('');
+                  setAdminPassword('');
+                  setAdminAuthError('');
+                }}
+                className="btn-secondary"
+                style={{ flex: 1, padding: '12px', justifyContent: 'center' }}
+              >
+                {lang === 'UZ' ? 'Bekor qilish' : 'Cancel'}
+              </button>
+              
+              <button 
+                onClick={() => {
+                  if (adminUsername === 'admin' && adminPassword === 'american2026') {
+                    setCurrentSection('admin');
+                    setIsAdminAuthModalOpen(false);
+                    setAdminUsername('');
+                    setAdminPassword('');
+                    setAdminAuthError('');
+                  } else {
+                    setAdminAuthError(lang === 'UZ' ? 'Login yoki parol noto\'g\'ri!' : 'Incorrect login or password!');
+                  }
+                }}
+                className="btn-primary"
+                style={{ flex: 1, padding: '12px', justifyContent: 'center', background: 'hsl(var(--primary))' }}
+              >
+                {lang === 'UZ' ? 'Kirish' : 'Login'}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

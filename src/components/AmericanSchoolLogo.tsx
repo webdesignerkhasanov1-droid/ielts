@@ -51,7 +51,7 @@ export const AmericanSchoolLogo: React.FC<LogoProps> = ({ size = 36, textColor: 
 
         <img 
           src="/american_school_logo.png" 
-          alt="American School" 
+          alt="American Mock Testing" 
           style={{
             height: `${size}px`,
             width: 'auto',
@@ -69,7 +69,7 @@ export const AmericanSchoolLogo: React.FC<LogoProps> = ({ size = 36, textColor: 
           <span style={{ 
             fontFamily: "'Outfit', sans-serif", 
             fontWeight: 800, 
-            fontSize: `${size * 0.44}px`, 
+            fontSize: `${size * 0.42}px`, 
             // Premium text gradient 
             background: 'linear-gradient(135deg, #0b2265 0%, #1e3a8a 50%, #108b58 100%)',
             WebkitBackgroundClip: 'text',
@@ -79,7 +79,7 @@ export const AmericanSchoolLogo: React.FC<LogoProps> = ({ size = 36, textColor: 
             transition: 'all 0.3s ease',
             filter: isHovered ? 'brightness(1.1) drop-shadow(0 2px 4px rgba(16, 139, 88, 0.15))' : 'none',
           }}>
-            American School
+            American Mock
           </span>
           <span style={{ 
             fontFamily: "'Inter', sans-serif", 
@@ -90,7 +90,7 @@ export const AmericanSchoolLogo: React.FC<LogoProps> = ({ size = 36, textColor: 
             textTransform: 'uppercase',
             opacity: 0.9
           }}>
-            Mock
+            Testing
           </span>
         </div>
       )}
