@@ -1136,32 +1136,18 @@
         </div>
         <div class="header-right" style="display: flex; align-items: center; gap: 10px;">
             <!-- Custom Audio Controls -->
-            <div style="display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 12px;">
-                <!-- -10 seconds button -->
-                <button onclick="skipBackward()" class="header-btn" style="background: none; border: none; color: white; cursor: pointer; padding: 4px; border-radius: 50%; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='none'" title="-10 seconds">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M11.99 5V1l-5 5 5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6h-2c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
-                    </svg>
-                    <span style="font-size: 8px; position: absolute; margin-top: 2px;">10</span>
-                </button>
-                
-                <!-- Enhanced Audio Player -->
-                <audio id="audioPlayer" preload="auto" controls playsinline webkit-playsinline crossorigin="anonymous" style="width: 400px; height: 30px; background: rgba(255,255,255,0.9); border-radius: 15px; outline: none;">
-                    <source src=https://pub-a3ed3eec4ae344b4917067de0a9376f1.r2.dev/Authentic%20Listening%20Mock%20%40shohrukhposts%20VIP.mp3 type="audio/mpeg">
-                    Your browser does not support the audio element.
+            <!-- Custom Uncontrollable Audio Controls -->
+            <div id="uncontrollable-audio-bar" style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 15px;">
+                <span style="font-size: 13px; font-weight: 600; color: white;">🎧 Listening Audio (Plays Once Only):</span>
+                <audio id="audioPlayer" preload="auto">
+                    <source src="https://pub-a3ed3eec4ae344b4917067de0a9376f1.r2.dev/Authentic%20Listening%20Mock%20%40shohrukhposts%20VIP.mp3" type="audio/mpeg">
                 </audio>
-                
-                <!-- +10 seconds button -->
-                <button onclick="skipForward()" class="header-btn" style="background: none; border: none; color: white; cursor: pointer; padding: 4px; border-radius: 50%; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='none'" title="+10 seconds">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/>
-                    </svg>
-                    <span style="font-size: 8px; position: absolute; margin-top: 2px;">10</span>
-                </button>
-                
-                <!-- Subtitles/CC button -->
-                <button id="ccButton" onclick="toggleSubtitles()" style="background: none; border: 1.5px solid white; color: white; cursor: pointer; padding: 3px 6px; border-radius: 4px; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;" title="Toggle Subtitles (CC)">
-                    CC
+                <div style="width: 150px; height: 6px; background: rgba(255,255,255,0.3); border-radius: 3px; overflow: hidden; position: relative;">
+                    <div id="audio-progress-bar" style="width: 0%; height: 100%; background: #4ade80; transition: width 0.25s linear;"></div>
+                </div>
+                <span id="audio-status-label" style="font-size: 12px; font-weight: 500; color: #4ade80;">⏳ Loading...</span>
+                <button id="start-audio-btn" style="display:none; padding: 4px 10px; background: #4ade80; color: #1e3a5f; border: none; border-radius: 12px; cursor: pointer; font-size: 11px; font-weight: 700; transition: all 0.2s;">
+                    ▶ Start
                 </button>
             </div>
             
@@ -2606,25 +2592,70 @@
                 });
             });
             
-            // Audio status updates
+            // Uncontrollable Audio playback setups
             const audio = document.getElementById('audioPlayer');
             const audioStatus = document.getElementById('audioStatus');
+            const startAudioBtn = document.getElementById('start-audio-btn');
+            const progressBar = document.getElementById('audio-progress-bar');
+            const audioStatusLabel = document.getElementById('audio-status-label');
             
-            if (audio && audioStatus) {
-                audio.addEventListener('play', function() {
-                    audioStatus.innerHTML = '🔊 Audio is playing';
-                });
-                
-                audio.addEventListener('pause', function() {
-                    audioStatus.innerHTML = '🔊 Audio is paused';
-                });
-                
-                audio.addEventListener('ended', function() {
-                    audioStatus.innerHTML = '🔊 Audio is paused';
-                });
+            let lastAllowedTime = 0;
+            let audioEnded = false;
+            
+            audio.addEventListener('canplaythrough', function() {
+                if (audioStatusLabel && audioStatusLabel.textContent.includes('Loading')) {
+                    audioStatusLabel.textContent = 'Ready';
+                }
+                if (startAudioBtn) {
+                    startAudioBtn.style.display = 'inline-block';
+                }
+            });
+            
+            if (startAudioBtn) {
+                startAudioBtn.onclick = function() {
+                    audio.play().then(() => {
+                        startAudioBtn.style.display = 'none';
+                        if (audioStatusLabel) audioStatusLabel.textContent = '▶ Playing';
+                        if (audioStatus) audioStatus.innerHTML = '🔊 Audio is playing';
+                    }).catch(err => {
+                        console.error('Play failed:', err);
+                    });
+                };
             }
             
-            // Initialize progress and navigation
+            // Prevent pausing
+            audio.addEventListener('pause', () => {
+                if (!audioEnded && audio.currentTime > 0) {
+                    audio.play().catch(() => {});
+                }
+            });
+
+            // Prevent seeking and updating progress bar
+            audio.addEventListener('timeupdate', () => {
+                if (!audioEnded) {
+                    if (audio.currentTime < lastAllowedTime - 2) {
+                        audio.currentTime = lastAllowedTime;
+                    } else {
+                        lastAllowedTime = Math.max(lastAllowedTime, audio.currentTime);
+                    }
+                }
+                const pct = (audio.currentTime / (audio.duration || 1)) * 100;
+                if (progressBar) progressBar.style.width = pct + '%';
+            });
+
+            audio.addEventListener('seeking', () => {
+                if (!audioEnded) {
+                    audio.currentTime = lastAllowedTime;
+                }
+            });
+            
+            audio.addEventListener('ended', () => {
+                audioEnded = true;
+                if (audioStatusLabel) audioStatusLabel.textContent = '✓ Complete';
+                if (audioStatus) audioStatus.innerHTML = '🔊 Audio is paused';
+                if (startAudioBtn) startAudioBtn.style.display = 'none';
+            });
+
             updateProgress();
             updateInspiraNavigation();
         });
@@ -2637,13 +2668,11 @@
 
         // Enhanced Audio functionality with skip controls
         function skipBackward() {
-            const audio = document.getElementById('audioPlayer');
-            audio.currentTime = Math.max(0, audio.currentTime - 10);
+            // Disabled for exam integrity!
         }
         
         function skipForward() {
-            const audio = document.getElementById('audioPlayer');
-            audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+            // Disabled for exam integrity!
         }
         
         // Subtitle functionality
@@ -2738,8 +2767,7 @@
         }
 
         function pauseAudio() {
-            const audio = document.getElementById('audioPlayer');
-            audio.pause();
+            // Disabled for exam integrity!
         }
 
         // Download answers function

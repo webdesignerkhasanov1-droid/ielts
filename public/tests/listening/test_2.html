@@ -2476,11 +2476,15 @@
 
     <!-- Audio Player Bar -->
     <div class="audio-player-container" id="audio-player-container" style="display:none;">
-        <span class="audio-label">🎧 Listening Audio:</span>
-        <audio id="listening-audio" controls controlsList="nodownload" preload="auto">
-            Your browser does not support the audio element.
-        </audio>
-        <span class="audio-status" id="audio-status">Ready</span>
+        <span class="audio-label">🎧 Listening Audio (Plays Once Only):</span>
+        <audio id="listening-audio" preload="auto"></audio>
+        <div style="width: 250px; height: 8px; background: #dee2e6; border-radius: 4px; overflow: hidden; position: relative;">
+            <div id="audio-progress-bar" style="width: 0%; height: 100%; background: #28a745; transition: width 0.25s linear;"></div>
+        </div>
+        <span class="audio-status" id="audio-status">⏳ Loading...</span>
+        <button id="start-audio-btn" style="display:none; padding: 6px 14px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600;">
+            ▶ Start Audio
+        </button>
     </div>
 
     <div class="main-container" id="main-container">
