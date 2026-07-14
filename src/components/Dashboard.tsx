@@ -267,8 +267,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onS
                   </h3>
                   <p style={{ color: '#64748b', fontSize: '0.82rem', margin: 0 }}>
                     {lang === 'UZ'
-                      ? "Authentic materiallar: 5 Listening · 4 Reading · 2 Writing testlari"
-                      : "Authentic materials: 5 Listening · 4 Reading · 2 Writing tests"}
+                      ? "Authentic materiallar: 18 Listening · 17 Reading · 12 Writing testlari"
+                      : "Authentic materials: 18 Listening · 17 Reading · 12 Writing tests"}
                   </p>
                 </div>
               </div>
