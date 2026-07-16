@@ -194,8 +194,10 @@ function App() {
   const handleListeningComplete = (listeningAns: Record<string, string>) => {
     setAnswers(prev => ({ ...prev, listening: listeningAns }));
     if (isFullTest) {
-      setCurrentSection('reading');
+      setActiveTest(null);
+      setListeningTransferTimeLeft(120);
     } else {
+      setActiveTest(null);
       setCurrentSection('results');
     }
   };
@@ -203,8 +205,10 @@ function App() {
   const handleReadingComplete = (readingAns: Record<string, string>) => {
     setAnswers(prev => ({ ...prev, reading: readingAns }));
     if (isFullTest) {
-      setCurrentSection('writing');
+      setActiveTest(null);
+      setReadingFinishedPrompt(true);
     } else {
+      setActiveTest(null);
       setCurrentSection('results');
     }
   };
@@ -212,20 +216,24 @@ function App() {
   const handleWritingComplete = (writingAns: Record<string, string>) => {
     setAnswers(prev => ({ ...prev, writing: writingAns }));
     if (isFullTest) {
-      setCurrentSection('speaking');
+      setActiveTest(null);
+      setCurrentSection('pending-speaking');
     } else {
+      setActiveTest(null);
       setCurrentSection('results');
     }
   };
 
   const handleSpeakingComplete = (speakingAns: Record<string, any>) => {
     setAnswers(prev => ({ ...prev, speaking: speakingAns }));
+    setActiveTest(null);
     setCurrentSection('results');
   };
 
   const handleRestart = () => {
     setAnswers({});
     setIsFullTest(false);
+    setActiveTest(null);
     setCurrentSection('dashboard');
   };
 
