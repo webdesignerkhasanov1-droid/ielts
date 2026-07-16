@@ -120,8 +120,20 @@ export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onS
                 name="fullName"
                 value={candidateInfo.fullName}
                 onChange={handleInputChange}
+                onFocus={(e) => {
+                  if (e.target.value === 'Abdurahmon Moydionov') {
+                    e.target.select();
+                  }
+                }}
                 placeholder="Abdurahmon Moydionov"
-                style={{ padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem' }}
+                style={{ 
+                  padding: '10px', 
+                  border: '1px solid #cbd5e1', 
+                  borderRadius: '8px', 
+                  fontSize: '0.9rem',
+                  color: candidateInfo.fullName === 'Abdurahmon Moydionov' ? '#94a3b8' : 'inherit',
+                  fontWeight: candidateInfo.fullName === 'Abdurahmon Moydionov' ? 400 : 500
+                }}
               />
             </div>
 
@@ -134,8 +146,20 @@ export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onS
                 name="phone"
                 value={candidateInfo.phone}
                 onChange={handleInputChange}
+                onFocus={(e) => {
+                  if (e.target.value === '+998 50 075 84 44') {
+                    e.target.select();
+                  }
+                }}
                 placeholder="+998 50 075 84 44"
-                style={{ padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem' }}
+                style={{ 
+                  padding: '10px', 
+                  border: '1px solid #cbd5e1', 
+                  borderRadius: '8px', 
+                  fontSize: '0.9rem',
+                  color: candidateInfo.phone === '+998 50 075 84 44' ? '#94a3b8' : 'inherit',
+                  fontWeight: candidateInfo.phone === '+998 50 075 84 44' ? 400 : 500
+                }}
               />
             </div>
 
@@ -148,8 +172,20 @@ export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onS
                 name="telegram"
                 value={candidateInfo.telegram}
                 onChange={handleInputChange}
+                onFocus={(e) => {
+                  if (e.target.value === '@amoyd1novvv') {
+                    e.target.select();
+                  }
+                }}
                 placeholder="@amoyd1novvv"
-                style={{ padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem' }}
+                style={{ 
+                  padding: '10px', 
+                  border: '1px solid #cbd5e1', 
+                  borderRadius: '8px', 
+                  fontSize: '0.9rem',
+                  color: candidateInfo.telegram === '@amoyd1novvv' ? '#94a3b8' : 'inherit',
+                  fontWeight: candidateInfo.telegram === '@amoyd1novvv' ? 400 : 500
+                }}
               />
             </div>
 
