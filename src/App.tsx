@@ -413,7 +413,11 @@ function App() {
         {currentSection === 'pending-speaking' && (
           <div style={{
             maxWidth: '600px',
-            margin: '80px auto',
+            width: '90%',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             padding: '40px',
             backgroundColor: '#ffffff',
             borderRadius: '16px',
@@ -466,7 +470,11 @@ function App() {
         {listeningTransferTimeLeft !== null && (
           <div style={{
             maxWidth: '600px',
-            margin: '80px auto',
+            width: '90%',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             padding: '40px',
             backgroundColor: '#ffffff',
             borderRadius: '16px',
@@ -526,7 +534,11 @@ function App() {
         {readingFinishedPrompt && (
           <div style={{
             maxWidth: '600px',
-            margin: '80px auto',
+            width: '90%',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             padding: '40px',
             backgroundColor: '#ffffff',
             borderRadius: '16px',
