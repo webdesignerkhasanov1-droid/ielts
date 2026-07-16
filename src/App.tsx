@@ -187,6 +187,7 @@ function App() {
 
   const startFullTest = (setIndex: number) => {
     setSelectedSetIndex(setIndex);
+    setIsFullTest(true);
     const chosenSet = MOCK_SETS[setIndex];
     setActiveTest(chosenSet.listening);
   };
