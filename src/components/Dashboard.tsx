@@ -49,19 +49,51 @@ export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onS
   };
 
   const validateAndStartFull = (setIndex: number) => {
-    if (!candidateInfo.fullName.trim() || !candidateInfo.phone.trim()) {
+    const nameInput = document.querySelector('input[name="fullName"]') as HTMLInputElement;
+    const phoneInput = document.querySelector('input[name="phone"]') as HTMLInputElement;
+    const telegramInput = document.querySelector('input[name="telegram"]') as HTMLInputElement;
+    
+    const nameVal = nameInput ? nameInput.value.trim() : '';
+    const phoneVal = phoneInput ? phoneInput.value.trim() : '';
+    const tgVal = telegramInput ? telegramInput.value.trim() : '';
+
+    if (!nameVal || !phoneVal) {
       setFormError(lang === 'UZ' ? "Ism-sharif va telefon raqami majburiy!" : "Name and phone number are required!");
       return;
     }
+    
+    // Sync state before proceeding
+    setCandidateInfo({
+      fullName: nameVal,
+      phone: phoneVal,
+      telegram: tgVal
+    });
+    
     setFormError('');
     onStartFullTest(setIndex);
   };
 
   const validateAndStartSectional = (category: 'listening' | 'reading' | 'writing') => {
-    if (!candidateInfo.fullName.trim() || !candidateInfo.phone.trim()) {
+    const nameInput = document.querySelector('input[name="fullName"]') as HTMLInputElement;
+    const phoneInput = document.querySelector('input[name="phone"]') as HTMLInputElement;
+    const telegramInput = document.querySelector('input[name="telegram"]') as HTMLInputElement;
+    
+    const nameVal = nameInput ? nameInput.value.trim() : '';
+    const phoneVal = phoneInput ? phoneInput.value.trim() : '';
+    const tgVal = telegramInput ? telegramInput.value.trim() : '';
+
+    if (!nameVal || !phoneVal) {
       setFormError(lang === 'UZ' ? "Ism-sharif va telefon raqami majburiy!" : "Name and phone number are required!");
       return;
     }
+
+    // Sync state before proceeding
+    setCandidateInfo({
+      fullName: nameVal,
+      phone: phoneVal,
+      telegram: tgVal
+    });
+    
     setFormError('');
     onSelectSectionalCategory(category);
   };
@@ -102,7 +134,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onS
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 2fr', gap: '30px', alignItems: 'start' }}>
         
         {/* Candidate Registration Panel */}
         <div className="glass-panel" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -120,7 +152,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onS
                 name="fullName"
                 value={candidateInfo.fullName}
                 onChange={handleInputChange}
-                placeholder="Abdurahmon Moydionov"
+                placeholder="Abdurahmon Moydinov"
                 style={{ padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem' }}
               />
             </div>

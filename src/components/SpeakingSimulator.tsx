@@ -366,7 +366,7 @@ export const SpeakingSimulator: React.FC<SpeakingSimulatorProps> = ({ lang, cand
                 {mode === 'examiner' ? 'EX' : 'AM'}
               </div>
               <span style={{ fontSize: '0.85rem', color: '#888' }}>
-                {mode === 'examiner' ? "You (Examiner)" : "Examiner (Abdurahmon Moydionov)"}
+                {mode === 'examiner' ? "You (Examiner)" : "Examiner (Abdurahmon Moydinov)"}
               </span>
             </div>
           )}
@@ -379,7 +379,7 @@ export const SpeakingSimulator: React.FC<SpeakingSimulatorProps> = ({ lang, cand
           )}
 
           <div className="zoom-screen-name">
-            {mode === 'examiner' ? (lang === 'UZ' ? "Imtihon oluvchi: Siz" : "Examiner: You") : "Examiner: Abdurahmon Moydionov"}
+            {mode === 'examiner' ? (lang === 'UZ' ? "Imtihon oluvchi: Siz" : "Examiner: You") : "Examiner: Abdurahmon Moydinov"}
           </div>
         </div>
 
@@ -675,7 +675,7 @@ export const SpeakingSimulator: React.FC<SpeakingSimulatorProps> = ({ lang, cand
           <h5 style={{ color: 'white', marginBottom: '10px', fontSize: '0.85rem' }}>Meeting Participants</h5>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.8rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span>Abdurahmon Moydionov (Examiner)</span>
+              <span>Abdurahmon Moydinov (Examiner)</span>
               <span style={{ color: '#06b6d4', fontSize: '0.7rem' }}>HOST</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
