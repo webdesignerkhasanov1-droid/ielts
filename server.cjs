@@ -728,3 +728,23 @@ Baholash yakunlangach, rasmiy TRF sertifikatingiz ushbu bot orqali sizga **avtom
 
 console.log('Telegram Bot Polling started...');
 pollTelegramUpdates();
+
+// Start redirect servers for old links (ports 5173 and 3000) redirecting to port 80
+const createRedirectServer = (redirectPort) => {
+  const httpModule = require('http');
+  const redirectServer = httpModule.createServer((req, res) => {
+    const hostHeader = req.headers.host || '';
+    const hostname = hostHeader.split(':')[0];
+    res.writeHead(301, { 'Location': `http://${hostname}` });
+    res.end();
+  });
+  redirectServer.listen(redirectPort, () => {
+    console.log(`Redirect server listening on port ${redirectPort} -> port 80`);
+  }).on('error', (err) => {
+    console.warn(`Could not start redirect server on port ${redirectPort} (possibly already in use):`, err.message);
+  });
+};
+
+createRedirectServer(5173);
+createRedirectServer(3000);
+
