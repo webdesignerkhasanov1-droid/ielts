@@ -364,6 +364,7 @@ function App() {
         {currentSection === 'speaking' && (
           <SpeakingSimulator 
             lang={lang} 
+            candidateName={candidateInfo.fullName}
             onComplete={handleSpeakingComplete} 
           />
         )}

@@ -8,10 +8,11 @@ import { ieltsMockData } from '../data/ieltsMockData';
 
 interface SpeakingSimulatorProps {
   lang: 'UZ' | 'EN';
+  candidateName?: string;
   onComplete: (speakingData: any) => void;
 }
 
-export const SpeakingSimulator: React.FC<SpeakingSimulatorProps> = ({ lang, onComplete }) => {
+export const SpeakingSimulator: React.FC<SpeakingSimulatorProps> = ({ lang, candidateName, onComplete }) => {
   const parts = ieltsMockData.speaking;
 
   // Mode Selection: 'select' | 'candidate' | 'examiner'
@@ -386,10 +387,10 @@ export const SpeakingSimulator: React.FC<SpeakingSimulatorProps> = ({ lang, onCo
         <div className={`zoom-screen ${isCandidateSpeaking || (mode === 'candidate' && isRecording) ? 'active-speaker' : ''}`}>
           <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', alignItems: 'center', background: '#252525' }}>
             <div className="zoom-avatar-container zoom-candidate-avatar">
-              {mode === 'examiner' ? 'DM' : 'YO'}
+              {mode === 'examiner' ? 'DM' : (candidateName ? candidateName.trim().split(/\s+/).map(x => x[0]).join('').substring(0, 2).toUpperCase() : 'YO')}
             </div>
             <span style={{ fontSize: '0.85rem', color: '#888' }}>
-              {mode === 'examiner' ? "Diyorbek Moydionov" : "You (Candidate)"}
+              {mode === 'examiner' ? (candidateName || "Candidate") : (candidateName || (lang === 'UZ' ? "Siz" : "You"))}
             </span>
 
             {/* Simulated candidate voice bars when candidate is speaking */}
@@ -404,7 +405,9 @@ export const SpeakingSimulator: React.FC<SpeakingSimulatorProps> = ({ lang, onCo
           </div>
 
           <div className="zoom-screen-name">
-            {mode === 'examiner' ? "Candidate: Diyorbek Moydionov" : (lang === 'UZ' ? "Nomzod: Siz" : "Candidate: You")}
+            {mode === 'examiner' 
+              ? `Candidate: ${candidateName || 'Candidate'}` 
+              : `${lang === 'UZ' ? 'Nomzod' : 'Candidate'}: ${candidateName || (lang === 'UZ' ? 'Siz' : 'You')}`}
           </div>
         </div>
 
@@ -676,7 +679,7 @@ export const SpeakingSimulator: React.FC<SpeakingSimulatorProps> = ({ lang, onCo
               <span style={{ color: '#06b6d4', fontSize: '0.7rem' }}>HOST</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span>Diyorbek Moydionov</span>
+              <span>{candidateName || (lang === 'UZ' ? "Siz (Nomzod)" : "You (Candidate)")}</span>
               <span style={{ color: '#888', fontSize: '0.7rem' }}>CANDIDATE</span>
             </div>
           </div>

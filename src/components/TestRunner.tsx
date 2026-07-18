@@ -291,8 +291,8 @@ export const TestRunner: React.FC<TestRunnerProps> = ({
         /* Hide original header links or external promotional bars if present */
         .telegram-link { display: none !important; }
         .header { display: none !important; }
-        .main-container, .container { margin-top: 0 !important; height: 100vh !important; max-width: 100% !important; width: 100% !important; }
-        body { padding-top: 0 !important; }
+        .main-container, .container, #main-container { margin: 0 !important; margin-top: 0 !important; margin-bottom: 0 !important; height: 100vh !important; min-height: 100vh !important; max-width: 100% !important; width: 100% !important; box-shadow: none !important; }
+        body, html { padding: 0 !important; margin: 0 !important; width: 100% !important; height: 100vh !important; }
       `;
 
       if (testCategory === 'listening') {
