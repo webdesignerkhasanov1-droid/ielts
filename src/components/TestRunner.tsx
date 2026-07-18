@@ -291,7 +291,7 @@ export const TestRunner: React.FC<TestRunnerProps> = ({
         /* Hide original header links or external promotional bars if present */
         .telegram-link { display: none !important; }
         .header { display: none !important; }
-        .main-container { margin-top: 0 !important; height: 100vh !important; }
+        .main-container, .container { margin-top: 0 !important; height: 100vh !important; max-width: 100% !important; width: 100% !important; }
         body { padding-top: 0 !important; }
       `;
 
