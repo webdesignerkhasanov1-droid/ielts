@@ -53,9 +53,9 @@ function App() {
 
   // Candidate Details state
   const [candidateInfo, setCandidateInfo] = useState({
-    fullName: 'Abdurahmon Moydionov',
-    phone: '+998 50 075 84 44',
-    telegram: '@amoyd1novvv'
+    fullName: '',
+    phone: '',
+    telegram: ''
   });
 
   // Admin Auth States
