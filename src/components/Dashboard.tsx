@@ -167,7 +167,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onS
           {/* Full Mock Exams Section */}
           <div>
             <h3 style={{ fontSize: '1.2rem', marginBottom: '16px', color: 'hsl(var(--primary))', borderLeft: '3px solid #e11d48', paddingLeft: '8px' }}>
-              {lang === 'UZ' ? 'To\'liq Mock Imtihonlar (Cambridge 20)' : 'Full Mock Exams (Cambridge 20)'}
+              {lang === 'UZ' ? 'To\'liq Mock Imtihonlar (Haqiqiy Materiallar)' : 'Full Mock Exams (Authentic Materials)'}
             </h3>
             
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
