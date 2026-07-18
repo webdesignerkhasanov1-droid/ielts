@@ -88,19 +88,8 @@ export const TestRunner: React.FC<TestRunnerProps> = ({
         return;
       }
       
-      if (isConfirmingExit.current) return;
-      isConfirmingExit.current = true;
-
-      const wantToEnd = window.confirm(
-        lang === 'UZ' 
-          ? "Siz imtihon oynasidan chiqdingiz! Testni hozir yakunlashni va natijalarni yuborishni xohlaysizmi?" 
-          : "You left the exam window! Do you want to end the test here and submit your results?"
-      );
-      
-      isConfirmingExit.current = false;
-      if (wantToEnd) {
-        forceSubmitTest();
-      }
+      // Auto submit immediately!
+      forceSubmitTest();
     }, 200);
   };
 
