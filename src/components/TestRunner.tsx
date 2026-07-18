@@ -415,7 +415,7 @@ export const TestRunner: React.FC<TestRunnerProps> = ({
 
         {/* Center: Time Management Countdown Timer */}
         <div style={{
-          display: 'flex',
+          display: testCategory === 'listening' ? 'none' : 'flex',
           alignItems: 'center',
           gap: '8px',
           background: 'rgba(225, 29, 72, 0.15)',
