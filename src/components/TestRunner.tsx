@@ -39,53 +39,79 @@ export const TestRunner: React.FC<TestRunnerProps> = ({
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [loading, setLoading] = useState(true);
-  const [cheatWarningsCount, setCheatWarningsCount] = useState(0);
-  const [showCheatModal, setShowCheatModal] = useState(false);
+  const isConfirmingExit = useRef(false);
+
+  const forceSubmitTest = () => {
+    try {
+      const iframe = iframeRef.current;
+      const iframeDoc = iframe?.contentDocument || iframe?.contentWindow?.document;
+      const iframeWin = iframe?.contentWindow as any;
+      if (iframeDoc && iframeWin) {
+        const submitBtn = iframeDoc.getElementById('deliverBtn') || 
+                          iframeDoc.getElementById('submitBtn') || 
+                          iframeDoc.querySelector('.deliver-btn') || 
+                          iframeDoc.querySelector('button[type="submit"]') ||
+                          iframeDoc.querySelector('.footer__deliverButton___3FM07') ||
+                          iframeDoc.getElementById('deliver-btn') ||
+                          iframeDoc.getElementById('submit-btn') || 
+                          iframeDoc.getElementById('submit-test') || 
+                          iframeDoc.querySelector('.submit-button') ||
+                          iframeDoc.getElementById('show-results') ||
+                          iframeDoc.getElementById('check-answers') ||
+                          iframeDoc.querySelector('button.submit-test');
+        if (submitBtn) {
+          (submitBtn as HTMLElement).click();
+        } else if (typeof iframeWin.checkAnswers === 'function') {
+          iframeWin.checkAnswers();
+        } else if (typeof iframeWin.deliver === 'function') {
+          iframeWin.deliver();
+        } else if (typeof iframeWin.showResults === 'function') {
+          iframeWin.showResults();
+        } else if (typeof iframeWin.submitTest === 'function') {
+          iframeWin.submitTest();
+        } else {
+          onComplete({});
+        }
+      } else {
+        onComplete({});
+      }
+    } catch (err) {
+      console.error("Auto submit failed", err);
+      onComplete({});
+    }
+  };
+
+  const handleExitDetection = () => {
+    setTimeout(() => {
+      // If the browser window itself still has focus (meaning they focused inside the iframe or clicked a scrollbar)
+      if (document.hasFocus() && !document.hidden) {
+        return;
+      }
+      
+      if (isConfirmingExit.current) return;
+      isConfirmingExit.current = true;
+
+      const wantToEnd = window.confirm(
+        lang === 'UZ' 
+          ? "Siz imtihon oynasidan chiqdingiz! Testni hozir yakunlashni va natijalarni yuborishni xohlaysizmi?" 
+          : "You left the exam window! Do you want to end the test here and submit your results?"
+      );
+      
+      isConfirmingExit.current = false;
+      if (wantToEnd) {
+        forceSubmitTest();
+      }
+    }, 200);
+  };
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        setCheatWarningsCount(prev => {
-          const nextVal = prev + 1;
-          if (nextVal >= 3) {
-            // Auto submit on third warning
-            setShowCheatModal(false);
-            // Trigger iframe click submit
-            try {
-              const iframe = iframeRef.current;
-              const iframeDoc = iframe?.contentDocument || iframe?.contentWindow?.document;
-              const iframeWin = iframe?.contentWindow as any;
-              if (iframeDoc && iframeWin) {
-                const submitBtn = iframeDoc.getElementById('deliverBtn') || 
-                                  iframeDoc.getElementById('submitBtn') || 
-                                  iframeDoc.querySelector('.deliver-btn') || 
-                                  iframeDoc.querySelector('button[type="submit"]') ||
-                                  iframeDoc.querySelector('.footer__deliverButton___3FM07') ||
-                                  iframeDoc.getElementById('deliver-btn');
-                if (submitBtn) {
-                  (submitBtn as HTMLElement).click();
-                } else if (typeof iframeWin.checkAnswers === 'function') {
-                  iframeWin.checkAnswers();
-                } else if (typeof iframeWin.deliver === 'function') {
-                  iframeWin.deliver();
-                }
-              }
-            } catch (err) {
-              console.error("Auto submit failed", err);
-            }
-          } else {
-            setShowCheatModal(true);
-          }
-          return nextVal;
-        });
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('visibilitychange', handleExitDetection);
+    window.addEventListener('blur', handleExitDetection);
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('visibilitychange', handleExitDetection);
+      window.removeEventListener('blur', handleExitDetection);
     };
-  }, []);
+  }, [lang]);
 
   // Dynamically calculate timer limits
   const getInitialTime = () => {
@@ -265,6 +291,10 @@ export const TestRunner: React.FC<TestRunnerProps> = ({
       const iframeWin = iframe.contentWindow as any;
       const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
       if (!iframeWin || !iframeDoc) return;
+
+      if (iframeWin) {
+        iframeWin.addEventListener('blur', handleExitDetection);
+      }
 
       // Inject custom styling inside the iframe to match light-academic look
       const style = iframeDoc.createElement('style');
@@ -532,91 +562,6 @@ export const TestRunner: React.FC<TestRunnerProps> = ({
           title={testTitle}
         />
       </div>
-
-      {showCheatModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(15, 23, 42, 0.95)',
-          backdropFilter: 'blur(10px)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 99999,
-          color: '#fff',
-          fontFamily: 'Outfit, sans-serif',
-          textAlign: 'center',
-          padding: '24px'
-        }}>
-          <div style={{
-            maxWidth: '500px',
-            backgroundColor: '#1e293b',
-            borderRadius: '24px',
-            padding: '40px',
-            border: '2px dashed #f43f5e',
-            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '24px'
-          }}>
-            <div style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '50%',
-              backgroundColor: 'rgba(244, 63, 94, 0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#f43f5e',
-              border: '2px solid #f43f5e'
-            }}>
-              <span style={{ fontSize: '36px', fontWeight: 800 }}>⚠️</span>
-            </div>
-            <div>
-              <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#f43f5e', margin: '0 0 12px' }}>
-                {lang === 'UZ' ? 'Taqiqlangan harakat aniqlandi!' : 'Tab Switch Detected!'}
-              </h2>
-              <p style={{ color: '#94a3b8', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
-                {lang === 'UZ' 
-                  ? 'IELTS imtihoni paytida boshqa tablarga o\'tish taqiqlanadi. 3 ta ogohlantirishdan keyin test avtomatik ravishda topshiriladi.'
-                  : 'Switching tabs during the IELTS exam is strictly prohibited. Your test will be auto-submitted after 3 warnings.'}
-              </p>
-            </div>
-            <div style={{
-              backgroundColor: '#0f172a',
-              padding: '12px 24px',
-              borderRadius: '12px',
-              fontSize: '18px',
-              fontWeight: 800,
-              color: '#f43f5e'
-            }}>
-              {lang === 'UZ' ? 'Ogohlantirishlar:' : 'Warnings:'} {cheatWarningsCount} / 3
-            </div>
-            <button
-              onClick={() => setShowCheatModal(false)}
-              style={{
-                background: '#2563eb',
-                color: '#fff',
-                border: 'none',
-                padding: '12px 32px',
-                borderRadius: '12px',
-                fontSize: '16px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                transition: 'background 0.2s'
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = '#1d4ed8')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = '#2563eb')}
-            >
-              {lang === 'UZ' ? 'Imtihonni Davom Ettirish' : 'Continue Exam'}
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
