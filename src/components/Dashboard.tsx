@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Headphones, BookOpen, PenTool, Play, ArrowRight, Library } from 'lucide-react';
+import { IeltsCalculator } from './IeltsCalculator';
 
 interface DashboardProps {
   lang: 'UZ' | 'EN';
@@ -136,61 +137,68 @@ export const Dashboard: React.FC<DashboardProps> = ({ lang, onStartFullTest, onS
 
       <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 2fr', gap: '30px', alignItems: 'start' }}>
         
-        {/* Candidate Registration Panel */}
-        <div className="glass-panel" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <h3 style={{ fontSize: '1.15rem', color: 'hsl(var(--primary))', borderBottom: '1px solid #cbd5e1', paddingBottom: '10px' }}>
-            {content.candidateHeading}
-          </h3>
+        {/* Left Column: Candidate Registration & IELTS Calculator */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          
+          {/* Candidate Registration Panel */}
+          <div className="glass-panel" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <h3 style={{ fontSize: '1.15rem', color: 'hsl(var(--primary))', borderBottom: '1px solid #cbd5e1', paddingBottom: '10px' }}>
+              {content.candidateHeading}
+            </h3>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'hsl(var(--text-secondary))' }}>
-                {content.nameLabel}
-              </label>
-              <input
-                type="text"
-                name="fullName"
-                value={candidateInfo.fullName}
-                onChange={handleInputChange}
-                placeholder="Abdurahmon Moydinov"
-                style={{ padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem' }}
-              />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'hsl(var(--text-secondary))' }}>
+                  {content.nameLabel}
+                </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={candidateInfo.fullName}
+                  onChange={handleInputChange}
+                  placeholder="e.g. Abdurahmon Moydinov"
+                  style={{ padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: '#f8fafc' }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'hsl(var(--text-secondary))' }}>
+                  {content.phoneLabel}
+                </label>
+                <input
+                  type="text"
+                  name="phone"
+                  value={candidateInfo.phone}
+                  onChange={handleInputChange}
+                  placeholder="e.g. +998 50 075 84 44"
+                  style={{ padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: '#f8fafc' }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'hsl(var(--text-secondary))' }}>
+                  {content.telegramLabel}
+                </label>
+                <input
+                  type="text"
+                  name="telegram"
+                  value={candidateInfo.telegram}
+                  onChange={handleInputChange}
+                  placeholder="e.g. @amoyd1novvv"
+                  style={{ padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: '#f8fafc' }}
+                />
+              </div>
+
+              {formError && (
+                <span style={{ color: '#e11d48', fontSize: '0.8rem', fontWeight: 700 }}>
+                  ⚠️ {formError}
+                </span>
+              )}
             </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'hsl(var(--text-secondary))' }}>
-                {content.phoneLabel}
-              </label>
-              <input
-                type="text"
-                name="phone"
-                value={candidateInfo.phone}
-                onChange={handleInputChange}
-                placeholder="+998 50 075 84 44"
-                style={{ padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem' }}
-              />
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'hsl(var(--text-secondary))' }}>
-                {content.telegramLabel}
-              </label>
-              <input
-                type="text"
-                name="telegram"
-                value={candidateInfo.telegram}
-                onChange={handleInputChange}
-                placeholder="@amoyd1novvv"
-                style={{ padding: '10px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem' }}
-              />
-            </div>
-
-            {formError && (
-              <span style={{ color: '#e11d48', fontSize: '0.8rem', fontWeight: 700 }}>
-                ⚠️ {formError}
-              </span>
-            )}
           </div>
+
+          {/* Separate IELTS Overall Band Score Calculator Panel */}
+          <IeltsCalculator lang={lang} />
         </div>
 
         {/* Practice Modes */}
