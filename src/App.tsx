@@ -59,9 +59,9 @@ function App() {
     telegram: ''
   });
 
-  // Terminal Lock & Security Passcode State (Unlocked by default for test sessions; requires passcode for Admin section)
+  // Terminal Lock & Security Passcode State (LOCKED BY DEFAULT ON SITE ENTRY!)
   const [isTerminalUnlocked, setIsTerminalUnlocked] = useState<boolean>(() => {
-    return sessionStorage.getItem('portal_terminal_unlocked') === 'true' || true;
+    return sessionStorage.getItem('portal_terminal_unlocked') === 'true';
   });
   const [masterPasscode, setMasterPasscode] = useState<string>(() => {
     return localStorage.getItem('portal_master_passcode') || 'AMERICAN2026';
@@ -342,7 +342,7 @@ function App() {
         resetTest={handleRestart}
         theme={theme}
         toggleTheme={toggleTheme}
-        onAdminClick={() => setIsAdminAuthModalOpen(true)}
+        onAdminClick={() => setCurrentSection('admin')}
         onLockClick={() => {
           sessionStorage.removeItem('portal_terminal_unlocked');
           localStorage.removeItem('portal_terminal_unlocked');
