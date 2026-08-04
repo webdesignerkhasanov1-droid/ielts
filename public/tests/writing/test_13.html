@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Writing Test 2026 - Authentic Series #13</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ielts-red': '#DC2626',
+                        'ielts-navy': '#1E3A8A'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; }
+        .editor-container { min-height: 250px; }
+    </style>
+</head>
+<body class="text-gray-900 pb-20 select-none">
+
+    <!-- Header / Control Bar -->
+    <header class="h-[65px] bg-white border-b border-gray-200 px-6 flex justify-between items-center fixed top-0 left-0 right-0 z-50 shadow-sm">
+        <div class="flex items-center space-x-4">
+            <a href="/" class="flex items-center space-x-2 text-sm font-semibold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200 hover:bg-blue-100 transition">
+                <span>◀ Back to Portal</span>
+            </a>
+            <h1 class="text-lg font-bold text-gray-800 hidden md:block">IELTS Academic Writing Test (2026 Real Exam Series #13)</h1>
+        </div>
+
+        <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-2 text-red-600 font-mono font-bold text-lg bg-red-50 px-4 py-1.5 rounded-md border border-red-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span id="timer">60:00</span>
+            </div>
+            <button onclick="submitWriting()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-semibold text-sm transition shadow-md">
+                Submit Response
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto mt-24 px-4 space-y-8">
+        
+        <!-- Task 1 Box -->
+        <section class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm">
+            <div class="flex items-center space-x-3 mb-4">
+                <span class="bg-blue-600 text-white font-bold px-3 py-1 rounded-lg text-xs tracking-wider uppercase">Task 1</span>
+                <span class="text-sm font-semibold text-gray-500">Recommended time: 20 minutes | Minimum 150 words</span>
+            </div>
+
+            <h2 class="text-xl font-bold text-gray-900 mb-3">Process Diagram: Geothermal Energy Generation</h2>
+            <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-lg mb-6">
+                <p class="text-gray-800 font-medium">
+                    The diagrams below illustrate the subterranean process of generating electricity using a dual-flash geothermal power plant and how thermal energy is recirculated into deep underground reservoirs. 
+                </p>
+                <p class="text-sm text-gray-600 mt-2">
+                    <em>Summarise the information by selecting and reporting the main features, and make comparisons where relevant.</em>
+                </p>
+            </div>
+
+            <!-- Task 1 Visual Graphic simulation -->
+            <div class="bg-slate-900 text-white p-6 rounded-xl mb-6 text-center space-y-4">
+                <div class="text-amber-400 font-bold text-sm uppercase tracking-widest">Geothermal Power Plant Subterranean System Diagram</div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs font-mono">
+                    <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                        <div class="text-blue-400 font-bold mb-1">Step 1: Cold Water Injection</div>
+                        <p class="text-gray-300">Pumped 4,500m underground into hot crystalline rock beds.</p>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                        <div class="text-amber-400 font-bold mb-1">Step 2: Thermal Heating</div>
+                        <p class="text-gray-300">Water heated to 250°C under extreme geothermal pressures.</p>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                        <div class="text-red-400 font-bold mb-1">Step 3: High-Pressure Steam</div>
+                        <p class="text-gray-300">Superheated steam rises via production well to drive turbines.</p>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                        <div class="text-emerald-400 font-bold mb-1">Step 4: Grid Distribution & Loop</div>
+                        <p class="text-gray-300">Generators send power to grid; condensed water re-injected.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <div class="flex justify-between items-center text-sm font-semibold text-gray-700">
+                    <label for="task1Input">Your Task 1 Response:</label>
+                    <span class="text-blue-600"><span id="task1Words">0</span> words</span>
+                </div>
+                <textarea id="task1Input" oninput="countWords('task1Input', 'task1Words')" placeholder="Write your Task 1 response here (minimum 150 words)..." class="w-full border border-gray-300 rounded-xl p-4 editor-container focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-base font-normal"></textarea>
+            </div>
+        </section>
+
+        <!-- Task 2 Box -->
+        <section class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm">
+            <div class="flex items-center space-x-3 mb-4">
+                <span class="bg-emerald-600 text-white font-bold px-3 py-1 rounded-lg text-xs tracking-wider uppercase">Task 2</span>
+                <span class="text-sm font-semibold text-gray-500">Recommended time: 40 minutes | Minimum 250 words</span>
+            </div>
+
+            <h2 class="text-xl font-bold text-gray-900 mb-3">Academic Essay (Real 2026 Exam Topic)</h2>
+            <div class="bg-emerald-50 border-l-4 border-emerald-600 p-4 rounded-r-lg mb-6">
+                <p class="text-gray-800 font-medium">
+                    In many countries, artificial intelligence tools are increasingly being used to analyze patient medical data and diagnose complex conditions without direct human doctor intervention. Some people argue that this significantly improves diagnostic accuracy and speed, while others fear it undermines patient trust and human empathy in healthcare.
+                </p>
+                <p class="text-sm text-gray-700 mt-2 font-bold">
+                    Discuss both views and give your own opinion. Give reasons for your answer and include any relevant examples from your own knowledge or experience.
+                </p>
+            </div>
+
+            <div class="space-y-2">
+                <div class="flex justify-between items-center text-sm font-semibold text-gray-700">
+                    <label for="task2Input">Your Task 2 Essay Response:</label>
+                    <span class="text-emerald-600"><span id="task2Words">0</span> words</span>
+                </div>
+                <textarea id="task2Input" oninput="countWords('task2Input', 'task2Words')" placeholder="Write your Task 2 essay here (minimum 250 words)..." class="w-full border border-gray-300 rounded-xl p-4 min-h-[350px] focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition text-base font-normal"></textarea>
+            </div>
+        </section>
+    </main>
+
+    <!-- Submission Modal -->
+    <div id="submitModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex justify-center items-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-lg w-full shadow-2xl text-center">
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">✍️</div>
+            <h3 class="text-2xl font-extrabold text-gray-900 mb-2">Writing Submitted Successfully!</h3>
+            <p class="text-gray-600 mb-6">Your responses have been recorded into the American School IELTS Portal database.</p>
+            
+            <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6 text-left space-y-2 text-sm">
+                <div class="flex justify-between font-semibold"><span>Task 1 Word Count:</span> <span id="resTask1Words" class="text-blue-600">0</span></div>
+                <div class="flex justify-between font-semibold"><span>Task 2 Word Count:</span> <span id="resTask2Words" class="text-emerald-600">0</span></div>
+                <div class="flex justify-between font-semibold border-t pt-2"><span>Estimated Band Score:</span> <span class="text-purple-700 font-bold">Evaluated by Teacher / AI Examiner</span></div>
+            </div>
+
+            <button onclick="window.location.href='/'" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition">
+                Return to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function countWords(inputId, outputId) {
+            const text = document.getElementById(inputId).value.trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            document.getElementById(outputId).textContent = words;
+        }
+
+        let seconds = 3600;
+        const timerEl = document.getElementById('timer');
+        setInterval(() => {
+            seconds--;
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            timerEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }, 1000);
+
+        function submitWriting() {
+            const t1 = document.getElementById('task1Words').textContent;
+            const t2 = document.getElementById('task2Words').textContent;
+            document.getElementById('resTask1Words').textContent = t1 + ' words';
+            document.getElementById('resTask2Words').textContent = t2 + ' words';
+            document.getElementById('submitModal').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

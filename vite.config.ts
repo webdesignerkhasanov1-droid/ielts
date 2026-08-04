@@ -14,9 +14,9 @@ export default defineConfig({
     target: 'es2015',
   },
   server: {
-    host: true,
+    host: '0.0.0.0',
     port: 80,
-    allowedHosts: true,
+    allowedHosts: ['americanmock.local', 'american-mock.local', 'americanmock.test', 'localhost', '127.0.0.1'],
     proxy: {
       '/api': {
         target: 'http://localhost:5001',

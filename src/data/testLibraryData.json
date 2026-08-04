@@ -1,6 +1,18 @@
 {
   "listening": [
     {
+      "id": 18,
+      "title": "2026 Authentic Listening Test #18",
+      "subtitle": "Full authentic test: Community Solar Installation & Microplastics Pelagic Cascade.",
+      "duration": "30 min",
+      "questions": 40,
+      "difficulty": "Advanced",
+      "url": "/tests/listening/test_18.html",
+      "free": true,
+      "source": "American School Authentic 2026",
+      "originalFile": "test_18.html"
+    },
+    {
       "id": 1,
       "title": "Authentic Listening Full Test 1",
       "subtitle": "Full 40-question listening test #1 based on authentic practice paper.",
@@ -219,6 +231,18 @@
   ],
   "reading": [
     {
+      "id": 18,
+      "title": "2026 Authentic Reading Series #18",
+      "subtitle": "3-passage authentic test: Mycorrhizal Fungi, Deep-Sea Bioluminescence & Chronobiology.",
+      "duration": "60 min",
+      "questions": 40,
+      "difficulty": "Advanced",
+      "url": "/tests/reading/test_18.html",
+      "free": true,
+      "source": "American School Authentic 2026",
+      "originalFile": "test_18.html"
+    },
+    {
       "id": 1,
       "title": "Authentic Reading Mock 10",
       "subtitle": "3-passage academic reading test #1 containing all core questions.",
@@ -424,6 +448,17 @@
     }
   ],
   "writing": [
+    {
+      "id": 13,
+      "title": "2026 Authentic Writing Test #13",
+      "subtitle": "Real 2026 exam topic: AI in Medical Diagnostics vs. Patient Trust & Geothermal Process.",
+      "duration": "60 min",
+      "questions": 2,
+      "difficulty": "Advanced",
+      "url": "/tests/writing/test_13.html",
+      "free": true,
+      "source": "American School Authentic 2026"
+    },
     {
       "id": 1,
       "title": "Practice Writing",

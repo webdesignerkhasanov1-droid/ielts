@@ -10,6 +10,7 @@ interface NavbarProps {
   theme: 'light' | 'dark';
   toggleTheme: () => void;
   onAdminClick?: () => void;
+  onLockClick?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ 
@@ -19,7 +20,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   resetTest,
   theme,
   toggleTheme,
-  onAdminClick
+  onAdminClick,
+  onLockClick
 }) => {
   return (
     <header className="glass-panel" style={{
@@ -99,6 +101,29 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
 
 
+
+        {onLockClick && (
+          <button
+            onClick={onLockClick}
+            className="btn-secondary"
+            style={{
+              padding: '6px 12px',
+              fontSize: '0.8rem',
+              borderRadius: 'var(--radius-sm)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              borderColor: '#f43f5e',
+              color: '#e11d48',
+              background: '#fff1f2',
+              fontWeight: 700
+            }}
+            title={lang === 'UZ' ? "Terminalni Qulflash" : "Lock Terminal"}
+          >
+            <span>🔒</span>
+            <span>{lang === 'UZ' ? "Qulflash" : "Lock"}</span>
+          </button>
+        )}
 
         {onAdminClick && currentSection === 'dashboard' && (
           <button

@@ -20,6 +20,7 @@ interface TestRunnerProps {
     listeningBand?: number;
     readingCorrect?: number;
     readingBand?: number;
+    writing?: Record<string, string>;
     writingBand?: number;
   }) => void;
   onExit: () => void;
@@ -246,16 +247,49 @@ export const TestRunner: React.FC<TestRunnerProps> = ({
 
         // 3. Writing completion check
         if (testCategory === 'writing') {
-          const resultsContainer = iframeDoc.getElementById('resultsContainer') || iframeDoc.getElementById('resultModal');
+          const resultsContainer = iframeDoc.getElementById('resultsContainer') || 
+                                   iframeDoc.getElementById('resultModal') ||
+                                   iframeDoc.getElementById('submitModal');
           const isSubmitted = isElementVisible(resultsContainer);
 
           if (isSubmitted) {
+            // Extract Task 1 and Task 2 essay text from iframe textareas or localStorage
+            const w1Text = (iframeDoc.getElementById('task1Input') as HTMLTextAreaElement)?.value ||
+                           (iframeDoc.getElementById('task1') as HTMLTextAreaElement)?.value ||
+                           iframeWin.localStorage?.getItem('ielts-writing-part-1') ||
+                           window.localStorage?.getItem('ielts-writing-part-1') ||
+                           '';
+
+            const w2Text = (iframeDoc.getElementById('task2Input') as HTMLTextAreaElement)?.value ||
+                           (iframeDoc.getElementById('task2') as HTMLTextAreaElement)?.value ||
+                           iframeWin.localStorage?.getItem('ielts-writing-part-2') ||
+                           window.localStorage?.getItem('ielts-writing-part-2') ||
+                           '';
+
+            const writingObj: Record<string, string> = {};
+            if (w1Text) writingObj.w1 = w1Text;
+            if (w2Text) writingObj.w2 = w2Text;
+
+            // Fallback for single-textarea practice tests (e.g. #writingTextarea)
+            if (!writingObj.w1 && !writingObj.w2) {
+              const genericText = (iframeDoc.getElementById('writingTextarea') as HTMLTextAreaElement)?.value || 
+                                  (iframeDoc.querySelector('textarea') as HTMLTextAreaElement)?.value || '';
+              if (genericText) {
+                if (testTitle.toLowerCase().includes('task 2')) {
+                  writingObj.w2 = genericText;
+                } else {
+                  writingObj.w1 = genericText;
+                }
+              }
+            }
+
             const overallBandText = iframeDoc.getElementById('overallBand')?.textContent || 
                                    iframeDoc.getElementById('score-summary')?.textContent?.split('Band')?.[1]?.trim() || '0';
             const overallBand = parseFloat(overallBandText);
 
             clearInterval(intervalId);
             onComplete({
+              writing: writingObj,
               writingBand: overallBand > 0 ? overallBand : undefined
             });
           }

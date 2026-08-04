@@ -10,6 +10,7 @@ import { VocabularyPractice } from './components/VocabularyPractice';
 import { TestLibrary } from './components/TestLibrary';
 import { TestRunner } from './components/TestRunner';
 import { AdminPortal } from './components/AdminPortal';
+import { TerminalLockScreen } from './components/TerminalLockScreen';
 import { FullTestSelect, MOCK_SETS } from './components/FullTestSelect';
 import { db } from './utils/db';
 import { CheckCircle, Sparkles, BookOpen } from 'lucide-react';
@@ -56,6 +57,12 @@ function App() {
     fullName: '',
     phone: '',
     telegram: ''
+  });
+
+  // Terminal Lock & Security Passcode State (ALWAYS LOCKED BY DEFAULT ON ENTRY!)
+  const [isTerminalUnlocked, setIsTerminalUnlocked] = useState<boolean>(false);
+  const [masterPasscode, setMasterPasscode] = useState<string>(() => {
+    return localStorage.getItem('portal_master_passcode') || 'AMERICAN2026';
   });
 
   // Admin Auth States
@@ -256,6 +263,17 @@ function App() {
     return '/bg_academic_pattern.png';
   };
 
+  // Render Terminal Passcode Lock Screen immediately if terminal is locked
+  if (!isTerminalUnlocked) {
+    return (
+      <TerminalLockScreen
+        lang={lang}
+        masterPasscode={masterPasscode}
+        onUnlock={() => setIsTerminalUnlocked(true)}
+      />
+    );
+  }
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
       {/* Premium Glassmorphic Mesh Background Blobs & Image Pattern */}
@@ -323,6 +341,11 @@ function App() {
         theme={theme}
         toggleTheme={toggleTheme}
         onAdminClick={() => setIsAdminAuthModalOpen(true)}
+        onLockClick={() => {
+          sessionStorage.removeItem('portal_terminal_unlocked');
+          localStorage.removeItem('portal_terminal_unlocked');
+          setIsTerminalUnlocked(false);
+        }}
       />
 
       <main style={{ flex: 1 }}>

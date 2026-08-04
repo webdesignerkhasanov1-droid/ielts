@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, RefreshCw, Sparkles, FileText, Send, Share2, PenTool, Clock, CheckCircle } from 'lucide-react';
 import { ieltsMockData } from '../data/ieltsMockData';
 import { TRFCertificate } from './TRFCertificate';
+import {
+  getOfficialListeningBand,
+  getOfficialReadingBand,
+  roundOfficialIELTSBand,
+  calculateOfficialWritingBand,
+  calculateOfficialOverallBand
+} from '../utils/ieltsScoring';
 
 interface ResultsDashboardProps {
   lang: 'UZ' | 'EN';
@@ -130,22 +137,6 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ lang, answer
         return correctCount;
       })();
 
-  const getListeningBand = (correct: number) => {
-    if (correct >= 39) return 9.0;
-    if (correct >= 37) return 8.5;
-    if (correct >= 35) return 8.0;
-    if (correct >= 33) return 7.5;
-    if (correct >= 30) return 7.0;
-    if (correct >= 27) return 6.5;
-    if (correct >= 23) return 6.0;
-    if (correct >= 19) return 5.5;
-    if (correct >= 15) return 5.0;
-    if (correct >= 13) return 4.5;
-    if (correct >= 10) return 4.0;
-    if (correct >= 8) return 3.5;
-    if (correct >= 6) return 3.0;
-    return 1.0;
-  };
   const totalListeningQuestions = answers.listening ? Object.keys(answers.listening).length : 40;
   const scaledListeningCorrect = totalListeningQuestions < 30 && totalListeningQuestions > 0
     ? Math.round((listeningCorrect / totalListeningQuestions) * 40)
@@ -153,7 +144,7 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ lang, answer
 
   const listeningBand = answers.listeningBand !== undefined
     ? answers.listeningBand
-    : getListeningBand(scaledListeningCorrect);
+    : getOfficialListeningBand(scaledListeningCorrect);
 
   // 2. Calculate Reading score
   const readingCorrect = answers.readingCorrect !== undefined
@@ -172,22 +163,6 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ lang, answer
         return correctCount;
       })();
 
-  const getReadingBand = (correct: number) => {
-    if (correct >= 39) return 9.0;
-    if (correct >= 37) return 8.5;
-    if (correct >= 35) return 8.0;
-    if (correct >= 33) return 7.5;
-    if (correct >= 30) return 7.0;
-    if (correct >= 27) return 6.5;
-    if (correct >= 23) return 6.0;
-    if (correct >= 19) return 5.5;
-    if (correct >= 15) return 5.0;
-    if (correct >= 13) return 4.5;
-    if (correct >= 10) return 4.0;
-    if (correct >= 8) return 3.5;
-    if (correct >= 6) return 3.0;
-    return 1.0;
-  };
   const totalReadingQuestions = answers.reading ? Object.keys(answers.reading).length : 40;
   const scaledReadingCorrect = totalReadingQuestions < 30 && totalReadingQuestions > 0
     ? Math.round((readingCorrect / totalReadingQuestions) * 40)
@@ -195,121 +170,260 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ lang, answer
 
   const readingBand = answers.readingBand !== undefined
     ? answers.readingBand
-    : getReadingBand(scaledReadingCorrect);
+    : getOfficialReadingBand(scaledReadingCorrect);
 
-  // 3. Transparent Essay Grader
+  // 3. Transparent & Accurate IELTS Writing Grader Engine
   const analyzeEssay = (essay: string, taskType: 'task1' | 'task2') => {
     const text = essay.trim();
+    if (!text) {
+      return {
+        submitted: false,
+        wordCount: 0,
+        taScore: 0,
+        taTitle: taskType === 'task1' ? 'Task Achievement' : 'Task Response',
+        taFeedback: lang === 'UZ' ? 'Imtihon topshirilmadi (Bitta topshiriq rejimida bajarilmagan)' : 'Not submitted (Unattempted in single-task mode)',
+        ccScore: 0,
+        ccFeedback: '-',
+        ccDetected: [],
+        lrScore: 0,
+        lrFeedback: '-',
+        lrDetected: [],
+        graScore: 0,
+        graFeedback: '-',
+        averageBand: 0
+      };
+    }
+
     const words = text.split(/\s+/).filter(Boolean);
     const wordCount = words.length;
     const minWords = taskType === 'task1' ? 150 : 250;
-    
-    // TA Score
-    let taScore = 1.0;
-    let taFeedback = "";
-    if (wordCount >= minWords) {
-      taScore = 8.5;
-      taFeedback = lang === 'UZ' 
-        ? `A'lo! Siz ${wordCount} ta so'z yozdingiz (kamida: ${minWords}).`
-        : `Excellent! You wrote ${wordCount} words (minimum: ${minWords}).`;
-    } else if (wordCount > minWords - 50) {
-      taScore = 6.0;
-      taFeedback = lang === 'UZ'
-        ? `Qisman yetarli. Siz ${wordCount} ta so'z yozdingiz. Eng kamida ${minWords} ta so'z bo'lishi kerak.`
-        : `Underlength. You wrote ${wordCount} words. Minimum ${minWords} required.`;
-    } else if (wordCount > 0) {
-      taScore = 4.5;
-      taFeedback = lang === 'UZ'
-        ? `Juda qisqa insho. ${wordCount} ta so'z yozilgan. Kamchilik bahoni pasaytiradi.`
-        : `Very short response. Only ${wordCount} words. Penalty applied.`;
-    } else {
-      taScore = 1.0;
-      taFeedback = lang === 'UZ' ? "Insho yozilmagan." : "No response provided.";
+    const taTitle = taskType === 'task1' ? 'Task Achievement' : 'Task Response';
+
+    // Anti-Copying / Prompt Boilerplate Check
+    const promptBoilerplate = /\b(the diagram below|the chart below|the table below|the graph shows|summarise the information by selecting|and reporting the main features|and make comparisons where relevant|give reasons for your answer|include any relevant examples)\b/i;
+    const isCopiedPromptOnly = promptBoilerplate.test(text) && wordCount < 60;
+
+    // Severe Inadequate / Copied Response Penalty (< 40 words or pure copied prompt)
+    if (wordCount < 40 || isCopiedPromptOnly) {
+      return {
+        submitted: true,
+        wordCount,
+        taScore: 1.0,
+        taTitle,
+        taFeedback: isCopiedPromptOnly
+          ? (lang === 'UZ' ? "Mavzu sharti ko'chirib bosilgan. Rasmiy IELTS qoidasiga ko'ra ko'chirilgan so'zlar hisobga olinmaydi va Band 1.0 beriladi." : "Prompt copied directly. Under official IELTS rules, copied prompt words are deducted and assigned Band 1.0.")
+          : (lang === 'UZ' ? `Juda oz so'z (${wordCount} ta). Rasmiy IELTS qoidasiga ko me'zon bo'lmagan matnga Band 1.0 beriladi.` : `Inadequate response (${wordCount} words). Under official IELTS rules, responses under 40 words receive Band 1.0.`),
+        ccScore: 1.0,
+        ccFeedback: lang === 'UZ' ? "Matn mantiqiy shakllanmagan." : "Inadequate logical structure.",
+        ccDetected: [],
+        lrScore: 1.0,
+        lrFeedback: lang === 'UZ' ? "So'z zaxirasi baholash uchun yetarsiz." : "Insufficient vocabulary sample.",
+        lrDetected: [],
+        graScore: 1.0,
+        graFeedback: lang === 'UZ' ? "Grammatik baholash uchun matn kam." : "Insufficient grammatical sample.",
+        averageBand: 1.0
+      };
     }
 
-    // CC Score
+    // A. Task Achievement (Task 1) / Task Response (Task 2)
+    let taScore = 6.0;
+    let taFeedback = "";
+
+    if (taskType === 'task1') {
+      const hasOverview = /\b(overall|overall trend|in summary|it is clear that|as can be seen|it is noticeable that|notably|in general|the main feature|in brief)\b/i.test(text);
+      const hasDataVerbs = /\b(increase|increased|decrease|decreased|rose|rose|fell|dropped|surged|plummeted|fluctuated|peaked|stood at|percent|percentage|proportion|rate|amount|number|figure|doubled|trebled)\b/i.test(text);
+      const hasComparison = /\b(higher than|lower than|compared to|in comparison with|whereas|while|by contrast|respectively|higher|lower)\b/i.test(text);
+
+      if (wordCount >= minWords) {
+        if (hasOverview && (hasDataVerbs || hasComparison)) {
+          taScore = wordCount >= 170 ? 8.5 : 8.0;
+          taFeedback = lang === 'UZ' 
+            ? `A'lo! ${wordCount} ta so'z. Aniq umumiy xulosa (Overview) va ko'rsatkichlar taqqoslanishi to'g'ri berilgan.`
+            : `Excellent! ${wordCount} words. Clear overview present with accurate key feature data comparison.`;
+        } else if (hasOverview) {
+          taScore = 7.0;
+          taFeedback = lang === 'UZ'
+            ? `Yaxshi. ${wordCount} ta so'z va umumiy xulosa (Overview) bor. Keyingi safar raqamlar taqqoslanishini boyiting.`
+            : `Good task achievement. ${wordCount} words with clear overview. Add more specific data highlights.`;
+        } else {
+          taScore = 6.0;
+          taFeedback = lang === 'UZ'
+            ? `Qisman yetarli (${wordCount} so'z). Diqqat: Task 1 da aniq 'Overall' (umumiy tendensiya) xulosasi bo'lishi shart.`
+            : `Satisfactory length (${wordCount} words). Essential: Include a clear Overview paragraph for Band 7+.`;
+        }
+      } else if (wordCount >= 120) {
+        taScore = 6.0;
+        taFeedback = lang === 'UZ'
+          ? `So'z soni biroz oz (${wordCount} ta so'z). Kamida 150 ta so'z talab etiladi.`
+          : `Underlength response (${wordCount} words). Minimum 150 words required.`;
+      } else if (wordCount >= 80) {
+        taScore = 4.0;
+        taFeedback = lang === 'UZ'
+          ? `Juda qisqa matn (${wordCount} so me me'zon). Rasmiy IELTS qoidasiga ko'ra Band 4.0 jazo qo'llandi.`
+          : `Very short response (${wordCount} words). Official IELTS underlength penalty applied (Band 4.0).`;
+      } else {
+        taScore = 3.0;
+        taFeedback = lang === 'UZ'
+          ? `Juda oz so'z (${wordCount} ta). Yetarli kontent bo'lmagani sababli Band 3.0 berildi.`
+          : `Extremely short response (${wordCount} words). Severe underlength penalty applied (Band 3.0).`;
+      }
+    } else {
+      // Task 2 evaluation
+      const hasOpinion = /\b(in my opinion|i believe|i firmly agree|i disagree|this essay will|from my perspective|to conclude|in conclusion|my view|it is argued)\b/i.test(text);
+      const hasArguments = /\b(because|due to|consequently|for instance|for example|such as|this implies|furthermore|as a result)\b/i.test(text);
+      
+      if (wordCount >= minWords) {
+        if (hasOpinion && hasArguments) {
+          taScore = wordCount >= 270 ? 8.5 : 8.0;
+          taFeedback = lang === 'UZ'
+            ? `A'lo insho! ${wordCount} ta so'z. Shaxsiy nuqtai nazar va dalillar ravshan rivojlantirilgan.`
+            : `Excellent essay! ${wordCount} words. Clear thesis, well-supported arguments and fully addressed prompt.`;
+        } else if (hasOpinion) {
+          taScore = 7.0;
+          taFeedback = lang === 'UZ'
+            ? `Yaxshi. ${wordCount} ta so'z. Muallif pozitsiyasi bor, lekin dalillarni misollar bilan boyiting.`
+            : `Good response. ${wordCount} words. Clear position statement; expand main body examples.`;
+        } else {
+          taScore = 6.5;
+          taFeedback = lang === 'UZ'
+            ? `Yetarli so me'zon (${wordCount} so'z). Kirish va xulosa qismida shaxsiy fikringizni aniqroq bildiring.`
+            : `Sufficient length (${wordCount} words). Clarify your position in the introduction and conclusion.`;
+        }
+      } else if (wordCount >= 200) {
+        taScore = 6.0;
+        taFeedback = lang === 'UZ'
+          ? `So'z soni kamroq (${wordCount} ta so'z). 250 ta so'zdan kam bo'lmasligi kerak.`
+          : `Underlength essay (${wordCount} words). Minimum 250 words required.`;
+      } else if (wordCount >= 100) {
+        taScore = 4.0;
+        taFeedback = lang === 'UZ'
+          ? `Insho juda qisqa (${wordCount} so'z). Rasmiy IELTS qoidasiga ko'ra Band 4.0 jazo qo'llandi.`
+          : `Very short essay (${wordCount} words). Official IELTS underlength penalty applied (Band 4.0).`;
+      } else {
+        taScore = 3.0;
+        taFeedback = lang === 'UZ'
+          ? `Juda oz so'z (${wordCount} ta). Yetarli kontent bo'lmagani sababli Band 3.0 berildi.`
+          : `Extremely short essay (${wordCount} words). Severe underlength penalty applied (Band 3.0).`;
+      }
+    }
+
+    // B. Coherence and Cohesion (CC)
+    const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 10);
     const linkingWords = [
       'however', 'therefore', 'furthermore', 'moreover', 'consequently', 
       'in addition', 'on the other hand', 'in conclusion', 'firstly', 
       'secondly', 'thirdly', 'specifically', 'to sum up', 'illustrate', 
-      'contrast', 'whereas', 'as a result', 'meanwhile', 'besides'
+      'contrast', 'whereas', 'as a result', 'meanwhile', 'besides',
+      'subsequently', 'nevertheless', 'nonetheless', 'in contrast',
+      'likewise', 'similarly', 'alternatively', 'accordingly', 'notably'
     ];
-    const detectedLinkers = linkingWords.filter(word => new RegExp(`\\b${word}\\b`, 'i').test(text));
+    const detectedLinkers = Array.from(new Set(linkingWords.filter(word => new RegExp(`\\b${word}\\b`, 'i').test(text))));
     
-    let ccScore = 1.0;
+    let ccScore = 6.0;
     let ccFeedback = "";
-    if (wordCount === 0) {
-      ccScore = 1.0;
-      ccFeedback = "-";
+    const linkerCount = detectedLinkers.length;
+
+    if (linkerCount >= 5 && paragraphs.length >= 2) {
+      ccScore = 8.5;
+      ccFeedback = lang === 'UZ' 
+        ? `A'lo mantiqiy bog'liqlik! ${linkerCount} turdagi transition so'zlar va paragraf bo'linishi mukammal.`
+        : `Excellent cohesion! ${linkerCount} distinct cohesive devices and clear paragraph structure.`;
+    } else if (linkerCount >= 3) {
+      ccScore = 7.0;
+      ccFeedback = lang === 'UZ'
+        ? `Mantiqiy ketma-ketlik yaxshi (${linkerCount} ta bog'lovchi tur). Paragraflar orasidagi o'tishni kuchaytiring.`
+        : `Good logical flow with ${linkerCount} transition markers. Ensure distinct paragraphing.`;
+    } else if (linkerCount >= 1) {
+      ccScore = 6.0;
+      ccFeedback = lang === 'UZ'
+        ? `O'rtacha bog'liqlik. 'However', 'Furthermore', 'Consequently' kabi transition so'zlardan ko'proq foydalaning.`
+        : `Moderate cohesion. Use more varied linking words like 'Furthermore' or 'Consequently'.`;
     } else {
-      const density = detectedLinkers.length;
-      if (density >= 6) {
-        ccScore = 8.5;
-        ccFeedback = lang === 'UZ' ? "Yuqori bog'liqlik va ravon o'tishlar." : "Strong cohesive layout.";
-      } else if (density >= 3) {
-        ccScore = 6.5;
-        ccFeedback = lang === 'UZ' ? "Bog'lovchilar bor, lekin ko'proq foydalanish mumkin." : "Moderate cohesive devices.";
-      } else {
-        ccScore = 5.0;
-        ccFeedback = lang === 'UZ' ? "Bog'liqlik juda sust. Transition so'zlar kam." : "Weak cohesion. Use more linking terms.";
-      }
+      ccScore = 5.0;
+      ccFeedback = lang === 'UZ'
+        ? `Bog'liqlik sust. Fikrlarni bog'lovchi maxsus transition so'zlar yetishmaydi.`
+        : `Weak cohesion. Incorporate linking terms to connect ideas logically.`;
     }
 
-    // LR Score
+    // C. Lexical Resource (LR)
     const academicWords = [
       'accelerate', 'democratize', 'portability', 'multifaceted', 'cohesive', 
       'substantial', 'proportions', 'illustrate', 'significant', 'indispensable', 
       'collaboration', 'motivate', 'integration', 'critic', 'alternative', 
-      'consequence', 'penetration', 'dramatic', 'unparalleled', 'supersede'
+      'consequence', 'penetration', 'dramatic', 'unparalleled', 'supersede',
+      'prominent', 'transformation', 'fluctuating', 'predominant', 'noticeable',
+      'exponential', 'imperative', 'plausible', 'detrimental', 'profound', 'efficacy'
     ];
-    const detectedAcademic = academicWords.filter(word => new RegExp(`\\b${word}\\b`, 'i').test(text));
-    
-    let lrScore = 1.0;
+    const detectedAcademic = Array.from(new Set(academicWords.filter(word => new RegExp(`\\b${word}\\b`, 'i').test(text))));
+    const uniqueWordRatio = new Set(words.map(w => w.toLowerCase())).size / Math.max(1, words.length);
+
+    let lrScore = 6.0;
     let lrFeedback = "";
-    if (wordCount === 0) {
-      lrScore = 1.0;
-      lrFeedback = "-";
+    const vocabCount = detectedAcademic.length;
+
+    if (vocabCount >= 4 && uniqueWordRatio > 0.45) {
+      lrScore = 8.5;
+      lrFeedback = lang === 'UZ' 
+        ? `Boy va aniq akademik lug'at zaxirasi! (${vocabCount} ta C1/C2 darajadagi so'zlar aniqlandi).`
+        : `Rich academic vocabulary! (${vocabCount} advanced C1/C2 level terms detected).`;
+    } else if (vocabCount >= 2 || uniqueWordRatio > 0.40) {
+      lrScore = 7.0;
+      lrFeedback = lang === 'UZ'
+        ? `Yaxshi so'z boyligi. Takroriy so'zlardan qoching va akademik sinonimlar qo'shing.`
+        : `Good vocabulary range. Try replacing repetitive terms with advanced academic synonyms.`;
+    } else if (wordCount >= minWords - 40) {
+      lrScore = 6.0;
+      lrFeedback = lang === 'UZ'
+        ? `O'rtacha lug me'zon. Ko'proq rasmiy va akademik iboralarni qo'llang.`
+        : `Satisfactory vocabulary. Incorporate more formal academic collocations.`;
     } else {
-      const vocabCount = detectedAcademic.length;
-      if (vocabCount >= 5) {
-        lrScore = 8.5;
-        lrFeedback = lang === 'UZ' ? "Boy akademik so'zlar zaxirasi." : "Advanced academic vocabulary.";
-      } else if (vocabCount >= 2) {
-        lrScore = 6.5;
-        lrFeedback = lang === 'UZ' ? "Oddiy so'zlar ko'p. Sinonimlar qo'shing." : "Basic vocabulary. Add synonyms.";
-      } else {
-        lrScore = 5.0;
-        lrFeedback = lang === 'UZ' ? "Sodda so'zlar qo'llangan." : "Repetitive or simple lexicon.";
-      }
+      lrScore = 5.0;
+      lrFeedback = lang === 'UZ'
+        ? `Lug'at boyligi cheklangan va sodda so'zlar takrorlangan.`
+        : `Limited lexical range. Expand academic vocabulary usage.`;
     }
 
-    // GRA Score
-    let graScore = 1.0;
+    // D. Grammatical Range and Accuracy (GRA)
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 5);
+    const sentenceCount = sentences.length;
+    const commas = (text.match(/,/g) || []).length;
+    const hasComplexClause = /\b(although|even though|provided that|unless|which|that|who|where|whose|while|whereas|despite|in order that)\b/i.test(text);
+    const hasPassiveVoice = /\b(is|are|was|were|been|being)\s+\w+(ed|en|t)\b/i.test(text);
+
+    let graScore = 6.0;
     let graFeedback = "";
-    if (wordCount === 0) {
-      graScore = 1.0;
-      graFeedback = "-";
+
+    if (sentenceCount >= 6 && (hasComplexClause || hasPassiveVoice) && commas >= 4) {
+      graScore = 8.5;
+      graFeedback = lang === 'UZ' 
+        ? `A'lo grammatik xilma-xillik! Murakkab ergash gaplar va majhul nisbat (passive voice) to'g'ri qo'llangan.`
+        : `Excellent grammatical accuracy and range! Effective complex clauses and passive constructions.`;
+    } else if (sentenceCount >= 4 && (hasComplexClause || commas >= 2)) {
+      graScore = 7.0;
+      graFeedback = lang === 'UZ'
+        ? `Yaxshi grammatik tuzilma. Murakkab va qo'shma gap shakllaridan foydalanilgan.`
+        : `Good grammatical range with compound/complex sentence structures.`;
+    } else if (sentenceCount >= 3) {
+      graScore = 6.0;
+      graFeedback = lang === 'UZ'
+        ? `O'rtacha grammatika. Sodda gaplar ko'p, ergash gapli murakkab grammatikani ko'paytiring.`
+        : `Satisfactory grammar. Try joining short simple sentences into complex structures.`;
     } else {
-      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 5);
-      const sentenceCount = sentences.length;
-      const commas = (text.match(/,/g) || []).length;
-      if (sentenceCount >= 8 && commas >= 6) {
-        graScore = 8.5;
-        graFeedback = lang === 'UZ' ? "Murakkab gaplar to'g'ri qo'llangan." : "Good complex syntax range.";
-      } else if (sentenceCount >= 4) {
-        graScore = 6.5;
-        graFeedback = lang === 'UZ' ? "Asosan sodda va o'rtacha gaplar." : "Satisfactory sentence diversity.";
-      } else {
-        graScore = 5.0;
-        graFeedback = lang === 'UZ' ? "Grammatik xatoliklar ko'p." : "Frequent structural issues.";
-      }
+      graScore = 5.0;
+      graFeedback = lang === 'UZ'
+        ? `Grammatik xatoliklar yoki juda sodda gaplar ko'p.`
+        : `Frequent grammatical errors or overly simplified sentences.`;
     }
 
-    const averageBand = parseFloat(((taScore + ccScore + lrScore + graScore) / 4).toFixed(2));
-    
+    // Overall Average Band for this Task (rounded using official BC/IDP IELTS rules)
+    const rawAvg = (taScore + ccScore + lrScore + graScore) / 4;
+    const roundedAvg = roundOfficialIELTSBand(rawAvg);
+
     return {
+      submitted: true,
       wordCount,
       taScore,
+      taTitle,
       taFeedback,
       ccScore,
       ccFeedback,
@@ -319,18 +433,20 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ lang, answer
       lrDetected: detectedAcademic,
       graScore,
       graFeedback,
-      averageBand
+      averageBand: roundedAvg
     };
   };
 
   const w1Analysis = analyzeEssay(answers.writing?.w1 || '', 'task1');
   const w2Analysis = analyzeEssay(answers.writing?.w2 || '', 'task2');
   
+  // Calculate writingBand using official British Council / IDP rules
   const writingBand = answers.writingBand !== undefined
     ? answers.writingBand
-    : (answers.writing?.w1 || answers.writing?.w2
-      ? parseFloat(((w1Analysis.averageBand + w2Analysis.averageBand * 2) / 3).toFixed(1))
-      : 1.0);
+    : calculateOfficialWritingBand(
+        w1Analysis.submitted ? w1Analysis.averageBand : null,
+        w2Analysis.submitted ? w2Analysis.averageBand : null
+      );
 
   // 4. Calculate Speaking Band score based on mode
   const speakingIsExaminerMode = answers.speaking?.mode === 'examiner';
@@ -344,10 +460,10 @@ export const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ lang, answer
         return 1.0;
       })();
 
-  // 5. Calculate Overall Band score
+  // 5. Calculate Overall Band score using official British Council / IDP rounding rule (.25 -> .5, .75 -> 1.0)
   const overallBand = answers.overall !== undefined 
     ? answers.overall
-    : parseFloat(((listeningBand + readingBand + writingBand + speakingBand) / 4).toFixed(1));
+    : calculateOfficialOverallBand(listeningBand, readingBand, writingBand, speakingBand);
   const overallBandScoreNum = isNaN(overallBand) ? 1.0 : overallBand;
 
   // Save result to local history
@@ -601,31 +717,73 @@ American School Mock Test tizimi orqali topshirildi!`;
         <div className="no-print" style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
           {/* AI Writing breakdown */}
           {hasWriting && (
-            <div className="glass-panel" style={{ padding: '24px', background: 'white' }}>
-              <h3 style={{ fontSize: '1.25rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '10px', marginBottom: '16px' }}>
-                Writing Essay AI Grading Detail
+            <div className="glass-panel" style={{ padding: '24px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+              <h3 style={{ fontSize: '1.25rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '12px', marginBottom: '20px', fontWeight: 700, color: '#1e293b' }}>
+                ✍️ IELTS Writing AI Grading Breakdown
               </h3>
 
               {/* Task 1 details */}
-              <div style={{ marginBottom: '24px', background: '#f8fafc', padding: '16px', borderRadius: '6px' }}>
-                <h4 style={{ color: 'hsl(var(--primary))', marginBottom: '10px' }}>Task 1 (Report) Assessment</h4>
-                <ul style={{ fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '6px', listStyleType: 'none' }}>
-                  <li>• Task Achievement: <strong>Band {w1Analysis.taScore}</strong> - {w1Analysis.taFeedback}</li>
-                  <li>• Coherence & Cohesion: <strong>Band {w1Analysis.ccScore}</strong> - {w1Analysis.ccFeedback}</li>
-                  <li>• Lexical Resource: <strong>Band {w1Analysis.lrScore}</strong> - {w1Analysis.lrFeedback}</li>
-                  <li>• Grammatical Accuracy: <strong>Band {w1Analysis.graScore}</strong> - {w1Analysis.graFeedback}</li>
-                </ul>
+              <div style={{ marginBottom: '20px', background: w1Analysis.submitted ? '#f8fafc' : '#f1f5f9', padding: '20px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                  <h4 style={{ color: '#2563eb', margin: 0, fontWeight: 700, fontSize: '1.05rem' }}>
+                    Task 1 (Report) Assessment
+                  </h4>
+                  <span style={{
+                    fontSize: '12px', fontWeight: 700,
+                    padding: '4px 12px', borderRadius: '12px',
+                    background: w1Analysis.submitted ? '#dbeafe' : '#e2e8f0',
+                    color: w1Analysis.submitted ? '#1e40af' : '#64748b'
+                  }}>
+                    {w1Analysis.submitted ? `Band ${w1Analysis.averageBand.toFixed(1)}` : (lang === 'UZ' ? "Topshirilmadi" : "Unattempted")}
+                  </span>
+                </div>
+
+                {w1Analysis.submitted ? (
+                  <ul style={{ fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '8px', listStyleType: 'none', padding: 0, margin: 0 }}>
+                    <li style={{ color: '#334155' }}>• <strong>Task Achievement (TA):</strong> <span style={{ color: '#2563eb', fontWeight: 700 }}>Band {w1Analysis.taScore.toFixed(1)}</span> — {w1Analysis.taFeedback}</li>
+                    <li style={{ color: '#334155' }}>• <strong>Coherence & Cohesion (CC):</strong> <span style={{ color: '#2563eb', fontWeight: 700 }}>Band {w1Analysis.ccScore.toFixed(1)}</span> — {w1Analysis.ccFeedback}</li>
+                    <li style={{ color: '#334155' }}>• <strong>Lexical Resource (LR):</strong> <span style={{ color: '#2563eb', fontWeight: 700 }}>Band {w1Analysis.lrScore.toFixed(1)}</span> — {w1Analysis.lrFeedback}</li>
+                    <li style={{ color: '#334155' }}>• <strong>Grammatical Accuracy (GRA):</strong> <span style={{ color: '#2563eb', fontWeight: 700 }}>Band {w1Analysis.graScore.toFixed(1)}</span> — {w1Analysis.graFeedback}</li>
+                  </ul>
+                ) : (
+                  <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
+                    {lang === 'UZ' 
+                      ? "Task 1 bajarilmagan. (Bitta topshiriqli mashq rejimida Task 1 umumiy bahoga ta'sir ko'rsatmaydi)."
+                      : "Task 1 was unattempted. (In single-task mode, unattempted tasks do not penalize your overall writing score)."}
+                  </p>
+                )}
               </div>
 
               {/* Task 2 details */}
-              <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '6px' }}>
-                <h4 style={{ color: 'hsl(var(--primary))', marginBottom: '10px' }}>Task 2 (Essay) Assessment</h4>
-                <ul style={{ fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '6px', listStyleType: 'none' }}>
-                  <li>• Task Response: <strong>Band {w2Analysis.taScore}</strong> - {w2Analysis.taFeedback}</li>
-                  <li>• Coherence & Cohesion: <strong>Band {w2Analysis.ccScore}</strong> - {w2Analysis.ccFeedback}</li>
-                  <li>• Lexical Resource: <strong>Band {w2Analysis.lrScore}</strong> - {w2Analysis.lrFeedback}</li>
-                  <li>• Grammatical Accuracy: <strong>Band {w2Analysis.graScore}</strong> - {w2Analysis.graFeedback}</li>
-                </ul>
+              <div style={{ background: w2Analysis.submitted ? '#f8fafc' : '#f1f5f9', padding: '20px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                  <h4 style={{ color: '#059669', margin: 0, fontWeight: 700, fontSize: '1.05rem' }}>
+                    Task 2 (Essay) Assessment
+                  </h4>
+                  <span style={{
+                    fontSize: '12px', fontWeight: 700,
+                    padding: '4px 12px', borderRadius: '12px',
+                    background: w2Analysis.submitted ? '#d1fae5' : '#e2e8f0',
+                    color: w2Analysis.submitted ? '#065f46' : '#64748b'
+                  }}>
+                    {w2Analysis.submitted ? `Band ${w2Analysis.averageBand.toFixed(1)}` : (lang === 'UZ' ? "Topshirilmadi" : "Unattempted")}
+                  </span>
+                </div>
+
+                {w2Analysis.submitted ? (
+                  <ul style={{ fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '8px', listStyleType: 'none', padding: 0, margin: 0 }}>
+                    <li style={{ color: '#334155' }}>• <strong>Task Response (TR):</strong> <span style={{ color: '#059669', fontWeight: 700 }}>Band {w2Analysis.taScore.toFixed(1)}</span> — {w2Analysis.taFeedback}</li>
+                    <li style={{ color: '#334155' }}>• <strong>Coherence & Cohesion (CC):</strong> <span style={{ color: '#059669', fontWeight: 700 }}>Band {w2Analysis.ccScore.toFixed(1)}</span> — {w2Analysis.ccFeedback}</li>
+                    <li style={{ color: '#334155' }}>• <strong>Lexical Resource (LR):</strong> <span style={{ color: '#059669', fontWeight: 700 }}>Band {w2Analysis.lrScore.toFixed(1)}</span> — {w2Analysis.lrFeedback}</li>
+                    <li style={{ color: '#334155' }}>• <strong>Grammatical Accuracy (GRA):</strong> <span style={{ color: '#059669', fontWeight: 700 }}>Band {w2Analysis.graScore.toFixed(1)}</span> — {w2Analysis.graFeedback}</li>
+                  </ul>
+                ) : (
+                  <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
+                    {lang === 'UZ'
+                      ? "Task 2 bajarilmagan. (Bitta topshiriqli mashq rejimida Task 2 bajarilmagani Task 1 bahosini tushirmaydi)."
+                      : "Task 2 was unattempted. (In single-task mode, unattempted tasks do not penalize your Task 1 score)."}
+                  </p>
+                )}
               </div>
             </div>
           )}

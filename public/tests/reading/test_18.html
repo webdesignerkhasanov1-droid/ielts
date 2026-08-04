@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Academic Reading Test 2026 - Authentic Series #18</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ielts-red': '#DC2626',
+                        'ielts-navy': '#1E3A8A',
+                        'ielts-green': '#059669',
+                        'ielts-gray': '#F3F4F6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .split-pane { height: calc(100vh - 65px); }
+        .passage-content p { margin-bottom: 1.25rem; line-height: 1.7; color: #1f2937; }
+        .passage-content h3 { font-weight: 700; font-size: 1.25rem; color: #111827; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .question-box { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem; }
+        .question-title { font-weight: 600; color: #1f2937; margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 overflow-hidden select-none">
+
+    <!-- Header / Control Bar -->
+    <header class="h-[65px] bg-white border-b border-gray-200 px-6 flex justify-between items-center z-50 relative shadow-sm">
+        <div class="flex items-center space-x-4">
+            <a href="/" class="flex items-center space-x-2 text-sm font-semibold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200 hover:bg-blue-100 transition">
+                <span>◀ Back to Portal</span>
+            </a>
+            <h1 class="text-lg font-bold text-gray-800 hidden md:block">IELTS Academic Reading Test (2026 Authentic Series #18)</h1>
+        </div>
+
+        <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-2 text-red-600 font-mono font-bold text-lg bg-red-50 px-4 py-1.5 rounded-md border border-red-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span id="timer">60:00</span>
+            </div>
+            <button onclick="submitTest()" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg font-semibold text-sm transition shadow-md">
+                Submit Test
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Dual Pane Interface -->
+    <div class="flex flex-col md:flex-row split-pane overflow-hidden">
+        
+        <!-- Left Pane: Passages -->
+        <div class="w-full md:w-1/2 h-full overflow-y-auto p-6 bg-white border-r border-gray-200 passage-content">
+            <div class="mb-4">
+                <span class="bg-blue-100 text-blue-800 font-semibold px-3 py-1 rounded-full text-xs uppercase tracking-wider">Passage 1</span>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">The Underground Communication Networks of Mycorrhizal Fungi</h2>
+            <p><strong>A</strong> Deep within forest soils lies an ancient biological infrastructure so intricate that scientists frequently compare it to human telecommunications. Mycorrhizal networks—symbiotic underground associations between specialized fungi and plant root systems—connect vast swathes of individual trees into unified biological communities. Through micro-thin threads called hyphae, these fungi facilitate the exchange of carbon, nitrogen, phosphorus, and complex biochemical signals between plants of differing ages and species.</p>
+            
+            <p><strong>B</strong> The ecological significance of these subterranean pathways became prominent through the pioneering field research of Dr. Suzanne Simard in the late 20th century. Simard demonstrated that mature "mother trees" utilize mycorrhizal fungi to transfer photosynthetic carbon directly to shaded saplings growing beneath the forest canopy. Remarkably, when a mother tree experiences physiological distress or pest infestation, it dramatically escalates its carbon export to surrounding offspring, effectively nurturing the next generation prior to its own demise.</p>
+
+            <p><strong>C</strong> Beyond nutrient redistribution, mycorrhizal networks serve as early-warning defensive radar networks for terrestrial ecosystems. When insects attack a Douglas fir, the tree synthesizes volatile defense chemicals while simultaneously transmitting electrical and chemical impulses through the fungal grid to neighboring trees. Upon receiving these subterranean warning signals, unattacked trees preemptively begin producing unpalatable tannins and toxic enzymes to deter impending herbivore predation.</p>
+
+            <p><strong>D</strong> Recent genetic sequencing has revealed that these networks exhibit complex subterranean topology. The density of fungal hubs follows scale-free network models similar to global computer routing systems. Certain central fungi act as primary hubs, interacting with hundreds of host trees simultaneously. Should these critical hubs be disrupted by intensive logging or agricultural soil tilling, the resilience of the entire forest ecosystem degrades exponentially.</p>
+
+            <hr class="my-8 border-gray-200">
+
+            <div class="mb-4">
+                <span class="bg-purple-100 text-purple-800 font-semibold px-3 py-1 rounded-full text-xs uppercase tracking-wider">Passage 2</span>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Deep-Sea Bioluminescence: Nature’s Cold Light and Bionics</h2>
+            <p>In the aphotic bathypelagic zone—stretching from 1,000 to 4,000 meters beneath the sea surface—sunlight is entirely absent. In this perpetual realm of darkness, over 75% of marine organismic species generate their own light through bioluminescence. Unlike incandescent or fluorescent lights created by human industrial power, bioluminescence produces light with virtually 100% thermal efficiency, generating no waste heat whatsoever.</p>
+            <p>The chemical reaction powering nature's cold light requires two key elements: a light-emitting substrate called <em>luciferin</em> and a catalytic enzyme known as <em>luciferase</em>. In the presence of oxygen, luciferase oxidizes luciferin, elevating its electron state. As the compound relaxes back to its baseline ground state, it releases photons primarily in blue-green wavelengths (470–490 nm), which travel farthest through underwater mediums.</p>
+
+            <hr class="my-8 border-gray-200">
+
+            <div class="mb-4">
+                <span class="bg-emerald-100 text-emerald-800 font-semibold px-3 py-1 rounded-full text-xs uppercase tracking-wider">Passage 3</span>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Chronobiology: Deciphering Human Circadian Rhythms</h2>
+            <p>Chronobiology is the branch of biological science that investigates periodic timing mechanisms within living organisms. Human physiology operates on an internal master clock residing in the <em>suprachiasmatic nucleus (SCN)</em>—a paired structure located inside the hypothalamus consisting of approximately 20,000 neurons. The SCN synchronizes cellular activities across all peripheral organ systems in accordance with the 24-hour solar daylight cycle.</p>
+        </div>
+
+        <!-- Right Pane: Questions -->
+        <div class="w-full md:w-1/2 h-full overflow-y-auto p-6 bg-gray-50">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Questions 1–10 (Passage 1 & 2)</h2>
+
+            <!-- Questions 1-4: True / False / Not Given -->
+            <div class="question-box">
+                <h3 class="font-bold text-blue-900 mb-3">Questions 1–4: True / False / Not Given</h3>
+                
+                <div class="mb-4">
+                    <p class="question-title">1. Mycorrhizal fungi transport nutrients exclusively between trees of the exact same species.</p>
+                    <div class="flex space-x-4 mt-2">
+                        <label class="inline-flex items-center"><input type="radio" name="q1" value="TRUE" class="mr-2"> TRUE</label>
+                        <label class="inline-flex items-center"><input type="radio" name="q1" value="FALSE" class="mr-2"> FALSE</label>
+                        <label class="inline-flex items-center"><input type="radio" name="q1" value="NOT GIVEN" class="mr-2"> NOT GIVEN</label>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <p class="question-title">2. Dr. Suzanne Simard's research showed mother trees increase carbon export when facing distress.</p>
+                    <div class="flex space-x-4 mt-2">
+                        <label class="inline-flex items-center"><input type="radio" name="q2" value="TRUE" class="mr-2"> TRUE</label>
+                        <label class="inline-flex items-center"><input type="radio" name="q2" value="FALSE" class="mr-2"> FALSE</label>
+                        <label class="inline-flex items-center"><input type="radio" name="q2" value="NOT GIVEN" class="mr-2"> NOT GIVEN</label>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <p class="question-title">3. Neighboring trees produce toxic enzymes before insects reach them after receiving fungal signals.</p>
+                    <div class="flex space-x-4 mt-2">
+                        <label class="inline-flex items-center"><input type="radio" name="q3" value="TRUE" class="mr-2"> TRUE</label>
+                        <label class="inline-flex items-center"><input type="radio" name="q3" value="FALSE" class="mr-2"> FALSE</label>
+                        <label class="inline-flex items-center"><input type="radio" name="q3" value="NOT GIVEN" class="mr-2"> NOT GIVEN</label>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <p class="question-title">4. Human computer routing systems were modeled directly after mycorrhizal fungal networks.</p>
+                    <div class="flex space-x-4 mt-2">
+                        <label class="inline-flex items-center"><input type="radio" name="q4" value="TRUE" class="mr-2"> TRUE</label>
+                        <label class="inline-flex items-center"><input type="radio" name="q4" value="FALSE" class="mr-2"> FALSE</label>
+                        <label class="inline-flex items-center"><input type="radio" name="q4" value="NOT GIVEN" class="mr-2"> NOT GIVEN</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions 5-8: Fill in blanks -->
+            <div class="question-box">
+                <h3 class="font-bold text-blue-900 mb-3">Questions 5–8: Complete the summary (NO MORE THAN TWO WORDS)</h3>
+                <p class="text-sm text-gray-600 mb-4">Complete the summary below. Choose NO MORE THAN TWO WORDS from Passage 1 for each answer.</p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium">5. Fungal threads known as <input type="text" id="q5" class="border border-gray-300 rounded px-2 py-1 mx-1 w-36 text-center font-semibold text-blue-700"> help plants exchange vital nutrients underground.</label>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium">6. Unattacked trees synthesize unpalatable <input type="text" id="q6" class="border border-gray-300 rounded px-2 py-1 mx-1 w-36 text-center font-semibold text-blue-700"> to deter predator insects.</label>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium">7. Underground networks follow <input type="text" id="q7" class="border border-gray-300 rounded px-2 py-1 mx-1 w-36 text-center font-semibold text-blue-700"> network topology models.</label>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium">8. Soil tilling or logging damages critical fungal <input type="text" id="q8" class="border border-gray-300 rounded px-2 py-1 mx-1 w-36 text-center font-semibold text-blue-700">, reducing forest resilience.</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-box">
+                <h3 class="font-bold text-purple-900 mb-3">Passage 2 Questions: Short Answer</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium">9. What percentage of deep-sea marine species create bioluminescent light? <input type="text" id="q9" class="border border-gray-300 rounded px-2 py-1 mx-1 w-28 text-center font-semibold text-purple-700"></label>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium">10. Name the catalytic enzyme involved in natural cold light reactions: <input type="text" id="q10" class="border border-gray-300 rounded px-2 py-1 mx-1 w-40 text-center font-semibold text-purple-700"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Result Modal -->
+    <div id="resultModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden flex justify-center items-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl text-center transform transition-all">
+            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">✓</div>
+            <h3 class="text-2xl font-extrabold text-gray-900 mb-2">Test Completed!</h3>
+            <p class="text-gray-600 mb-6">Here is your estimated IELTS Reading Band Score for this authentic set:</p>
+            
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+                <div class="text-4xl font-black text-blue-700" id="bandScore">7.5</div>
+                <div class="text-sm font-semibold text-blue-900 mt-1" id="scoreDetail">Correct: 8 / 10</div>
+            </div>
+
+            <button onclick="window.location.href='/'" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition">
+                Back to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Timer countdown
+        let seconds = 3600;
+        const timerEl = document.getElementById('timer');
+        const interval = setInterval(() => {
+            seconds--;
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            timerEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            if (seconds <= 0) {
+                clearInterval(interval);
+                submitTest();
+            }
+        }, 1000);
+
+        function submitTest() {
+            clearInterval(interval);
+            
+            // Checking key answers
+            let correct = 0;
+            const q1 = document.querySelector('input[name="q1"]:checked')?.value;
+            const q2 = document.querySelector('input[name="q2"]:checked')?.value;
+            const q3 = document.querySelector('input[name="q3"]:checked')?.value;
+            const q4 = document.querySelector('input[name="q4"]:checked')?.value;
+
+            if (q1 === 'FALSE') correct++;
+            if (q2 === 'TRUE') correct++;
+            if (q3 === 'TRUE') correct++;
+            if (q4 === 'FALSE') correct++;
+
+            const q5 = document.getElementById('q5')?.value.trim().toLowerCase();
+            const q6 = document.getElementById('q6')?.value.trim().toLowerCase();
+            const q7 = document.getElementById('q7')?.value.trim().toLowerCase();
+            const q8 = document.getElementById('q8')?.value.trim().toLowerCase();
+            const q9 = document.getElementById('q9')?.value.trim().toLowerCase();
+            const q10 = document.getElementById('q10')?.value.trim().toLowerCase();
+
+            if (q5 === 'hyphae') correct++;
+            if (q6 === 'tannins') correct++;
+            if (q7 === 'scale-free' || q7 === 'scale free') correct++;
+            if (q8 === 'hubs') correct++;
+            if (q9.includes('75')) correct++;
+            if (q10 === 'luciferase') correct++;
+
+            // Band score mapping (10 questions sample scaling)
+            let band = 5.0;
+            if (correct >= 9) band = 8.5;
+            else if (correct >= 8) band = 8.0;
+            else if (correct >= 7) band = 7.5;
+            else if (correct >= 6) band = 6.5;
+            else if (correct >= 4) band = 5.5;
+
+            document.getElementById('bandScore').textContent = band.toFixed(1);
+            document.getElementById('scoreDetail').textContent = `Correct Answers: ${correct} / 10`;
+            document.getElementById('resultModal').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
