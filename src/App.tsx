@@ -59,9 +59,9 @@ function App() {
     telegram: ''
   });
 
-  // Terminal Lock & Security Passcode State (LOCKED BY DEFAULT ON SITE ENTRY!)
+  // Terminal Lock & Security Passcode State
   const [isTerminalUnlocked, setIsTerminalUnlocked] = useState<boolean>(() => {
-    return sessionStorage.getItem('portal_terminal_unlocked') === 'true';
+    return sessionStorage.getItem('portal_terminal_unlocked') !== 'false';
   });
   const [masterPasscode, setMasterPasscode] = useState<string>(() => {
     return localStorage.getItem('portal_master_passcode') || 'AMERICAN2026';
@@ -342,7 +342,7 @@ function App() {
         resetTest={handleRestart}
         theme={theme}
         toggleTheme={toggleTheme}
-        onAdminClick={() => setCurrentSection('admin')}
+        onAdminClick={() => setIsAdminAuthModalOpen(true)}
         onLockClick={() => {
           sessionStorage.removeItem('portal_terminal_unlocked');
           localStorage.removeItem('portal_terminal_unlocked');
