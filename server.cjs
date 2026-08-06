@@ -475,6 +475,32 @@ const server = http.createServer((req, res) => {
     res.end(JSON.stringify(dbData.results));
   }
 
+  else if ((parsedUrl.pathname === '/api/result/delete' || parsedUrl.pathname === '/api/result/delete/') && (req.method === 'POST' || req.method === 'DELETE')) {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        const { resultId } = JSON.parse(body || '{}');
+        const dbData = readDB();
+        dbData.results = dbData.results.filter(r => r.id !== resultId);
+        writeDB(dbData);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, message: 'Result deleted successfully' }));
+      } catch (e) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+  }
+
+  else if ((parsedUrl.pathname === '/api/results/clear' || parsedUrl.pathname === '/api/results/clear/') && req.method === 'POST') {
+    const dbData = readDB();
+    dbData.results = [];
+    writeDB(dbData);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ success: true, message: 'All results cleared' }));
+  }
+
   else {
     // Serve static files from dist (React build)
     let filePath = path.join(DIST_DIR, parsedUrl.pathname);

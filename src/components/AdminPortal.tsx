@@ -127,9 +127,24 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ lang, onBack }) => {
 
   const handleClearDatabase = () => {
     if (window.confirm(lang === 'UZ' ? "Haqiqatdan ham barcha ma'lumotlarni o'chirmoqchimisiz?" : "Are you sure you want to clear all data?")) {
+      db.clearResults();
       localStorage.removeItem('american_school_candidates');
       localStorage.removeItem('american_school_results');
       setCandidates([]);
+      setResults([]);
+    }
+  };
+
+  const handleDeleteSingleResult = (resultId: string) => {
+    if (window.confirm(lang === 'UZ' ? "Ushbu imtihon natijasini o'chirmoqchimisiz?" : "Delete this test result?")) {
+      db.deleteResult(resultId);
+      setResults(prev => prev.filter(r => r.id !== resultId));
+    }
+  };
+
+  const handleClearResults = () => {
+    if (window.confirm(lang === 'UZ' ? "Barcha imtihon natijalarini tozalashni tasdiqlaysizmi?" : "Clear all test results?")) {
+      db.clearResults();
       setResults([]);
     }
   };
@@ -253,9 +268,20 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ lang, onBack }) => {
       {/* TAB 2: TEST RESULTS LIST */}
       {activeTab === 'results' && (
         <div className="glass-panel" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <h4 style={{ fontSize: '1.1rem', margin: 0, fontWeight: 700, color: '#1e293b' }}>
-            {lang === 'UZ' ? "Imtihon natijalari tarixi" : "Test Results History"}
-          </h4>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h4 style={{ fontSize: '1.1rem', margin: 0, fontWeight: 700, color: '#1e293b' }}>
+              {lang === 'UZ' ? "Imtihon natijalari tarixi" : "Test Results History"}
+            </h4>
+            {results.length > 0 && (
+              <button 
+                onClick={handleClearResults} 
+                className="btn-secondary" 
+                style={{ color: '#ef4444', borderColor: '#fee2e2', fontWeight: 700 }}
+              >
+                🗑️ {lang === 'UZ' ? "Barcha Natijalarni Tozalash" : "Clear All Results"}
+              </button>
+            )}
+          </div>
 
           {results.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
@@ -273,6 +299,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ lang, onBack }) => {
                     <th style={{ padding: '12px 8px' }}>Overall</th>
                     <th style={{ padding: '12px 8px' }}>Date</th>
                     <th style={{ padding: '12px 8px', textAlign: 'center' }}>Evaluate Speaking</th>
+                    <th style={{ padding: '12px 8px', textAlign: 'center' }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -321,6 +348,25 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ lang, onBack }) => {
                               {updatingId === r.id ? '...' : (speakingVal > 0 ? 'Update & Send' : 'Save & Send')}
                             </button>
                           </div>
+                        </td>
+                        <td style={{ padding: '12px 8px', textAlign: 'center' }}>
+                          <button
+                            onClick={() => handleDeleteSingleResult(r.id)}
+                            style={{
+                              background: '#fef2f2',
+                              border: '1px solid #fca5a5',
+                              color: '#ef4444',
+                              padding: '6px 10px',
+                              borderRadius: '8px',
+                              cursor: 'pointer',
+                              fontWeight: 700,
+                              fontSize: '12px',
+                              transition: 'background 0.2s'
+                            }}
+                            title={lang === 'UZ' ? "Natijani o'chirish" : "Delete Result"}
+                          >
+                            🗑️
+                          </button>
                         </td>
                       </tr>
                     );

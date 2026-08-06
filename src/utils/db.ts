@@ -108,6 +108,23 @@ export const db = {
     return data ? JSON.parse(data) : [];
   },
 
+  deleteResult: (resultId: string): void => {
+    const results = db.getResults().filter(r => r.id !== resultId);
+    localStorage.setItem(RESULTS_KEY, JSON.stringify(results));
+    fetch(`${API_URL}/api/result/delete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ resultId })
+    }).catch(err => console.warn("Backend Sync Delete Failed:", err));
+  },
+
+  clearResults: (): void => {
+    localStorage.removeItem(RESULTS_KEY);
+    fetch(`${API_URL}/api/results/clear`, {
+      method: 'POST'
+    }).catch(err => console.warn("Backend Sync Clear Failed:", err));
+  },
+
   // Telegram settings config
   saveConfig: (botToken: string, chatId: string): void => {
     const config: TelegramConfig = { botToken, chatId };
