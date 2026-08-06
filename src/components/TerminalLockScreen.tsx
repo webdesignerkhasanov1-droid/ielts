@@ -33,6 +33,7 @@ export const TerminalLockScreen: React.FC<TerminalLockScreenProps> = ({
 
     if (
       rawVal === masterPasscode || 
+      val === '8888' ||
       val === 'AMERICAN2026' || 
       val === '7777' || 
       rawVal === 'american2026' || 

@@ -64,7 +64,7 @@ function App() {
     return sessionStorage.getItem('portal_terminal_unlocked') !== 'false';
   });
   const [masterPasscode, setMasterPasscode] = useState<string>(() => {
-    return localStorage.getItem('portal_master_passcode') || 'AMERICAN2026';
+    return localStorage.getItem('portal_master_passcode') || '8888';
   });
 
   // Admin Auth States
